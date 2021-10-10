@@ -1,0 +1,27 @@
+/*
+Custom Css
+*/
+.logo-Header{
+    width: 100px;
+}
+.logo-Footer{
+    width: 100px;
+    text-align: center;
+}
+
+.footer .logo-Footer{
+    align-items: center;
+}
+.socal .footer-icons{
+    text-align: center;
+   
+}
+.con{
+    text-align: center;
+}
+.login-app{
+    text-align: center;
+}
+.logo{
+    width: 300px;
+}
