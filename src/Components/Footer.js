@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link, NavLink } from 'react-router-dom'
 
 function Footer() {
     return (
@@ -21,7 +22,7 @@ function Footer() {
                                 </li>
                                 <li>
                                     <i class="fa fa-envelope fa-fw"></i>
-                                    <a class="text-decoration-none" href="mailto:info@company.com">Bondnuy007@me.com</a>
+                                    <a class="text-decoration-none" href="mailto:bondnuy007@me.com">Bondnuy007@me.com</a>
                                 </li>
                             </ul>
                         </div>
@@ -42,11 +43,11 @@ function Footer() {
                         <div class="col-md-4 pt-5">
                             <h2 class="h2 text-light border-bottom pb-3 border-light">Further Info</h2>
                             <ul class="list-unstyled text-light footer-link-list">
-                                <li><a class="text-decoration-none" href="#">Home</a></li>
-                                <li><a class="text-decoration-none" href="#">Search</a></li>
-                                <li><a class="text-decoration-none" href="#">About Us</a></li>
-                                <li><a class="text-decoration-none" href="#">FAQs</a></li>
-                                <li><a class="text-decoration-none" href="#">Contact</a></li>
+                                <li><Link class="text-decoration-none" to="/">Home</Link></li>
+                                <li><Link class="text-decoration-none" to="/search">Search</Link></li>
+                                <li><Link class="text-decoration-none" to="/abount">About Us</Link></li>
+                                <li><Link class="text-decoration-none" to="/faq">FAQ</Link></li>
+                                <li><Link class="text-decoration-none" to="/contact">Contact</Link></li>
                             </ul>
                         </div>
 

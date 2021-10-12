@@ -25,3 +25,23 @@ Custom Css
 .logo{
     width: 300px;
 }
+.img-fluid{
+    height: 300px;
+}
+.img-fluid-show{
+    height: 100%;
+    border-radius: 25px;
+    /* vertical-align: middle; */
+    width: 100%;
+}
+.header-active{
+    background-color: #910B08;
+}
+.show-logo{
+    text-align: center;
+    
+}
+.name-app{
+    text-align: center;
+}
+

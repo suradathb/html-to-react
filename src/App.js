@@ -4,11 +4,12 @@ import newcowdams from "./data/NewCowDam";
 import { useState } from 'react';
 import NewCowcert from "./Components/NewCowcert";
 import Banner from "./Components/Banner";
-import { Route, Switch } from "react-router";
+import { Route, Switch } from "react-router-dom";
 import Abount from "./Abount";
 import Contract from "./Contract";
 import Login from "./Login";
 import Page404 from "./Page404";
+import Search from "./Search";
 
 function App() {
   const [selectNewCowItem,setSelectNewCowItem] = useState('');
@@ -41,6 +42,9 @@ function App() {
                 </div>
               </div> 
             </section>
+          </Route>
+          <Route path="/search">
+              <Search />
           </Route>
           <Route path="/abount">
               <Abount />

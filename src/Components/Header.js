@@ -1,4 +1,5 @@
 import React from "react";
+import { Link, NavLink } from "react-router-dom";
 
 function Header() {
   return (
@@ -19,23 +20,26 @@ function Header() {
                             <div class="flex-fill">
                                 <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="/">Home</a>
+                                        <Link class="nav-link"  to="/">Home</Link>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="about.html">Search</a>
+                                        <Link class="nav-link"  to="/search">Search</Link>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="/abount">Abount Us</a>
+                                        <Link class="nav-link"  to="/abount">Abount Us</Link>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" href="/contact">Contact</a>
+                                        <Link class="nav-link"  to="/faq">FAQ</Link>
+                                    </li>
+                                    <li class="nav-item">
+                                        <Link class="nav-link"  to="/contact">Contact</Link>
                                     </li>
                                 </ul>
                             </div>
                             <div class="navbar align-self-center d-flex">
                                 <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="/login">Login</a>
+                                        <Link class="nav-link"  to="/login">Login</Link>
                                     </li>
                                 </ul>
                             </div>
