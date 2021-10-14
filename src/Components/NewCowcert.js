@@ -1,9 +1,13 @@
 import React from 'react'
 
+
 function NewCowcert(props) {
+   
     const {newcowdam} = props;
+       console.log(newcowdam)     
     return (
             <>
+            
                 <div className="col-12 col-md-4 mb-4">
                     <div className="card h-100">
                         <a href="shop-single.html">
@@ -28,6 +32,7 @@ function NewCowcert(props) {
                         </div>
                     </div>
                 </div>
+            
               </>
     );
 }

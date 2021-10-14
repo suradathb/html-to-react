@@ -46,7 +46,7 @@ function Footer() {
                                 <li><Link class="text-decoration-none" to="/">Home</Link></li>
                                 <li><Link class="text-decoration-none" to="/search">Search</Link></li>
                                 <li><Link class="text-decoration-none" to="/abount">About Us</Link></li>
-                                <li><Link class="text-decoration-none" to="/faq">FAQ</Link></li>
+                                <li><Link class="text-decoration-none" to="/addcowcert">CreateCowCert</Link></li>
                                 <li><Link class="text-decoration-none" to="/contact">Contact</Link></li>
                             </ul>
                         </div>

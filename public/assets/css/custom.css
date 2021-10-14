@@ -45,3 +45,6 @@ Custom Css
     text-align: center;
 }
 
+.text-end{
+    padding-right: (spacer * .5) !important;
+}
