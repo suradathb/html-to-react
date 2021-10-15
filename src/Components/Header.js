@@ -61,7 +61,7 @@ class Header extends Component {
                     </Link>
                   </li>
                   <li class="nav-item">
-                    <Link class="nav-link" to="/addcowcert">
+                    <Link class="nav-link" to="/showcowcert">
                       CreateCowCert
                     </Link>
                   </li>

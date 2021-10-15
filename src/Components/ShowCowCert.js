@@ -1,6 +1,11 @@
 import React from "react";
+import { Route,Link} from "react-router-dom";
+import AddCowCert from "../AddCowCert";
 
 function ShowCowCert() {
+  <Route path="/AddCowCert">
+    <AddCowCert />
+  </Route>
   return (
     <>
       <div class="container-fluid bg-light py-5">
@@ -20,15 +25,15 @@ function ShowCowCert() {
         <div class="row py-5">
           <form class="col-md-9 m-auto" method="post" role="form" action="">
             <div className="Add-app">
-              <a type="submit" class="btn btn-success btn-lg px-3">
-                Create Addrewss &nbsp;
-                <i className="fa fa-plus-circle"></i>
-              </a>
+                <Link class="btn btn-success btn-lg px-3" to="/showcowcert">
+                  Create Addrewss 
+                  <i className="fa fa-plus-circle"></i>
+                </Link>
               &nbsp;&nbsp;&nbsp;&nbsp;
-              <a type="submit" class="btn btn-success btn-lg px-3">
-                Create CowCert &nbsp;
-                <i className="fa fa-plus-circle"></i>
-              </a>
+                <Link class="btn btn-success btn-lg px-3" to="/AddCowCert">
+                  CreateCowCert
+                  <i className="fa fa-plus-circle"></i>
+                </Link>
             </div>
 
             <table class="table table-borderless">
@@ -47,10 +52,11 @@ function ShowCowCert() {
                     B6A98075E4C2A24724C805F905A9CA1CED77AC09B4B497EF5600B0FCB3C12708
                   </td>
                   <td>
-                    <a type="submit" class="btn btn-outline-secondary">
-                      <i class="fa fa-eye"></i>
-                      &nbsp;View
-                    </a>
+                    <Link class="btn btn-outline-secondary" to="/search">
+                    <i class="fa fa-eye"></i>
+                    &nbsp;
+                    View
+                    </Link>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                   </td>
                   <td>
@@ -66,10 +72,11 @@ function ShowCowCert() {
                     B6A98075E4C2A24724C805F905A9CA1CED77AC09B4B497EF5600B0FCB3C12708
                   </td>
                   <td>
-                    <a type="submit" class="btn btn-outline-secondary">
-                      <i class="fa fa-eye"></i>
-                      &nbsp;View
-                    </a>
+                    <Link class="btn btn-outline-secondary" to="/search">
+                    <i class="fa fa-eye"></i>
+                    &nbsp;
+                    View
+                    </Link>
                   </td>
                   <td>
                     <a type="submit" class="btn btn-outline-secondary">
@@ -84,10 +91,11 @@ function ShowCowCert() {
                     B6A98075E4C2A24724C805F905A9CA1CED77AC09B4B497EF5600B0FCB3C12708
                   </td>
                   <td>
-                    <a type="submit" class="btn btn-outline-secondary">
-                      <i class="fa fa-eye"></i>
-                      &nbsp;View
-                    </a>
+                    <Link class="btn btn-outline-secondary" to="/search">
+                    <i class="fa fa-eye"></i>
+                    &nbsp;
+                    View
+                    </Link>
                   </td>
                   <td>
                     <a type="submit" class="btn btn-outline-secondary">

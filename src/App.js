@@ -69,9 +69,12 @@ class App extends Component {
             <Route path="/abount">
                 <Abount />
             </Route>
-            <Route path="/addcowcert">
+            <Route path="/showcowcert">
                 {/* <AddCowCert value={this.state.account}/> */}
                 <ShowCowCert />
+            </Route>
+            <Route path="/addcowcert">
+                  <AddCowCert />
             </Route>
             <Route path="/contact">
               <Contract />
