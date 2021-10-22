@@ -48,7 +48,7 @@ class ShowCowCert extends Component {
         const getDataAll = this.state.setDataAll.map((cow, key) => {
           let arrTmp = cow.result;
           const saveshow = [];
-          console.log(arrTmp)
+          // console.log(arrTmp)
           if (arrTmp.length) {
             for (var i = 1; i <= arrTmp.length; i++) {
               if (arrTmp[i] === undefined) continue;
