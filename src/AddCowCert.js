@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import SmartCowCert from "./abis/SmartCowCert.json";
 import Web3 from "web3";
 import CreateCowCert from "./Components/CreateCowCert";
+import CowCertificate from "./abis/CowCertificate.json";
 
-// function AddCowCert(props) {
+
 class AddCowCert extends Component {
   async componentWillMount() {
     await this.loadWeb3();
@@ -28,36 +28,23 @@ class AddCowCert extends Component {
     const accounts = await web3.eth.getAccounts();
     this.setState({ account: accounts[0] });
     const networkId = await web3.eth.net.getId();
-    const networkData = SmartCowCert.networks[networkId];
-    const abi = SmartCowCert.abi;
+    const networkData = CowCertificate.networks[networkId];
+    const abi = CowCertificate.abi;
     const address = networkData.address;
-    const smartCowCert = new web3.eth.Contract(abi, address);
-    this.setState({ smartCowCert });
-    const taskCount = await smartCowCert.methods.taskCount().call();
+    const cowCertificate = new web3.eth.Contract(abi, address);
+    this.setState({ cowCertificate });
+    const taskCount = await cowCertificate.methods.taskCount().call();
     this.setState({ taskCount });
     for (var i = 1; i <= taskCount; i++) {
-      const task = await smartCowCert.methods.tasks(i).call();
+      const task = await cowCertificate.methods.taskcows(i).call();
       this.setState({
         tasks: [...this.state.tasks, task],
       });
     }
     this.setState({ loading: false });
-
-    // const networkId = await web3.eth.net.getId();
-    // const networkData = SmartCowCert.networks[networkId];
-
-    // if (networkData) {
-    //   const abi = SmartCowCert.abi;
-    //   const address = networkData.address;
-    //   const contract = new web3.eth.Contract(abi, address);
-    //   this.setState({ contract });
-    //   const getCow = await contract.methods.taskCount().call();
-    //   this.setState({ getCow });
-
-    // } else {
-    //   window.alert("Smart contract not deployed to detected network.");
-    // }
   }
+
+  
 
   constructor(props) {
     super(props);
@@ -68,16 +55,19 @@ class AddCowCert extends Component {
       loading: true,
     };
     this.createTask = this.createTask.bind(this);
+    this.toggleCompleted = this.toggleCompleted.bind(this);
   }
   createTask(content) {
     console.log(content)
+    const objectArray = Object.values(content);
     this.setState({ loading: true });
-    this.state.smartCowCert.methods
-      .createTask(content)
+    const addCert = this.state.cowCertificate.methods
+      .CreateCowCert(`${objectArray}`)
       .send({ from: this.state.account })
       .once("receipt", (receipt) => {
         this.setState({ loading: false });
       });
+    // console.log(addCert)
   }
   toggleCompleted(taskId) {
     this.setState({ loading: true });
@@ -88,23 +78,22 @@ class AddCowCert extends Component {
         this.setState({ loading: false });
       });
   }
+
   render() {
     return (
       <>
-        
-          {this.state.loading ? (
-            <div id="loader" className="text-center">
-              <p className="text-center">Loading...</p>
+        {this.state.loading ? (
+          <div className="container-fluid bg-light py-5">
+            <div className="col-md-6 m-auto text-center">
+              <h1 className="h1">Create Cowcert</h1>
+              <div className="input-group mb-3">
+                <p className="text-center">Create CowCert Loading...</p>
+              </div>
             </div>
-          ) : (
-            <CreateCowCert
-              tasks={this.state.tasks}
-              createTask={this.createTask}
-              toggleCompleted={this.toggleCompleted}
-            />
-          )}
-              
-        {/* <CreateCowCert /> */}
+          </div>
+        ) : (
+          <CreateCowCert createTask={this.createTask} />
+        )}
       </>
     );
   }

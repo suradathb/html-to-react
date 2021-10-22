@@ -13,7 +13,6 @@ class Header extends Component {
     }
     return (
       <>
-        {/* <!-- Header --> */}
         <nav class="navbar navbar-expand-lg navbar-light shadow">
           <div class="container d-flex justify-content-between align-items-center">
             <a
@@ -57,7 +56,7 @@ class Header extends Component {
                   </li>
                   <li class="nav-item">
                     <Link class="nav-link" to="/abount">
-                      Abount Us
+                      About Us
                     </Link>
                   </li>
                   <li class="nav-item">
@@ -65,6 +64,11 @@ class Header extends Component {
                       CreateCowCert
                     </Link>
                   </li>
+                  {/* <li class="nav-item">
+                    <Link class="nav-link" to="/Alert">
+                        TestAlert
+                    </Link>
+                  </li> */}
                   <li class="nav-item">
                     <Link class="nav-link" to="/contact">
                       Contact

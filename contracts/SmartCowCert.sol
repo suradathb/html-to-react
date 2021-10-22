@@ -3,6 +3,7 @@ pragma solidity >=0.4.22 <0.9.0;
 
 contract SmartCowCert {
     uint public taskCount = 0;
+    string[] public cowcertList;
 
   struct Task {
     uint id;
@@ -24,7 +25,7 @@ contract SmartCowCert {
   );
 
   constructor() public {
-    createTask("CowCert.com");
+    // createTask("CowCert.com");
   }
 
   function createTask(string memory _content) public {
@@ -39,19 +40,4 @@ contract SmartCowCert {
     tasks[_id] = _task;
     emit TaskCompleted(_id, _task.completed);
   }
-    // string public createCowCert;
-    // uint public taskCount = 0;
-
-    // constructor () public {
-    //     addCowCert('CowCertificate');
-    // }
-    // function addCowCert(string memory _createCowCert) public {
-    //     taskCount++;
-    //     createCowCert = _createCowCert;
-    // }
-
-
-    // function getCowCert() public view returns(string memory){
-    //     return createCowCert;
-    // }
 }

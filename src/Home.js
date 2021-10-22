@@ -5,7 +5,7 @@ import {useState} from 'react';
 
 function Home() {
   const [selectNewCowItem, setSelectNewCowItem] = useState('');
-  console.log(newcowdams)
+  // console.log(newcowdams)ß
   const tattooElements = newcowdams
     .filter((newcowdam) => {
       return newcowdam.name.includes(selectNewCowItem);
@@ -16,7 +16,6 @@ function Home() {
     
   return (
     <>
-      {/* <NewCowcert />    */}
       {tattooElements}
     </>
   );
