@@ -4,7 +4,7 @@ import React from 'react'
 function NewCowcert(props) {
    
     const {newcowdam} = props;
-       console.log(newcowdam)     
+    //    console.log(newcowdam)     
     return (
             <>
             

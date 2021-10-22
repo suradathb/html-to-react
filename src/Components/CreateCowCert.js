@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import ShowCowCert from "./ShowCowCert";
 
 // function createCowCert() {
 class CreateCowCert extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      cow_type:"",
       cow_sax: "",
-      cowcert_no: "",
+      cowcert_no: "",//Key
       cowcert_name: "",
       cowcert_birth: "",
       cowcert_number: "",
@@ -62,20 +64,27 @@ class CreateCowCert extends Component {
               // onSubmit={() => alert(JSON.stringify(this.state))}
               onSubmit={(event) => {
                 event.preventDefault()
+                // console.log(this.state)
                 this.props.createTask(this.state)
               }}
             >
               <div class="row">
                 <div class="form-group col-md-6 mb-3">
                   <h3>ข้อมูลโคบราห์มัน</h3>
-                  <select className="btn btn-secondary dropdown-toggle">
-                    <option value="F1">F1</option>
-                    <option value="F2">F2</option>
-                    <option value="F3">F3</option>
-                    <option value="F4">F4</option>
-                    <option value="F5">F5</option>
-                    <option value="100">เลือด 100 %</option>
-                  </select>
+                    <select
+                      name="f"
+                      class="custom-select custom-select-sm  custom-arrow-select input-group-text font-size-base "
+                      onChange={(e) => {
+                        this.setState({cow_type: e.target.value})
+                      }}
+                    >
+                      <option selected="F1" value="F1">F1</option>
+                      <option value="F2">F2</option>
+                      <option value="F3">F3</option>
+                      <option value="F4">F4</option>
+                      <option value="F5">F5</option>
+                      <option value="100">เลือด 100 %</option>
+                    </select>
                 </div>
               </div>
               <div class="row">
@@ -108,7 +117,7 @@ class CreateCowCert extends Component {
                   />
                 </div>
                 <div class="form-group col-md-4 mb-3">
-                  <label for="inputemail">ชื่อพ่อโคบราห์มัน</label>
+                  <label for="inputemail">ชื่อโคบราห์มัน</label>
                   <input
                     type="text"
                     class="form-control mt-1"
@@ -470,6 +479,8 @@ class CreateCowCert extends Component {
             </form>
           </div>
         </div>
+        <ul id="completedTaskList" className="list-unstyled">
+        </ul>
       </>
     );
   }
