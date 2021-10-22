@@ -215,9 +215,9 @@ class Search extends Component{
                 </ul>
             )
         )} */}
-        {/* <div class="container py-5">
+        <div class="container py-5">
           <div class="row py-5">
-            <form class="col-md-9 m-auto" method="post" role="form">
+            {/* <form class="col-md-9 m-auto" method="post" role="form">
               <div class="row">
                 <div class="mb-3 name-app">
                   <h1 class="h1">{arrayCow.value}</h1>
@@ -374,9 +374,9 @@ class Search extends Component{
                   </label>
                 </div>
               </div>
-            </form>
+            </form> */}
           </div>
-        </div> */}
+        </div>
       </>
     );
   }
