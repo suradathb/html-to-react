@@ -37,6 +37,7 @@ class AddCowCert extends Component {
     this.setState({ taskCount });
     for (var i = 1; i <= taskCount; i++) {
       const task = await cowCertificate.methods.taskcows(i).call();
+   
       this.setState({
         tasks: [...this.state.tasks, task],
       });
@@ -58,7 +59,7 @@ class AddCowCert extends Component {
     this.toggleCompleted = this.toggleCompleted.bind(this);
   }
   createTask(content) {
-    console.log(content)
+    // console.log(content)
     const objectArray = Object.values(content);
     this.setState({ loading: true });
     const addCert = this.state.cowCertificate.methods
