@@ -17,61 +17,63 @@ class ShowCowCert extends Component {
     } else if (window.web3) {
       window.web3 = new Web3(window.web3.currentProvider);
     } else {
-      window.alert(
-        "Non-Ethereum browser detected. You should consider trying MetaMask!"
-      );
+      // window.alert(
+      //   "Non-Ethereum browser detected. You should consider trying MetaMask!"
+      // );
     }
   }
 
   async loadBlockchainData() {
-    const web3 = window.web3;
-    // Load account
-    const accounts = await web3.eth.getAccounts();
-    this.setState({ account: accounts[0] });
-    const networkId = await web3.eth.net.getId();
-    const networkData = CowCertificate.networks[networkId];
-    const abi = CowCertificate.abi;
-    const address = networkData.address;
-    const cowCertificate = new web3.eth.Contract(abi, address);
-    this.setState({ cowCertificate });
-    const taskCount = await cowCertificate.methods.taskCount().call();
-    this.setState({ taskCount });
-    // const getEmployeestest = () => {
-    axios
-      .get(
-        "https://api-testnet.bscscan.com/api?module=account&action=txlist&address=0x5548bbf0736ca2f04417273c0f9edb1d23a13a10&startblock=1&endblock=99999999&sort=asc&apikey=YourApiKeyToken"
-      )
-      .then((response) => {
-        this.setState({
-          setDataAll: [...this.state.setDataAll, response.data],
-        });
-        const getDataAll = this.state.setDataAll.map((cow, key) => {
-          let arrTmp = cow.result;
-          const saveshow = [];
-          // console.log(arrTmp)
-          if (arrTmp.length) {
-            for (var i = 1; i <= arrTmp.length; i++) {
-              if (arrTmp[i] === undefined) continue;
-              const show = arrTmp[i].hash;
-              this.setState({
-                hash: [...this.state.hash, arrTmp[i].hash],
-              });
-              // console.log(show)
+    if (window.web3) {
+      const web3 = window.web3;
+      // Load account
+      const accounts = await web3.eth.getAccounts();
+      this.setState({ account: accounts[0] });
+      const networkId = await web3.eth.net.getId();
+      const networkData = CowCertificate.networks[networkId];
+      const abi = CowCertificate.abi;
+      const address = networkData.address;
+      const cowCertificate = new web3.eth.Contract(abi, address);
+      this.setState({ cowCertificate });
+      const taskCount = await cowCertificate.methods.taskCount().call();
+      this.setState({ taskCount });
+      // const getEmployeestest = () => {
+      axios
+        .get(
+          "https://api-testnet.bscscan.com/api?module=account&action=txlist&address=0x5548bbf0736ca2f04417273c0f9edb1d23a13a10&startblock=1&endblock=99999999&sort=asc&apikey=YourApiKeyToken"
+        )
+        .then((response) => {
+          this.setState({
+            setDataAll: [...this.state.setDataAll, response.data],
+          });
+          const getDataAll = this.state.setDataAll.map((cow, key) => {
+            let arrTmp = cow.result;
+            const saveshow = [];
+            console.log(arrTmp)
+            if (arrTmp.length) {
+              for (var i = 1; i <= arrTmp.length; i++) {
+                if (arrTmp[i] === undefined) continue;
+                const show = arrTmp[i].hash;
+                this.setState({
+                  hash: [...this.state.hash, arrTmp[i].hash],
+                });
+                console.log(show)
+              }
             }
-          }
+          });
+          // alert(response)
         });
-        // alert(response)
-      });
 
-    for (var i = 1; i <= taskCount; i++) {
-      const task = await cowCertificate.methods.taskcows(i).call();
-      const data = task[1];
-      const taskArray = data.split(",");
-      this.setState({
-        tasks: [...this.state.tasks, taskArray],
-      });
+      for (var i = 1; i <= taskCount; i++) {
+        const task = await cowCertificate.methods.taskcows(i).call();
+        const data = task[1];
+        const taskArray = data.split(",");
+        this.setState({
+          tasks: [...this.state.tasks, taskArray],
+        });
+      }
+      this.setState({ loading: false });
     }
-    this.setState({ loading: false });
   }
 
   constructor(props) {
@@ -90,10 +92,10 @@ class ShowCowCert extends Component {
     <Route path="/AddCowCert">
       <AddCowCert />
     </Route>;
-    
+
     const showCowCertAll = this.state.tasks.map((task, key) => {
-      const hash = this.state.hash
-      const getKey = hash[key]
+      const hash = this.state.hash;
+      const getKey = hash[key];
       // console.log(getKey)
       return (
         <>
@@ -140,7 +142,7 @@ class ShowCowCert extends Component {
                   CreateCowCert
                   <i className="fa fa-plus-circle"></i>
                 </Link>
-                <hr/>
+                <hr />
                 <p>CertCount : {this.state.taskCount} รายการ</p>
               </div>
 

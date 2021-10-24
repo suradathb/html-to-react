@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link, NavLink } from "react-router-dom";
 
-// function Header() {
 class Header extends Component {
   render() {
     const useraccount = this.props.account;
@@ -11,13 +10,23 @@ class Header extends Component {
     } else {
       button = <Link class="nav-link" to="/login">Login</Link>;
     }
+    let Permission;
+    if(useraccount){
+      Permission = <li class="nav-item">
+      <Link class="nav-link" to="/showcowcert">
+        CreateCowCert
+      </Link>
+    </li>
+    }else{
+     
+    }
     return (
       <>
         <nav class="navbar navbar-expand-lg navbar-light shadow">
           <div class="container d-flex justify-content-between align-items-center">
             <a
               class="navbar-brand text-success logo h1 align-self-center"
-              href="index.html"
+              href="/"
             >
               <img
                 className="logo-Header"
@@ -59,11 +68,12 @@ class Header extends Component {
                       About Us
                     </Link>
                   </li>
-                  <li class="nav-item">
+                  {Permission}
+                  {/* <li class="nav-item">
                     <Link class="nav-link" to="/showcowcert">
                       CreateCowCert
                     </Link>
-                  </li>
+                  </li> */}
                   {/* <li class="nav-item">
                     <Link class="nav-link" to="/Alert">
                         TestAlert
