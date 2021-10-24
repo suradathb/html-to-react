@@ -130,7 +130,7 @@ class App extends Component {
             <Page404 />
           </Route>
         </Switch>
-        <Footer />
+        <Footer account={this.state.account} />
       </>
     );
   }
