@@ -20,7 +20,7 @@ module.exports = {
     binanceTestnet: {
       provider: () => providerTestnet,
       network_id: "97",
-      gas: 1000000,
+      // gas: 1000000,
       skipDryRun: true,
     },
   },
@@ -33,7 +33,8 @@ module.exports = {
       optimizer:{
         enabled:true,
         runs:200
-      }
+      },
+      version:"^0.8.7",
     }
   },
   db: {
