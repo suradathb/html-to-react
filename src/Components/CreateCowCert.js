@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import ShowCowCert from "./ShowCowCert";
+import "./CreateCowCert.css";
+
 
 // function createCowCert() {
 class CreateCowCert extends Component {
@@ -19,27 +21,87 @@ class CreateCowCert extends Component {
       cowcert_owner_name: "",
       cowcert_trans_date: "",
       cowcert_ref_hash: "",
+      account_Employee :"",
+      fac_type:"0",
+      // file:"",
+      // imagePreviewUrl:"",
+      /* start All detail F1 */
       //
       sire_no: "",
-      sire_birtdate: "",
       sire_name: "",
       sire_color: "",
       sire_number: "",
       sire_ownerno: "",
-      sire_hash: "",
       //
       dam_no: "",
-      dam_birtdate: "",
       dam_name: "",
       dam_color: "",
       dam_number: "",
       dam_ownerno: "",
-      dam_hash: "",
+      /* End All detail F1 */
+      // Start  dad
+      no_dad:"",//No: พ่อ
+      has_dad:"",//Hash: พ่อ
+      no_dad_1:"",//No: ปู่สายพ่อ
+      has_dad_1:"",//Hash: ปู่สายพ่อ
+      no_dad_2:"",//No: ย่าสายพ่อ
+      has_dad_2:"",//Hash: ย่าสายพ่อ
+      no_dad_3:"",//No: ปู่ทวดสายปู่
+      has_dad_3:"",//Hash: ปู่ทวดสายปู่
+      no_dad_4:"",//No: ย่าทวดสายปู่
+      has_dad_4:"",//Hash: ย่าทวดสายปู่
+      no_dad_5:"",//No: ตาทวดสายย่า
+      has_dad_5:"",//Hash: ตาทวดสายย่า
+      no_dad_6:"",//No: ยายทวดสายย่า
+      has_dad_6:"",//Hash: ยายทวดสายย่า
+      // End dad
+
+      // Start  mom
+      no_mom:"",//No: แม่
+      has_mom:"",//Hash: แม่
+      no_mom_1:"",//No: ตาสายแม่
+      has_mom_1:"",//Hash: ตาสายแม่
+      no_mom_2:"",//No: ยายสายแม่
+      has_mom_2:"",//Hash: ยายสายแม่
+      no_mom_3:"",//No: ปู่ทวดสายตา
+      has_mom_3:"",//Hash: ปู่ทวดสายตา
+      no_mom_4:"",//No: ย่าทวดสายตา
+      has_mom_4:"",//Hash: ย่าทวดสายตา
+      no_mom_5:"",//No: ตาทวดสายยาย
+      has_mom_5:"",//Hash: ตาทวดสายยาย
+      no_mom_6:"",//No: ยายทวดสายยาย
+      has_mom_6:"",//Hash: ยายทวดสายยาย
+      // End dad
+
+      buffer:null,
+      
     };
+    this.captureFile = this.captureFile.bind(this);
   }
-  
+  handleChange = (e) => {
+    this.setState({ cow_type: e.target.value });
+  }
+  captureFile(event) {
+    event.preventDefault()
+    const file = event.target.files[0]
+    const reader = new window.FileReader()
+    reader.readAsArrayBuffer(file)
+    reader.onloadend = () => {
+      this.setState({ buffer: Buffer(reader.result) })
+      // console.log('buffer', this.state.buffer)
+    }
+  }
 
   render() {
+    const getType = this.state.cow_type;
+    if(getType != "F1")
+    {
+      this.state.fac_type = "1";
+    }
+    else{
+      this.state.fac_type = "0";
+    }
+ 
     return (
       <>
         <div class="container-fluid bg-light py-5">
@@ -47,10 +109,7 @@ class CreateCowCert extends Component {
             <h1 class="h1">Create Cowcert</h1>
             <div class="input-group mb-3">
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat.
+                โปรดทราบการสร้างข้อมูล CowCert  ไม่สามารถเปลี่ยนแปลงข้อมูลได้หากบันทึกแล้ว โปรดตรวจสอบข้อมูลก่อนการบันทึกทุกครั้ง
               </p>
             </div>
           </div>
@@ -69,22 +128,47 @@ class CreateCowCert extends Component {
               }}
             >
               <div class="row">
-                <div class="form-group col-md-6 mb-3">
+                <div class="form-group col-md-9 mb-3">
+                <div class="form-group">
+                <div class="custom-file">
+                  <input type='file' onChange={this.captureFile} />
+                </div>
+              </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-4 mb-3">
                   <h3>ข้อมูลโคบราห์มัน</h3>
                     <select
-                      name="f"
+                      name="fac_type"
                       class="custom-select custom-select-sm  custom-arrow-select input-group-text font-size-base "
                       onChange={(e) => {
                         this.setState({cow_type: e.target.value})
                       }}
                     >
-                      <option selected="F1" value="F1">F1</option>
+                      <option selected="0">โปรดเลือกประเภท</option> 
+                      <option value="F1">F1</option>
                       <option value="F2">F2</option>
                       <option value="F3">F3</option>
                       <option value="F4">F4</option>
                       <option value="F5">F5</option>
                       <option value="100">เลือด 100 %</option>
                     </select>
+                </div>
+                
+                <div class="form-group col-md-4 mb-3">
+                  <label for="inputname">Address</label>
+                  <input
+                    type="text"
+                    class="form-control mt-1"
+                    id="account_Employee"
+                    name="account_Employee"
+                    value={this.state.account_Employee}
+                    onChange={(e) => {
+                      this.setState({ account_Employee: e.target.value });
+                    }}
+                    placeholder="address"
+                  />
                 </div>
               </div>
               <div class="row">
@@ -103,7 +187,7 @@ class CreateCowCert extends Component {
                   />
                 </div>
                 <div class="form-group col-md-4 mb-3">
-                  <label for="inputemail">ทะเบียนโคบราห์มันเลขที่</label>
+                  <label for="inputemail">เลขทะเบียนโคบราห์มัน</label>
                   <input
                     type="text"
                     class="form-control mt-1"
@@ -146,7 +230,7 @@ class CreateCowCert extends Component {
                   />
                 </div>
                 <div class="form-group col-md-4 mb-3">
-                  <label for="inputemail">หมายเลขประจำตัวโคบราห์มัน</label>
+                  <label for="inputemail">เลขประจำตัว</label>
                   <input
                     type="text"
                     class="form-control mt-1"
@@ -156,7 +240,7 @@ class CreateCowCert extends Component {
                     onChange={(e) => {
                       this.setState({ cowcert_number: e.target.value });
                     }}
-                    placeholder="เลขประจำตัวโคบราห์มัน เช่น 20"
+                    placeholder="เช่น 20"
                   />
                 </div>
                 <div class="form-group col-md-4 mb-3">
@@ -252,9 +336,412 @@ class CreateCowCert extends Component {
                   <h3>ข้อมูลสายพ่อ</h3>
                 </div>
               </div>
+              {
+                this.state.cow_type !== "F1" ?
+                // console.log("ShowNot F1")
+                <div>
+                <div class="row">
+                <div class="form-group col-md-6 mb-3">
+                  <label for="inputname">ทะเบียนพ่อโคบราห์มัน</label>
+                  <input
+                    type="text"
+                    class="form-control mt-1"
+                    id="no_dad"
+                    name="no_dad"
+                    value={this.state.no_dad}
+                    onChange={(e) => {
+                      this.setState({ no_dad: e.target.value });
+                    }}
+                    placeholder="เช่น 1000001"
+                  />
+                  {/* <input
+                    type="hidden"
+                    class="form-control mt-1"
+                    id="fac_type"
+                    name="fac_type"
+                    value="1"
+                    onChange={(e) => {
+                      this.setState({ fac_type: e.target.value });
+                    }}
+                    placeholder="เช่น 1000001"
+                  /> */}
+                  <label for="inputemail">Hash : พ่อ</label>
+                  <input
+                    type="text"
+                    class="form-control mt-1"
+                    id="hash_dad"
+                    name="hash_dad"
+                    value={this.state.has_dad}
+                    onChange={(e) => {
+                      this.setState({ has_dad: e.target.value });
+                    }}
+                    placeholder="Hash : พ่อ"
+                  />
+                </div>
+                {/* Hash: ปู่สายพ่อ */}
+                <div class="form-group col-md-6 mb-3">
+                  <label for="inputname">ทะเบียน ปู่สายพ่อ</label>
+                  <input
+                    type="text"
+                    class="form-control mt-1"
+                    id="no_dad_1"
+                    name="no_dad_1"
+                    value={this.state.no_dad_1}
+                    onChange={(e) => {
+                      this.setState({ no_dad_1: e.target.value });
+                    }}
+                    placeholder="เช่น 1000001"
+                  />
+                  <label for="inputemail">Hash: ปู่สายพ่อ</label>
+                  <input
+                    type="text"
+                    class="form-control mt-1"
+                    id="has_dad_1"
+                    name="has_dad_1"
+                    value={this.state.has_dad_1}
+                    onChange={(e) => {
+                      this.setState({ has_dad_1: e.target.value });
+                    }}
+                    placeholder="Hash: ปู่สายพ่อ"
+                  />
+                </div>
+                {/* Hash: ย่าสายพ่อ */}
+                <div class="form-group col-md-6 mb-3">
+                  <label for="inputname">ทะเบียน ย่าสายพ่อ</label>
+                  <input
+                    type="text"
+                    class="form-control mt-1"
+                    id="no_dad_2"
+                    name="no_dad_2"
+                    value={this.state.no_dad_2}
+                    onChange={(e) => {
+                      this.setState({ no_dad_2: e.target.value });
+                    }}
+                    placeholder="เช่น 1000001"
+                  />
+                  <label for="inputemail">Hash: ย่าสายพ่อ</label>
+                  <input
+                    type="text"
+                    class="form-control mt-1"
+                    id="has_dad_2"
+                    name="has_dad_2"
+                    value={this.state.has_dad_2}
+                    onChange={(e) => {
+                      this.setState({ has_dad_2: e.target.value });
+                    }}
+                    placeholder="Hash: ย่าสายพ่อ"
+                  />
+                </div>
+                {/* Hash: ปู่ทวดสายปู่ */}
+                <div class="form-group col-md-6 mb-3">
+                  <label for="inputname">ทะเบียน ปู่ทวดสายปู่</label>
+                  <input
+                    type="text"
+                    class="form-control mt-1"
+                    id="no_dad_3"
+                    name="no_dad_3"
+                    value={this.state.no_dad_3}
+                    onChange={(e) => {
+                      this.setState({ no_dad_3: e.target.value });
+                    }}
+                    placeholder="เช่น 1000001"
+                  />
+                  <label for="inputemail">Hash: ปู่ทวดสายปู่</label>
+                  <input
+                    type="text"
+                    class="form-control mt-1"
+                    id="has_dad_3"
+                    name="has_dad_3"
+                    value={this.state.has_dad_3}
+                    onChange={(e) => {
+                      this.setState({ has_dad_3: e.target.value });
+                    }}
+                    placeholder="Hash: ปู่ทวดสายปู่"
+                  />
+                </div>
+                {/* Hash: ย่าทวดสายปู่ */}
+                <div class="form-group col-md-6 mb-3">
+                  <label for="inputname">ทะเบียน ย่าทวดสายปู่</label>
+                  <input
+                    type="text"
+                    class="form-control mt-1"
+                    id="no_dad_4"
+                    name="no_dad_4"
+                    value={this.state.no_dad_4}
+                    onChange={(e) => {
+                      this.setState({ no_dad_4: e.target.value });
+                    }}
+                    placeholder="เช่น 1000001"
+                  />
+                  <label for="inputemail">Hash: ย่าทวดสายปู่</label>
+                  <input
+                    type="text"
+                    class="form-control mt-1"
+                    id="has_dad_4"
+                    name="has_dad_4"
+                    value={this.state.has_dad_4}
+                    onChange={(e) => {
+                      this.setState({ has_dad_4: e.target.value });
+                    }}
+                    placeholder="Hash: ย่าทวดสายปู่"
+                  />
+                </div>
+                {/* Hash: ตาทวดสายย่า */}
+                <div class="form-group col-md-6 mb-3">
+                  <label for="inputname">ทะเบียน ตาทวดสายย่า</label>
+                  <input
+                    type="text"
+                    class="form-control mt-1"
+                    id="no_dad_5"
+                    name="no_dad_5"
+                    value={this.state.no_dad_5}
+                    onChange={(e) => {
+                      this.setState({ no_dad_5: e.target.value });
+                    }}
+                    placeholder="เช่น 1000001"
+                  />
+                  <label for="inputemail">Hash: ตาทวดสายย่า</label>
+                  <input
+                    type="text"
+                    class="form-control mt-1"
+                    id="has_dad_5"
+                    name="has_dad_5"
+                    value={this.state.has_dad_5}
+                    onChange={(e) => {
+                      this.setState({ has_dad_5: e.target.value });
+                    }}
+                    placeholder="Hash: ตาทวดสายย่า"
+                  />
+                </div>
+                {/* Hash: ยายทวดสายย่า */}
+                <div class="form-group col-md-6 mb-3">
+                  <label for="inputname">ทะเบียน ยายทวดสายย่า</label>
+                  <input
+                    type="text"
+                    class="form-control mt-1"
+                    id="no_dad_6"
+                    name="no_dad_6"
+                    value={this.state.no_dad_6}
+                    onChange={(e) => {
+                      this.setState({ no_dad_6: e.target.value });
+                    }}
+                    placeholder="เช่น 1000001"
+                  />
+                  <label for="inputemail">Hash: ยายทวดสายย่า</label>
+                  <input
+                    type="text"
+                    class="form-control mt-1"
+                    id="has_dad_6"
+                    name="has_dad_6"
+                    value={this.state.has_dad_6}
+                    onChange={(e) => {
+                      this.setState({ has_dad_6: e.target.value });
+                    }}
+                    placeholder="Hash: ยายทวดสายย่า"
+                  />
+                </div>
+              </div>
               <div class="row">
+                <div class="form-group col-md-6 mb-3">
+                  <h3>ข้อมูลสายแม่</h3>
+                </div>
+              </div>
+              <div class="row">
+              <div class="form-group col-md-6 mb-3">
+                <label for="inputname">ทะเบียนแม่โคบราห์มัน</label>
+                <input
+                  type="text"
+                  class="form-control mt-1"
+                  id="no_mom"
+                  name="no_mom"
+                  value={this.state.no_mom}
+                  onChange={(e) => {
+                    this.setState({ no_mom: e.target.value });
+                  }}
+                  placeholder="เช่น 1000001"
+                />
+                <label for="inputemail">Hash: แม่</label>
+                <input
+                  type="text"
+                  class="form-control mt-1"
+                  id="has_mom"
+                  name="has_mom"
+                  value={this.state.has_mom}
+                  onChange={(e) => {
+                    this.setState({ has_mom: e.target.value });
+                  }}
+                  placeholder="Hash: แม่"
+                />
+              </div>
+              {/* Hash: ปู่สายพ่อ */}
+              <div class="form-group col-md-6 mb-3">
+                <label for="inputname">ทะเบียน ตาสายแม่</label>
+                <input
+                  type="text"
+                  class="form-control mt-1"
+                  id="no_mom_1"
+                  name="no_mom_1"
+                  value={this.state.no_mom_1}
+                  onChange={(e) => {
+                    this.setState({ no_mom_1: e.target.value });
+                  }}
+                  placeholder="เช่น 1000001"
+                />
+                <label for="inputemail">Hash: ตาสายแม่</label>
+                <input
+                  type="text"
+                  class="form-control mt-1"
+                  id="has_mom_1"
+                  name="has_mom_1"
+                  value={this.state.has_mom_1}
+                  onChange={(e) => {
+                    this.setState({ has_mom_1: e.target.value });
+                  }}
+                  placeholder="Hash: ตาสายแม่"
+                />
+              </div>
+              {/* Hash: ยายสายแม่ */}
+              <div class="form-group col-md-6 mb-3">
+                <label for="inputname">ทะเบียน ยายสายแม่</label>
+                <input
+                  type="text"
+                  class="form-control mt-1"
+                  id="no_mom_2"
+                  name="no_mom_2"
+                  value={this.state.no_mom_2}
+                  onChange={(e) => {
+                    this.setState({ no_mom_2: e.target.value });
+                  }}
+                  placeholder="เช่น 1000001"
+                />
+                <label for="inputemail">Hash: ยายสายแม่</label>
+                <input
+                  type="text"
+                  class="form-control mt-1"
+                  id="has_mom_2"
+                  name="has_mom_2"
+                  value={this.state.has_mom_2}
+                  onChange={(e) => {
+                    this.setState({ has_mom_2: e.target.value });
+                  }}
+                  placeholder="Hash: ยายสายแม่"
+                />
+              </div>
+              {/* Hash: ปู่ทวดสายตา */}
+              <div class="form-group col-md-6 mb-3">
+                <label for="inputname">ทะเบียน ปู่ทวดสายตา</label>
+                <input
+                  type="text"
+                  class="form-control mt-1"
+                  id="no_mom_3"
+                  name="no_mom_3"
+                  value={this.state.no_mom_3}
+                  onChange={(e) => {
+                    this.setState({ no_mom_3: e.target.value });
+                  }}
+                  placeholder="เช่น 1000001"
+                />
+                <label for="inputemail">Hash: ปู่ทวดสายตา</label>
+                <input
+                  type="text"
+                  class="form-control mt-1"
+                  id="has_mom_3"
+                  name="has_mom_3"
+                  value={this.state.has_mom_3}
+                  onChange={(e) => {
+                    this.setState({ has_mom_3: e.target.value });
+                  }}
+                  placeholder="Hash: ปู่ทวดสายตา"
+                />
+              </div>
+              {/* Hash: ย่าทวดสายตา */}
+              <div class="form-group col-md-6 mb-3">
+                <label for="inputname">ทะเบียน ย่าทวดสายตา</label>
+                <input
+                  type="text"
+                  class="form-control mt-1"
+                  id="no_mom_4"
+                  name="no_mom_4"
+                  value={this.state.no_mom_4}
+                  onChange={(e) => {
+                    this.setState({ no_mom_4: e.target.value });
+                  }}
+                  placeholder="เช่น 1000001"
+                />
+                <label for="inputemail">Hash: ย่าทวดสายตา</label>
+                <input
+                  type="text"
+                  class="form-control mt-1"
+                  id="has_mom_4"
+                  name="has_mom_4"
+                  value={this.state.has_mom_4}
+                  onChange={(e) => {
+                    this.setState({ has_mom_4: e.target.value });
+                  }}
+                  placeholder="Hash: ย่าทวดสายตา"
+                />
+              </div>
+              {/* Hash: ตาทวดสายยาย */}
+              <div class="form-group col-md-6 mb-3">
+                <label for="inputname">ทะเบียน ตาทวดสายยาย</label>
+                <input
+                  type="text"
+                  class="form-control mt-1"
+                  id="no_mom_5"
+                  name="no_mom_5"
+                  value={this.state.no_mom_5}
+                  onChange={(e) => {
+                    this.setState({ no_mom_5: e.target.value });
+                  }}
+                  placeholder="เช่น 1000001"
+                />
+                <label for="inputemail">Hash: ตาทวดสายยาย</label>
+                <input
+                  type="text"
+                  class="form-control mt-1"
+                  id="has_mom_5"
+                  name="has_mom_5"
+                  value={this.state.has_mom_5}
+                  onChange={(e) => {
+                    this.setState({ has_mom_5: e.target.value });
+                  }}
+                  placeholder="Hash: ตาทวดสายยาย"
+                />
+              </div>
+              {/* Hash: ยายทวดสายยาย */}
+              <div class="form-group col-md-6 mb-3">
+                <label for="inputname">ทะเบียน ยายทวดสายยาย</label>
+                <input
+                  type="text"
+                  class="form-control mt-1"
+                  id="no_mom_6"
+                  name="no_mom_6"
+                  value={this.state.no_mom_6}
+                  onChange={(e) => {
+                    this.setState({ no_mom_6: e.target.value });
+                  }}
+                  placeholder="เช่น 1000001"
+                />
+                <label for="inputemail">Hash: ยายทวดสายยาย</label>
+                <input
+                  type="text"
+                  class="form-control mt-1"
+                  id="has_mom_6"
+                  name="has_mom_6"
+                  value={this.state.has_mom_6}
+                  onChange={(e) => {
+                    this.setState({ has_mom_6: e.target.value });
+                  }}
+                  placeholder="Hash: ยายทวดสายยาย"
+                />
+              </div>
+            </div>
+            </div>
+              
+                : <div>
+                  <div class="row">
                 <div class="form-group col-md-4 mb-3">
-                  <label for="inputname">ทะเบียนโคบราห์มันเลขที่ พ่อ</label>
+                  <label for="inputname">ทะเบียนพ่อโคบราห์มัน</label>
                   <input
                     type="text"
                     class="form-control mt-1"
@@ -267,7 +754,7 @@ class CreateCowCert extends Component {
                     placeholder="เช่น 1000001"
                   />
                 </div>
-                <div class="form-group col-md-4 mb-3">
+                {/* <div class="form-group col-md-4 mb-3">
                   <label for="inputemail">วันเกิด พ่อ</label>
                   <input
                     type="date"
@@ -279,7 +766,7 @@ class CreateCowCert extends Component {
                       this.setState({ sire_birtdate: e.target.value });
                     }}
                   />
-                </div>
+                </div> */}
                 <div class="form-group col-md-4 mb-3">
                   <label for="inputemail">ชื่อพ่อโคบราห์มัน</label>
                   <input
@@ -311,7 +798,7 @@ class CreateCowCert extends Component {
                   />
                 </div>
                 <div class="form-group col-md-4 mb-3">
-                  <label for="inputemail">หมายเลขประจำตัวพ่อโคบราห์มัน</label>
+                  <label for="inputemail">เลขประจำตัว</label>
                   <input
                     type="text"
                     class="form-control mt-1"
@@ -321,7 +808,7 @@ class CreateCowCert extends Component {
                     onChange={(e) => {
                       this.setState({ sire_number: e.target.value });
                     }}
-                    placeholder="เช่น 1000002"
+                    placeholder="เช่น 02"
                   />
                 </div>
                 <div class="form-group col-md-4 mb-3">
@@ -340,29 +827,13 @@ class CreateCowCert extends Component {
                 </div>
               </div>
               <div class="row">
-                <div class="form-group col-md-12 mb-3">
-                  <label for="inputemail">HASH.พ่อโคบราห์มัน</label>
-                  <input
-                    type="text"
-                    class="form-control mt-1"
-                    id="sire_hash"
-                    name="sire_hash"
-                    value={this.state.sire_hash}
-                    onChange={(e) => {
-                      this.setState({ sire_hash: e.target.value });
-                    }}
-                    placeholder="HASH.พ่อโค"
-                  />
-                </div>
-              </div>
-              <div class="row">
                 <div class="form-group col-md-6 mb-3">
                   <h3>ข้อมูลสายแม่</h3>
                 </div>
               </div>
               <div class="row">
                 <div class="form-group col-md-4 mb-3">
-                  <label for="inputname">ทะเบียนโคบราห์มันเลขที่ แม่</label>
+                  <label for="inputname">ทะเบียนแม่โคบราห์มัน</label>
                   <input
                     type="text"
                     class="form-control mt-1"
@@ -375,7 +846,7 @@ class CreateCowCert extends Component {
                     placeholder="เช่น 003255"
                   />
                 </div>
-                <div class="form-group col-md-4 mb-3">
+                {/* <div class="form-group col-md-4 mb-3">
                   <label for="inputemail">วันเกิด แม่</label>
                   <input
                     type="date"
@@ -387,7 +858,7 @@ class CreateCowCert extends Component {
                       this.setState({ dam_birtdate: e.target.value });
                     }}
                   />
-                </div>
+                </div> */}
                 <div class="form-group col-md-4 mb-3">
                   <label for="inputemail">ชื่อแม่โคบราห์มัน</label>
                   <input
@@ -419,7 +890,7 @@ class CreateCowCert extends Component {
                   />
                 </div>
                 <div class="form-group col-md-4 mb-3">
-                  <label for="inputemail">หมายเลขประจำตัวแม่โคบราห์มัน</label>
+                  <label for="inputemail">เลขประจำตัว</label>
                   <input
                     type="text"
                     class="form-control mt-1"
@@ -447,22 +918,9 @@ class CreateCowCert extends Component {
                   />
                 </div>
               </div>
-              <div class="row">
-                <div class="form-group col-md-12 mb-3">
-                  <label for="inputemail">HASH.แม่โคบราห์มัน</label>
-                  <input
-                    type="text"
-                    class="form-control mt-1"
-                    id="dam_hash"
-                    name="dam_hash"
-                    value={this.state.dam_hash}
-                    onChange={(e) => {
-                      this.setState({ dam_hash: e.target.value });
-                    }}
-                    placeholder="HASH.แม่โคบราห์มัน"
-                  />
-                </div>
               </div>
+              }
+              
               <div class="row">
                 <div class="col text-end mt-2">
                   <Link class="btn btn-light btn-lg px-3" to="/showcowcert">

@@ -1,9 +1,5 @@
-const SmartCowCert = artifacts.require("SmartCowCert");
-const TodoList = artifacts.require("TodoList");
-const CowCertificate =artifacts.require("CowCertificate");
+const CowCoin = artifacts.require("CowCoin");
 
 module.exports = function (deployer) {
-  deployer.deploy(SmartCowCert);
-  deployer.deploy(TodoList);
-  deployer.deploy(CowCertificate);
+  deployer.deploy(CowCoin);
 };

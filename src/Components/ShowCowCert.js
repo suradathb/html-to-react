@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import { Route, Link } from "react-router-dom";
 import AddCowCert from "../AddCowCert";
 import Web3 from "web3";
+import CowCoin from "../abis/CowCoin.json";
 import CowCertificate from "../abis/CowCertificate.json";
 import axios from "axios";
+import "./ShowCowCert.css";
 
 class ShowCowCert extends Component {
   async componentWillMount() {
@@ -30,32 +32,51 @@ class ShowCowCert extends Component {
       const accounts = await web3.eth.getAccounts();
       this.setState({ account: accounts[0] });
       const networkId = await web3.eth.net.getId();
-      const networkData = CowCertificate.networks[networkId];
-      const abi = CowCertificate.abi;
+      const networkData = CowCoin.networks[networkId];
+      const abi = CowCoin.abi;
       const address = networkData.address;
-      const cowCertificate = new web3.eth.Contract(abi, address);
-      this.setState({ cowCertificate });
-      const taskCount = await cowCertificate.methods.taskCount().call();
-      this.setState({ taskCount });
+      const cowCoin = new web3.eth.Contract(abi, address);
+      this.setState({ cowCoin });
+      const coinCow = await cowCoin.methods.cowCertCount().call();
+      this.setState({ coinCow });
+      // console.log(cowCoin);
+      // const shwaddress = cowCoin.methods.ownerOf(1).call();
+      // console.log(shwaddress);
+
+      for (var i = 1; i <= coinCow; i++) {
+        const task = await cowCoin.methods.blacklistedCowCert(i).call();
+        // const shwaddress = await cowCoin.methods.ownerOf(i).call();
+        // console.log(task,i);
+        this.setState({
+          tasks: [...this.state.tasks, task],
+        });
+      }
       // const getEmployeestest = () => {
       axios
         .get(
-          "https://api-testnet.bscscan.com/api?module=account&action=txlist&address=0x5548bbf0736ca2f04417273c0f9edb1d23a13a10&startblock=1&endblock=99999999&sort=asc&apikey=YourApiKeyToken"
+          "https://api-testnet.bscscan.com/api?module=account&action=txlist&address=0x4c17Cf6ADaaB57285556332e74C853a07962C0A0&startblock=1&endblock=99999999&sort=asc&apikey=YourApiKeyToken"
         )
         .then((response) => {
+          // console.log(response);
           this.setState({
             setDataAll: [...this.state.setDataAll, response.data],
           });
           const getDataAll = this.state.setDataAll.map((cow, key) => {
             let arrTmp = cow.result;
             const saveshow = [];
-            // console.log(arrTmp)
+            // console.log(arrTmp);
             if (arrTmp.length) {
               for (var i = 1; i <= arrTmp.length; i++) {
                 if (arrTmp[i] === undefined) continue;
-                const show = arrTmp[i].hash;
+                // const show = arrTmp[i].hash;
+                // const task =  cowCoin.methods.blacklistedCowCert(i).call();
+                // const shwaddress = await cowCoin.methods.ownerOf(i).call();
+                // console.log(i);
+                // console.log(arrTmp[i]);
                 this.setState({
                   hash: [...this.state.hash, arrTmp[i].hash],
+                  blocks: [...this.state.blocks, arrTmp[i]],
+                  // tasks: [...this.state.tasks, task],
                 });
                 // console.log(show)
               }
@@ -63,16 +84,6 @@ class ShowCowCert extends Component {
           });
           // alert(response)
         });
-
-      for (var i = 1; i <= taskCount; i++) {
-        const task = await cowCertificate.methods.taskcows(i).call();
-        const data = task[1];
-        const taskArray = data.split(",");
-        this.setState({
-          tasks: [...this.state.tasks, taskArray],
-        });
-      }
-      this.setState({ loading: false });
     }
   }
 
@@ -80,45 +91,44 @@ class ShowCowCert extends Component {
     super(props);
     this.state = {
       account: "",
+      cowCoin: [],
       taskCount: 0,
       tasks: [],
       loading: true,
       setDataAll: [],
       hash: [],
+      getdata: [],
+      searchShow: [],
+      search: "",
+      blocks: [],
     };
   }
+  searchChanged = (event) => {
+    console.log(event)
+    const search = this.state.search;
+    const selectDrop = this.state.selectDrop;
+    const hash = this.state.hash;
+    //  console.log(this.state.coinCow);
+    for (var c = 0; c <= this.state.coinCow; c++) {
+      const getdata = this.state.cowCoin.methods.blacklistedCowCert(c).call();
+      // console.log(getdata)
+      getdata.then((result) =>
+        this.setState({
+          searchShow: result,
+        })
+      );
+    }
+  };
+
+  copyCodeToClipboard = (e) => {
+    // console.log(e)
+    const el = e;
+    // console.log(el);
+    // el.select()
+    document.execCommand("copy");
+  };
 
   render() {
-    <Route path="/AddCowCert">
-      <AddCowCert />
-    </Route>;
-
-    const showCowCertAll = this.state.tasks.map((task, key) => {
-      const hash = this.state.hash;
-      const getKey = hash[key];
-      // console.log(getKey)
-      return (
-        <>
-          <tr>
-            <th key={hash[key]}>{task[2]}</th>
-            <td>{hash[key]}</td>
-            <td>
-              <Link class="btn btn-outline-secondary" to="/search">
-                <i class="fa fa-eye"></i>
-                View
-              </Link>
-              &nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td>
-              <a type="submit" class="btn btn-outline-secondary">
-                <i class="fa fa-copy"></i>
-                Copy
-              </a>
-            </td>
-          </tr>
-        </>
-      );
-    });
     return (
       <>
         <div class="container-fluid bg-light py-5">
@@ -131,31 +141,125 @@ class ShowCowCert extends Component {
         </div>
         <div class="container py-5">
           <div class="row py-5">
-            <form class="col-md-12 m-auto" method="post" role="form" action="">
+            <form
+              class="col-md-12 m-auto"
+              role="form"
+              // onSubmit={() => alert(JSON.stringify(this.state))}
+              onSubmit={(event) => {
+                event.preventDefault();
+                // console.log(this.state)
+                this.searchChanged();
+              }}
+            >
+              <div class="input-group mb-3">
+                <div class="input-group-prepend d-none d-md-block input-group-text">
+                  <select
+                    name="f"
+                    class="custom-select custom-select-sm  custom-arrow-select input-group-text font-size-base "
+                    onChange={(event) => {
+                      this.setState({
+                        selectDrop: [event.target.value],
+                      });
+                    }}
+                  >
+                    <option value="1">Addresses</option>
+                    <option value="2">เลขทะเบียนโค</option>
+                  </select>
+                </div>
+                <input
+                  type="text"
+                  class="form-control form-control-lg"
+                  placeholder="Search by Address / Txn Hash / Block / Token"
+                  // onChange={this.searchChanged}
+                  value={this.state.search}
+                  onChange={(event) => {
+                    this.setState({ search: event.target.value });
+                  }}
+                />
+                <button
+                  type="submit"
+                  // onClick={this.searchChanged}
+                  class="input-group-text btn-success"
+                >
+                  <i class="bi bi-search me-2"></i> Search
+                </button>
+              </div>
               <div className="Add-app">
-                <Link class="btn btn-success btn-lg px-3" to="/showcowcert">
-                  Create Member
+                <Link class="btn btn-success btn-lg px-3" to="/addowner">
+                  Create Owner
                   <i className="fa fa-plus-circle"></i>
                 </Link>
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <Link class="btn btn-success btn-lg px-3" to="/AddCowCert">
-                  CreateCowCert
+                  Register CowCert
                   <i className="fa fa-plus-circle"></i>
                 </Link>
                 <hr />
-                <p>CertCount : {this.state.taskCount} รายการ</p>
+                <p>CertCount : {this.state.coinCow} รายการ</p>
               </div>
 
               <table class="table table-responsive-md">
                 <thead>
                   <tr>
                     <th scope="col">Cow No</th>
-                    <th scope="col">Hash</th>
-                    <th scope="col"></th>
+                    <th scope="col">Photo</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">เจ้าของเหรียญ</th>
                     <th scope="col"></th>
                   </tr>
                 </thead>
-                <tbody>{showCowCertAll}</tbody>
+                <tbody>
+                  {/* {isCowCoin} */}
+                  
+                  {this.state.blocks.map((block, number) => {
+                    // console.log(block);
+                    const contractCow = this.state.tasks;
+                    const beforAr = contractCow[number].cowCertlist;
+                    const afterSp = beforAr.split(',');
+                    // console.log(block.hash)
+                    var s = 0;
+                    return (
+                      <>
+                        <tr key={number} >
+                          <td>{contractCow[number].tokendId}</td>
+                          <td>
+                          
+                          <img className="CowCoin" src={`https://ipfs.io/ipfs/${contractCow[number].imgPath}`} alt=""/>
+                            {/* <img
+                              className="CowCoin"
+                              src="./assets/images/CowCoin.jpeg"
+                              alt=""
+                            /> */}
+                          </td>
+                          <td>{afterSp[3]}</td>
+                          <td>
+                            สมาชิก : {afterSp[12]}<br/>
+                            Hash : {block.hash}
+                          </td>
+                          <td>
+                            <Link
+                              class="btn btn-outline-secondary"
+                              value={contractCow[number].id}
+                              to="/search"
+                            >
+                              <i class="fa fa-eye"></i>
+                              history
+                            </Link>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <a
+                              type="submit"
+                              class="btn btn-outline-secondary"
+                              onClick={() => this.copyCodeToClipboard(block.hash)}
+                            >
+                              <i class="fa fa-copy"></i>
+                              Copy
+                            </a>
+                          </td>
+                        </tr>
+                      </>
+                    );
+                  })}
+                </tbody>
               </table>
             </form>
           </div>

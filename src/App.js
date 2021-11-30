@@ -10,6 +10,7 @@ import Login from "./Login";
 import Page404 from "./Page404";
 import Search from "./Search";
 import CowCertificate from "./abis/CowCertificate.json";
+import CowCoin from "./abis/CowCoin.json";
 import Web3 from "web3";
 import AddCowCert from "./AddCowCert";
 import React, { Component } from "react";
@@ -17,6 +18,11 @@ import Home from "./Home";
 import ShowCowCert from "./Components/ShowCowCert";
 import AleartConfirm from "./AleartConfirm";
 import axios from "axios";
+// import CreateMember from "./Components/CreateMember";
+import AddOwner from "./AddMember";
+import Example from "./Components/ReportCert";
+
+
 
 // const str = "F1|009255|F|PX|MrKOK201|04/10/2556|แดง|100001|100002|สวาท บังนิไกร|10/4/2556|0|007255|Mr.MOT 09|ZX|แดง|90|10/04/2554|100002|0|003255|Ms.SXT 02|SX|แดง|2|10/4/2555|100003|0";
 // const arrayCow = str.split("|");
@@ -41,29 +47,30 @@ class App extends Component {
   async loadBlockchainData() {
     if (window.web3) {
       const web3 = window.web3;
-
       // Load account
       const accounts = await web3.eth.getAccounts();
+      // console.log(accounts)
       this.setState({ account: accounts[0] });
       const networkId = await web3.eth.net.getId();
-      const networkData = CowCertificate.networks[networkId];
-      const abi = CowCertificate.abi;
+      const networkData = CowCoin.networks[networkId];
+      // console.log(CowCertificate)
+      const abi = CowCoin.abi;
       const address = networkData.address;
-      const cowCertificate = new web3.eth.Contract(abi, address);
-      this.setState({ cowCertificate });
-      const taskCount = await cowCertificate.methods.taskCount().call();
+      const cowCoin = new web3.eth.Contract(abi, address);
+      this.setState({ cowCoin });
+      const taskCount = await cowCoin.methods.cowCertCount().call();
       this.setState({ taskCount });
-      for (var i = 1; i <= taskCount; i++) {
-        const task = await cowCertificate.methods.taskcows(i).call();
-        // console.log(task.dataCow)
-        this.setState({
-          tasks: [...this.state.tasks, task],
-        });
-      }
-      this.setState({ loading: false });
+      // for (var i = 1; i <= taskCount; i++) {
+      //   const task = await cowCoin.methods.taskcows(i).call();
+      //   // console.log(task.dataCow)
+      //   this.setState({
+      //     tasks: [...this.state.tasks, task],
+      //   });
+      // }
+      // this.setState({ loading: false });
     }
   }
-
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -117,6 +124,9 @@ class App extends Component {
           <Route path="/addcowcert">
             <AddCowCert />
           </Route>
+          <Route path="/addowner">
+            <AddOwner />
+          </Route>
           <Route path="/Alert">
             <AleartConfirm />
           </Route>
@@ -126,9 +136,16 @@ class App extends Component {
           <Route path="/login">
             <Login />
           </Route>
+          <Route path="/testprint">
+            <Example/>
+          </Route>
+          {/* <Route>
+            <CreateMember />
+          </Route> */}
           <Route path="*">
             <Page404 />
           </Route>
+         
         </Switch>
         <Footer account={this.state.account} />
       </>
