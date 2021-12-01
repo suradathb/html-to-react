@@ -6,7 +6,7 @@ class Header extends Component {
     const useraccount = this.props.account;
     let button;
     if (useraccount) {
-      button = <Link class="nav-link" to="/login">{useraccount}</Link>;
+      button = <Link class="nav-link" to="/members">{useraccount}</Link>;
     } else {
       button = <Link class="nav-link" to="/login">Login</Link>;
     }
@@ -16,6 +16,9 @@ class Header extends Component {
       <Link class="nav-link" to="/showcowcert">
         CreateCowCert
       </Link>
+      {/* <Link class="nav-link" to="/members">
+        Member
+      </Link> */}
     </li>
     }else{
      
@@ -68,7 +71,6 @@ class Header extends Component {
                       About Us
                     </Link>
                   </li>
-                  {Permission}
                   {/* <li class="nav-item">
                     <Link class="nav-link" to="/showcowcert">
                       CreateCowCert
@@ -84,6 +86,7 @@ class Header extends Component {
                       Contact
                     </Link>
                   </li>
+                  {Permission}
                 </ul>
               </div>
               <div class="navbar align-self-center d-flex">

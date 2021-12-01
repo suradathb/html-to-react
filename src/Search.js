@@ -256,11 +256,10 @@ class Search extends Component {
                 const afterSp = beforAr.split(",");
                 if (show && afterSp[13] == "0") {
                   return (
-                    // <form class="col-md-9 m-auto" method="post" role="form">
-                    <>
+                    <form class="col-md-9 m-auto" method="post" role="form" key={setkey}>
                       <div class="row">
                         <div class="mb-3 name-app">
-                          <h1 class="h1" key={setkey}>{afterSp[3]}</h1>
+                          <h1 class="h1">{afterSp[3]}</h1>
                         </div>
                       </div>
                       <div class="row">
@@ -431,16 +430,14 @@ class Search extends Component {
                           </label>
                         </div>
                       </div>
-                      {/* // </form> */}
-                    </>
+                     </form>
                   );
                 } else if (show && afterSp[13] == "1") {
                   return (
-                    // <form class="col-md-9 m-auto" method="post" role="form">
-                    <>
+                    <form class="col-md-9 m-auto" method="post" role="form" key={setkey}>
                       <div class="row">
                         <div class="mb-3 name-app">
-                          <h1 class="h1" key={setkey}>{afterSp[3]}</h1>
+                          <h1 class="h1">{afterSp[3]}</h1>
                         </div>
                       </div>
                       <div class="row">
@@ -716,8 +713,7 @@ class Search extends Component {
                           </label>
                         </div>
                       </div>
-                      {/* // </form> */}
-                    </>
+                    </form>
                   );
                 }
               })}
