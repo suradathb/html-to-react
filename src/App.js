@@ -21,6 +21,7 @@ import axios from "axios";
 // import CreateMember from "./Components/CreateMember";
 import AddOwner from "./AddMember";
 import Example from "./Components/ReportCert";
+import Member from "./Member";
 
 
 
@@ -135,6 +136,9 @@ class App extends Component {
           </Route>
           <Route path="/testprint">
             <Example/>
+          </Route>
+          <Route path="/members">
+            <Member/>
           </Route>
           {/* <Route>
             <CreateMember />
