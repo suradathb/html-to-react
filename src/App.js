@@ -127,9 +127,6 @@ class App extends Component {
           <Route path="/addowner">
             <AddOwner />
           </Route>
-          <Route path="/Alert">
-            <AleartConfirm />
-          </Route>
           <Route path="/contact">
             <Contract />
           </Route>
