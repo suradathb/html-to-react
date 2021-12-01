@@ -151,7 +151,7 @@ class ShowCowCert extends Component {
                 this.searchChanged();
               }}
             >
-              <div class="input-group mb-3">
+              {/* <div class="input-group mb-3">
                 <div class="input-group-prepend d-none d-md-block input-group-text">
                   <select
                     name="f"
@@ -183,7 +183,7 @@ class ShowCowCert extends Component {
                 >
                   <i class="bi bi-search me-2"></i> Search
                 </button>
-              </div>
+              </div> */}
               <div className="Add-app">
                 <Link class="btn btn-success btn-lg px-3" to="/addowner">
                   Create Owner
@@ -223,13 +223,7 @@ class ShowCowCert extends Component {
                         <tr key={number} >
                           <td>{contractCow[number].tokendId}</td>
                           <td>
-                          
                           <img className="CowCoin" src={`https://ipfs.io/ipfs/${contractCow[number].imgPath}`} alt=""/>
-                            {/* <img
-                              className="CowCoin"
-                              src="./assets/images/CowCoin.jpeg"
-                              alt=""
-                            /> */}
                           </td>
                           <td>{afterSp[3]}</td>
                           <td>
