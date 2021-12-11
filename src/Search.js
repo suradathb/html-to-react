@@ -7,6 +7,7 @@ import ERC721 from "./abis/ERC721.json";
 import "./Search.css";
 import Example from "./Components/ReportCert";
 
+
 // function Search(props) {
 class Search extends Component {
   async componentWillMount() {
@@ -46,11 +47,12 @@ class Search extends Component {
       this.setState({ coinCow });
       for (var i = 1; i <= coinCow; i++) {
         const task = await cowCoin.methods.blacklistedCowCert(i).call();
-        // const shwaddress = await cowerc.methods.ownerOf(i).call();
+        const shwaddress = await cowerc.methods.ownerOf(i).call();
+        // task.push(shwaddress)
         // console.log(shwaddress);
         this.setState({
           tasks: [...this.state.tasks, task],
-          // owner: [...this.state.owner,shwaddress],
+          owner: [...this.state.owner,shwaddress],
         });
       }
     } else {
@@ -73,6 +75,7 @@ class Search extends Component {
       // console.log(cowerc)
       for (var i = 1; i <= coinCow; i++) {
         const task = await cowCoin.methods.blacklistedCowCert(i).call();
+        // console.log(task)
         this.setState({
           tasks: [...this.state.tasks, task],
         });
@@ -80,53 +83,14 @@ class Search extends Component {
     }
   }
 
-  // getEmployees = () => {
-  //   const search = this.state.search;
-  //   const selectDrop = this.state.selectDrop;
-  //   if (selectDrop == 0) {
-  //     // alert("0")
-  //   }
-  //   if (selectDrop == 1) {
-  //     alert("1");
-  //   }
-  //   if (selectDrop == 2) {
-  //     axios
-  //       .get(
-  //         "https://api-testnet.bscscan.com/api?module=transaction&action=gettxreceiptstatus&txhash=" +
-  //           search +
-  //           "&apikey=YourApiKeyToken"
-  //       )
-  //       .then((response) => {
-  //         // setEmployeeList(response.data);
-  //         alert(response.data.message);
-  //       });
-  //   }
-  //   if (selectDrop == 3) {
-  //     alert("3");
-  //   }
-  //   if (selectDrop == 4) {
-  //     alert("4");
-  //   }
-  //   axios
-  //     .get(
-  //       "https://api-testnet.bscscan.com/api?module=transaction&action=gettxreceiptstatus&txhash=" +
-  //         search +
-  //         "&apikey=YourApiKeyToken"
-  //     )
-  //     .then((response) => {
-  //       console.log(search, response.data);
-  //       this.setState({
-  //         tasks: [...this.steate.task, response.data],
-  //       });
-  //     });
-  // };
   getEmployeestest() {
     axios
       .get(
-        "https://api-testnet.bscscan.com/api?module=account&action=txlist&address=0x4c17Cf6ADaaB57285556332e74C853a07962C0A0&startblock=1&endblock=99999999&sort=asc&apikey=YourApiKeyToken"
+        "https://api-testnet.bscscan.com/api?module=account&action=txlist&address=0x82eaDcf8504F893993cf075b98f11465078B240E&startblock=1&endblock=99999999&sort=asc&apikey=YourApiKeyToken"
       )
       .then((response) => {
         const getDataAll = response.data.result.map((cow, key) => {
+          // console.log(cow,key)
           this.setState({
             hash: [...this.state.hash, cow.hash],
           });
@@ -141,8 +105,6 @@ class Search extends Component {
     const hashs = this.state.hash;
     const count = 0;
 
-    // console.log(selectDrop)
-    // console.log(this.state.hash)
     switch (selectDrop) {
       case "1":
         hashs.map((cert, key) => {
@@ -153,12 +115,10 @@ class Search extends Component {
               let number = key - 1;
               this.state.tasks.map((name, keyname) => {
                 if (number == keyname) {
-                  const shwaddress = this.state.cowerc.methods
-                    .ownerOf(keyname)
-                    .call();
+                  const shwaddress = this.state.cowerc.methods.ownerOf(keyname).call();
                   this.setState({
                     searchShow: [...this.state.searchShow, name],
-                    owner: [...this.state.owner, shwaddress],
+                    winOwner: [...this.state.owner, this.state.owner[number]],
                   });
                 }
               });
@@ -167,20 +127,20 @@ class Search extends Component {
         });
       case "2":
         this.state.tasks.map((name, key) => {
+          
           if (name.tokendId == search) {
-            // alert("test")
+            let addressnum
             let number = key + 1;
-            const shwaddress = this.state.cowerc.methods.ownerOf(number).call();
-            // console.log(shwaddress)
             this.setState({
               searchShow: [...this.state.searchShow, name],
-              owner: [...this.state.owner, shwaddress],
+              winOwner: [...this.state.owner, this.state.owner[number]],
             });
           }
         });
     }
-    this.setState({ search: "" });
+    // this.setState({ search: "" });
   };
+  
 
   constructor(props) {
     super(props);
@@ -197,13 +157,24 @@ class Search extends Component {
       searchShow: [],
       hash: [],
       getapi: [],
-      owner: "",
+      owner: [],
+      winOwner:"",
+      isReadMore:true,
     };
     // this.getEmployeestest = this.getEmployeestest.bind(this);
   }
 
   render() {
-    
+    // console.log(this.state.owner)
+  //   const getnumber = this.state.owner
+  //   var newArray = [];
+  //   var newArray = getnumber.filter(function(elem, pos) {
+  //           return getnumber.indexOf(elem) == pos;
+  //   });
+  // const pads = newArray.map((num) => {
+  //   console.log(num)
+  // })
+   
     return (
       <>
         <div class="container-fluid bg-light py-5">
@@ -250,7 +221,7 @@ class Search extends Component {
             <div id="contentCow">
               {/* {show} */}
               {this.state.searchShow.map((show, setkey) => {
-                // const contractCow = this.state.tasks;
+                const Anum = show.id -1
                 document.getElementById("contentCow").innerHTML = "";
                 const beforAr = show.cowCertlist;
                 const afterSp = beforAr.split(",");
@@ -285,13 +256,13 @@ class Search extends Component {
                       <div class="row">
                         <div class="form-group col-md-12 mb-3">
                           <label htmlFor="inputname">
-                            {" "}
                             <img
                               className="imgPreview"
                               src="../assets/images/CowCoin.jpeg"
                               alt=""
                             />
-                            address เจ้าของโค : {afterSp[12]}
+                            address เจ้าของโค : {this.state.winOwner[Anum]}
+                           
                           </label>
                         </div>
                       </div>
@@ -468,7 +439,7 @@ class Search extends Component {
                               src="../assets/images/CowCoin.jpeg"
                               alt=""
                             />
-                            address เจ้าของโค : {afterSp[12]}
+                            address เจ้าของโค : {this.state.winOwner[Anum]}
                           </label>
                         </div>
                       </div>

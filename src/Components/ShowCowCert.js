@@ -46,7 +46,7 @@ class ShowCowCert extends Component {
       for (var i = 1; i <= coinCow; i++) {
         const task = await cowCoin.methods.blacklistedCowCert(i).call();
         // const shwaddress = await cowCoin.methods.ownerOf(i).call();
-        // console.log(task,i);
+        console.log(task);
         this.setState({
           tasks: [...this.state.tasks, task],
         });
@@ -54,7 +54,7 @@ class ShowCowCert extends Component {
       // const getEmployeestest = () => {
       axios
         .get(
-          "https://api-testnet.bscscan.com/api?module=account&action=txlist&address=0x4c17Cf6ADaaB57285556332e74C853a07962C0A0&startblock=1&endblock=99999999&sort=asc&apikey=YourApiKeyToken"
+          "https://api-testnet.bscscan.com/api?module=account&action=txlist&address=0x82eaDcf8504F893993cf075b98f11465078B240E&startblock=1&endblock=99999999&sort=asc&apikey=YourApiKeyToken"
         )
         .then((response) => {
           // console.log(response);
@@ -104,7 +104,7 @@ class ShowCowCert extends Component {
     };
   }
   searchChanged = (event) => {
-    console.log(event)
+    // console.log(event)
     const search = this.state.search;
     const selectDrop = this.state.selectDrop;
     const hash = this.state.hash;
@@ -121,10 +121,7 @@ class ShowCowCert extends Component {
   };
 
   copyCodeToClipboard = (e) => {
-    // console.log(e)
     const el = e;
-    // console.log(el);
-    // el.select()
     document.execCommand("copy");
   };
 
@@ -151,39 +148,6 @@ class ShowCowCert extends Component {
                 this.searchChanged();
               }}
             >
-              {/* <div class="input-group mb-3">
-                <div class="input-group-prepend d-none d-md-block input-group-text">
-                  <select
-                    name="f"
-                    class="custom-select custom-select-sm  custom-arrow-select input-group-text font-size-base "
-                    onChange={(event) => {
-                      this.setState({
-                        selectDrop: [event.target.value],
-                      });
-                    }}
-                  >
-                    <option value="1">Addresses</option>
-                    <option value="2">เลขทะเบียนโค</option>
-                  </select>
-                </div>
-                <input
-                  type="text"
-                  class="form-control form-control-lg"
-                  placeholder="Search by Address / Txn Hash / Block / Token"
-                  // onChange={this.searchChanged}
-                  value={this.state.search}
-                  onChange={(event) => {
-                    this.setState({ search: event.target.value });
-                  }}
-                />
-                <button
-                  type="submit"
-                  // onClick={this.searchChanged}
-                  class="input-group-text btn-success"
-                >
-                  <i class="bi bi-search me-2"></i> Search
-                </button>
-              </div> */}
               <div className="Add-app">
                 <Link class="btn btn-success btn-lg px-3" to="/addowner">
                   Create Owner
@@ -214,6 +178,7 @@ class ShowCowCert extends Component {
                   {this.state.blocks.map((block, number) => {
                     // console.log(block);
                     const contractCow = this.state.tasks;
+                    if (contractCow[number] != undefined) {
                     const beforAr = contractCow[number].cowCertlist;
                     const afterSp = beforAr.split(',');
                     // console.log(block.hash)
@@ -252,6 +217,7 @@ class ShowCowCert extends Component {
                         </tr>
                       </>
                     );
+                    }
                   })}
                 </tbody>
               </table>
