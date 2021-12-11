@@ -39,50 +39,35 @@ class ShowCowCert extends Component {
       this.setState({ cowCoin });
       const coinCow = await cowCoin.methods.cowCertCount().call();
       this.setState({ coinCow });
-      // console.log(cowCoin);
-      // const shwaddress = cowCoin.methods.ownerOf(1).call();
-      // console.log(shwaddress);
 
       for (var i = 1; i <= coinCow; i++) {
         const task = await cowCoin.methods.blacklistedCowCert(i).call();
-        // const shwaddress = await cowCoin.methods.ownerOf(i).call();
         console.log(task);
         this.setState({
           tasks: [...this.state.tasks, task],
         });
       }
-      // const getEmployeestest = () => {
       axios
         .get(
           "https://api-testnet.bscscan.com/api?module=account&action=txlist&address=0x82eaDcf8504F893993cf075b98f11465078B240E&startblock=1&endblock=99999999&sort=asc&apikey=YourApiKeyToken"
         )
         .then((response) => {
-          // console.log(response);
           this.setState({
             setDataAll: [...this.state.setDataAll, response.data],
           });
           const getDataAll = this.state.setDataAll.map((cow, key) => {
             let arrTmp = cow.result;
             const saveshow = [];
-            // console.log(arrTmp);
             if (arrTmp.length) {
               for (var i = 1; i <= arrTmp.length; i++) {
                 if (arrTmp[i] === undefined) continue;
-                // const show = arrTmp[i].hash;
-                // const task =  cowCoin.methods.blacklistedCowCert(i).call();
-                // const shwaddress = await cowCoin.methods.ownerOf(i).call();
-                // console.log(i);
-                // console.log(arrTmp[i]);
                 this.setState({
                   hash: [...this.state.hash, arrTmp[i].hash],
                   blocks: [...this.state.blocks, arrTmp[i]],
-                  // tasks: [...this.state.tasks, task],
                 });
-                // console.log(show)
               }
             }
           });
-          // alert(response)
         });
     }
   }

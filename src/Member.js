@@ -154,7 +154,7 @@ class Member extends Component {
                                 to="/search"
                               >
                                 {this.state.isReadMore
-                                  ? namecontract.hash.slice(0, 50) + "..."
+                                  ? namecontract.hash
                                   : namecontract.hash}
                               </Link>
                             </td>

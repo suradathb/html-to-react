@@ -7,7 +7,6 @@ import ERC721 from "./abis/ERC721.json";
 import "./Search.css";
 import Example from "./Components/ReportCert";
 
-
 // function Search(props) {
 class Search extends Component {
   async componentWillMount() {
@@ -48,11 +47,9 @@ class Search extends Component {
       for (var i = 1; i <= coinCow; i++) {
         const task = await cowCoin.methods.blacklistedCowCert(i).call();
         const shwaddress = await cowerc.methods.ownerOf(i).call();
-        // task.push(shwaddress)
-        // console.log(shwaddress);
         this.setState({
           tasks: [...this.state.tasks, task],
-          owner: [...this.state.owner,shwaddress],
+          owner: [...this.state.owner, shwaddress],
         });
       }
     } else {
@@ -60,7 +57,7 @@ class Search extends Component {
         Web3.givenProvider || "https://data-seed-prebsc-1-s1.binance.org:8545/"
       );
 
-      this.setState({ account: "0x9029ce7108536BB09EE0C5bdB39cdF8bdFcfD4ce" });
+      this.setState({ account: "0x82eaDcf8504F893993cf075b98f11465078B240E" });
       const networkId = await publicweb3.eth.net.getId();
       const networkData = CowCoin.networks[networkId];
       const abi = CowCoin.abi;
@@ -75,9 +72,11 @@ class Search extends Component {
       // console.log(cowerc)
       for (var i = 1; i <= coinCow; i++) {
         const task = await cowCoin.methods.blacklistedCowCert(i).call();
-        // console.log(task)
+        const shwaddress = await cowerc.methods.ownerOf(i).call();
+        console.log(task)
         this.setState({
           tasks: [...this.state.tasks, task],
+          owner: [...this.state.owner, shwaddress],
         });
       }
     }
@@ -86,13 +85,20 @@ class Search extends Component {
   getEmployeestest() {
     axios
       .get(
-        "https://api-testnet.bscscan.com/api?module=account&action=txlist&address=0x82eaDcf8504F893993cf075b98f11465078B240E&startblock=1&endblock=99999999&sort=asc&apikey=YourApiKeyToken"
+        // "https://api-testnet.bscscan.com/api?module=account&action=txlist&address=0x82eaDcf8504F893993cf075b98f11465078B240E&startblock=1&endblock=99999999&sort=asc&apikey=YourApiKeyToken"
+        "https://api-testnet.bscscan.com/api?module=account&action=tokennfttx&contractaddress=0x82eaDcf8504F893993cf075b98f11465078B240E"
       )
       .then((response) => {
         const getDataAll = response.data.result.map((cow, key) => {
-          // console.log(cow,key)
+          const hashs = {
+            hash: cow.hash,
+            token: cow.tokenID,
+            from : cow.from,
+            to: cow.to
+          }
+          // console.log(hashs)
           this.setState({
-            hash: [...this.state.hash, cow.hash],
+            hash: [...this.state.hash, hashs],
           });
         });
       });
@@ -104,32 +110,33 @@ class Search extends Component {
     const selectDrop = this.state.selectDrop;
     const hashs = this.state.hash;
     const count = 0;
-
+    
     switch (selectDrop) {
       case "1":
         hashs.map((cert, key) => {
-          // console.log(hash,key)
-          for (var h = 1; h <= key; h++) {
-            // const owner = "";
-            if (cert == search) {
-              let number = key - 1;
+          // console.log(cert)
+          // for (var h = 0; h <= key; h++) {
+            if (cert.hash == search) {
+              
+              // let number = key - 1;
               this.state.tasks.map((name, keyname) => {
-                if (number == keyname) {
-                  const shwaddress = this.state.cowerc.methods.ownerOf(keyname).call();
+                if (cert.token == name.id) {
+                  // console.log(cert.hash,name)
+                  const shwaddress = this.state.cowerc.methods
+                    .ownerOf(name.id)
+                    .call();
                   this.setState({
                     searchShow: [...this.state.searchShow, name],
-                    winOwner: [...this.state.owner, this.state.owner[number]],
+                    winOwner: [...this.state.owner, cert.hash],
                   });
                 }
               });
             }
-          }
+          // }
         });
       case "2":
         this.state.tasks.map((name, key) => {
-          
           if (name.tokendId == search) {
-            let addressnum
             let number = key + 1;
             this.setState({
               searchShow: [...this.state.searchShow, name],
@@ -137,10 +144,9 @@ class Search extends Component {
             });
           }
         });
+      
     }
-    // this.setState({ search: "" });
   };
-  
 
   constructor(props) {
     super(props);
@@ -158,23 +164,12 @@ class Search extends Component {
       hash: [],
       getapi: [],
       owner: [],
-      winOwner:"",
-      isReadMore:true,
+      winOwner: "",
+      isReadMore: true,
     };
-    // this.getEmployeestest = this.getEmployeestest.bind(this);
   }
 
   render() {
-    // console.log(this.state.owner)
-  //   const getnumber = this.state.owner
-  //   var newArray = [];
-  //   var newArray = getnumber.filter(function(elem, pos) {
-  //           return getnumber.indexOf(elem) == pos;
-  //   });
-  // const pads = newArray.map((num) => {
-  //   console.log(num)
-  // })
-   
     return (
       <>
         <div class="container-fluid bg-light py-5">
@@ -221,13 +216,18 @@ class Search extends Component {
             <div id="contentCow">
               {/* {show} */}
               {this.state.searchShow.map((show, setkey) => {
-                const Anum = show.id -1
+                const Anum = show.id - 1;
                 document.getElementById("contentCow").innerHTML = "";
                 const beforAr = show.cowCertlist;
                 const afterSp = beforAr.split(",");
                 if (show && afterSp[13] == "0") {
                   return (
-                    <form class="col-md-9 m-auto" method="post" role="form" key={setkey}>
+                    <form
+                      class="col-md-9 m-auto"
+                      method="post"
+                      role="form"
+                      key={setkey}
+                    >
                       <div class="row">
                         <div class="mb-3 name-app">
                           <h1 class="h1">{afterSp[3]}</h1>
@@ -237,7 +237,6 @@ class Search extends Component {
                         <div class="mb-3 show-logo">
                           <img
                             className="img-fluid-show"
-                            // src="./assets/images/Me02.jpeg"
                             src={`https://ipfs.io/ipfs/${show.imgPath}`}
                             alt=""
                           />
@@ -262,7 +261,6 @@ class Search extends Component {
                               alt=""
                             />
                             address เจ้าของโค : {this.state.winOwner[Anum]}
-                           
                           </label>
                         </div>
                       </div>
@@ -401,11 +399,16 @@ class Search extends Component {
                           </label>
                         </div>
                       </div>
-                     </form>
+                    </form>
                   );
                 } else if (show && afterSp[13] == "1") {
                   return (
-                    <form class="col-md-9 m-auto" method="post" role="form" key={setkey}>
+                    <form
+                      class="col-md-9 m-auto"
+                      method="post"
+                      role="form"
+                      key={setkey}
+                    >
                       <div class="row">
                         <div class="mb-3 name-app">
                           <h1 class="h1">{afterSp[3]}</h1>
@@ -691,7 +694,6 @@ class Search extends Component {
             </div>
           </div>
         </div>
-        {/* </form> */}
       </>
     );
   }
