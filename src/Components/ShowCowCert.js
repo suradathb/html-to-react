@@ -3,6 +3,7 @@ import { Route, Link } from "react-router-dom";
 import AddCowCert from "../AddCowCert";
 import Web3 from "web3";
 import CowCoin from "../abis/CowCoin.json";
+import ERC721 from "../abis/ERC721.json";
 import CowCertificate from "../abis/CowCertificate.json";
 import axios from "axios";
 import "./ShowCowCert.css";
@@ -34,17 +35,22 @@ class ShowCowCert extends Component {
       const networkId = await web3.eth.net.getId();
       const networkData = CowCoin.networks[networkId];
       const abi = CowCoin.abi;
+      const abiERC = ERC721.abi;
       const address = networkData.address;
       const cowCoin = new web3.eth.Contract(abi, address);
+      const cowerc = new web3.eth.Contract(abiERC, address);
       this.setState({ cowCoin });
+      this.setState({ cowerc });
       const coinCow = await cowCoin.methods.cowCertCount().call();
       this.setState({ coinCow });
 
       for (var i = 1; i <= coinCow; i++) {
         const task = await cowCoin.methods.blacklistedCowCert(i).call();
-        console.log(task);
+        const shwaddress = await cowerc.methods.ownerOf(i).call();
+        // console.log(task);
         this.setState({
           tasks: [...this.state.tasks, task],
+          owner: [...this.state.owner, shwaddress],
         });
       }
       axios
@@ -86,6 +92,7 @@ class ShowCowCert extends Component {
       searchShow: [],
       search: "",
       blocks: [],
+      owner:""
     };
   }
   searchChanged = (event) => {
@@ -178,26 +185,28 @@ class ShowCowCert extends Component {
                           <td>{afterSp[3]}</td>
                           <td>
                             สมาชิก : {afterSp[12]}<br/>
+                            <Link to="/hiscowcoin">
                             Hash : {block.hash}
+                            </Link>
                           </td>
                           <td>
                             <Link
                               class="btn btn-outline-secondary"
                               value={contractCow[number].id}
-                              to="/search"
+                              to="/hiscowcoin"
                             >
                               <i class="fa fa-eye"></i>
                               history
                             </Link>
                             &nbsp;&nbsp;&nbsp;&nbsp;
-                            <a
+                            {/* <a
                               type="submit"
                               class="btn btn-outline-secondary"
                               onClick={() => this.copyCodeToClipboard(block.hash)}
                             >
                               <i class="fa fa-copy"></i>
                               Copy
-                            </a>
+                            </a> */}
                           </td>
                         </tr>
                       </>

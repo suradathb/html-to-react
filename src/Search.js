@@ -73,7 +73,7 @@ class Search extends Component {
       for (var i = 1; i <= coinCow; i++) {
         const task = await cowCoin.methods.blacklistedCowCert(i).call();
         const shwaddress = await cowerc.methods.ownerOf(i).call();
-        console.log(task)
+        // console.log(task)
         this.setState({
           tasks: [...this.state.tasks, task],
           owner: [...this.state.owner, shwaddress],

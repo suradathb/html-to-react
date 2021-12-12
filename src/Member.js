@@ -151,7 +151,7 @@ class Member extends Component {
                               <Link
                                 class="nav-link"
                                 value={smarts[keyname].id}
-                                to="/search"
+                                to="/hiscowcoin"
                               >
                                 {this.state.isReadMore
                                   ? namecontract.hash

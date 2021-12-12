@@ -22,6 +22,7 @@ import axios from "axios";
 import AddOwner from "./AddMember";
 import Example from "./Components/ReportCert";
 import Member from "./Member";
+import ShowItemCowCert from "./Components/ShowItemCowCert";
 
 
 
@@ -140,9 +141,9 @@ class App extends Component {
           <Route path="/members">
             <Member/>
           </Route>
-          {/* <Route>
-            <CreateMember />
-          </Route> */}
+          <Route path="/hiscowcoin">
+            <ShowItemCowCert />
+          </Route>
           <Route path="*">
             <Page404 />
           </Route>
