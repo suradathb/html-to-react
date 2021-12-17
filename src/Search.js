@@ -1,7 +1,6 @@
 import React, { useState, useEffect, Component } from "react";
 import axios from "axios";
 import Web3 from "web3";
-import CowCertificate from "./abis/CowCertificate.json";
 import CowCoin from "./abis/CowCoin.json";
 import ERC721 from "./abis/ERC721.json";
 import "./Search.css";
@@ -46,11 +45,10 @@ class Search extends Component {
       this.setState({ coinCow });
       for (var i = 1; i <= coinCow; i++) {
         const task = await cowCoin.methods.blacklistedCowCert(i).call();
-        // const shwaddress = await cowerc.methods.ownerOf(i).call();
-        // console.log(shwaddress);
+        const shwaddress = await cowerc.methods.ownerOf(i).call();
         this.setState({
           tasks: [...this.state.tasks, task],
-          // owner: [...this.state.owner,shwaddress],
+          owner: [...this.state.owner, shwaddress],
         });
       }
     } else {
@@ -58,7 +56,7 @@ class Search extends Component {
         Web3.givenProvider || "https://data-seed-prebsc-1-s1.binance.org:8545/"
       );
 
-      this.setState({ account: "0x9029ce7108536BB09EE0C5bdB39cdF8bdFcfD4ce" });
+      this.setState({ account: "0x82eaDcf8504F893993cf075b98f11465078B240E" });
       const networkId = await publicweb3.eth.net.getId();
       const networkData = CowCoin.networks[networkId];
       const abi = CowCoin.abi;
@@ -73,62 +71,33 @@ class Search extends Component {
       // console.log(cowerc)
       for (var i = 1; i <= coinCow; i++) {
         const task = await cowCoin.methods.blacklistedCowCert(i).call();
+        const shwaddress = await cowerc.methods.ownerOf(i).call();
+        // console.log(task)
         this.setState({
           tasks: [...this.state.tasks, task],
+          owner: [...this.state.owner, shwaddress],
         });
       }
     }
   }
 
-  // getEmployees = () => {
-  //   const search = this.state.search;
-  //   const selectDrop = this.state.selectDrop;
-  //   if (selectDrop == 0) {
-  //     // alert("0")
-  //   }
-  //   if (selectDrop == 1) {
-  //     alert("1");
-  //   }
-  //   if (selectDrop == 2) {
-  //     axios
-  //       .get(
-  //         "https://api-testnet.bscscan.com/api?module=transaction&action=gettxreceiptstatus&txhash=" +
-  //           search +
-  //           "&apikey=YourApiKeyToken"
-  //       )
-  //       .then((response) => {
-  //         // setEmployeeList(response.data);
-  //         alert(response.data.message);
-  //       });
-  //   }
-  //   if (selectDrop == 3) {
-  //     alert("3");
-  //   }
-  //   if (selectDrop == 4) {
-  //     alert("4");
-  //   }
-  //   axios
-  //     .get(
-  //       "https://api-testnet.bscscan.com/api?module=transaction&action=gettxreceiptstatus&txhash=" +
-  //         search +
-  //         "&apikey=YourApiKeyToken"
-  //     )
-  //     .then((response) => {
-  //       console.log(search, response.data);
-  //       this.setState({
-  //         tasks: [...this.steate.task, response.data],
-  //       });
-  //     });
-  // };
   getEmployeestest() {
     axios
       .get(
-        "https://api-testnet.bscscan.com/api?module=account&action=txlist&address=0x4c17Cf6ADaaB57285556332e74C853a07962C0A0&startblock=1&endblock=99999999&sort=asc&apikey=YourApiKeyToken"
+        // "https://api-testnet.bscscan.com/api?module=account&action=txlist&address=0x82eaDcf8504F893993cf075b98f11465078B240E&startblock=1&endblock=99999999&sort=asc&apikey=YourApiKeyToken"
+        "https://api-testnet.bscscan.com/api?module=account&action=tokennfttx&contractaddress=0x82eaDcf8504F893993cf075b98f11465078B240E"
       )
       .then((response) => {
         const getDataAll = response.data.result.map((cow, key) => {
+          const hashs = {
+            hash: cow.hash,
+            token: cow.tokenID,
+            from : cow.from,
+            to: cow.to
+          }
+          // console.log(hashs)
           this.setState({
-            hash: [...this.state.hash, cow.hash],
+            hash: [...this.state.hash, hashs],
           });
         });
       });
@@ -140,46 +109,42 @@ class Search extends Component {
     const selectDrop = this.state.selectDrop;
     const hashs = this.state.hash;
     const count = 0;
-
-    // console.log(selectDrop)
-    // console.log(this.state.hash)
+    
     switch (selectDrop) {
       case "1":
         hashs.map((cert, key) => {
-          // console.log(hash,key)
-          for (var h = 1; h <= key; h++) {
-            // const owner = "";
-            if (cert == search) {
-              let number = key - 1;
+          // console.log(cert)
+          // for (var h = 0; h <= key; h++) {
+            if (cert.hash == search) {
+              
+              // let number = key - 1;
               this.state.tasks.map((name, keyname) => {
-                if (number == keyname) {
+                if (cert.token == name.id) {
+                  // console.log(cert.hash,name)
                   const shwaddress = this.state.cowerc.methods
-                    .ownerOf(keyname)
+                    .ownerOf(name.id)
                     .call();
                   this.setState({
                     searchShow: [...this.state.searchShow, name],
-                    owner: [...this.state.owner, shwaddress],
+                    winOwner: [...this.state.owner, cert.hash],
                   });
                 }
               });
             }
-          }
+          // }
         });
       case "2":
         this.state.tasks.map((name, key) => {
           if (name.tokendId == search) {
-            // alert("test")
             let number = key + 1;
-            const shwaddress = this.state.cowerc.methods.ownerOf(number).call();
-            // console.log(shwaddress)
             this.setState({
               searchShow: [...this.state.searchShow, name],
-              owner: [...this.state.owner, shwaddress],
+              winOwner: [...this.state.owner, this.state.owner[number]],
             });
           }
         });
+      
     }
-    this.setState({ search: "" });
   };
 
   constructor(props) {
@@ -197,13 +162,13 @@ class Search extends Component {
       searchShow: [],
       hash: [],
       getapi: [],
-      owner: "",
+      owner: [],
+      winOwner: "",
+      isReadMore: true,
     };
-    // this.getEmployeestest = this.getEmployeestest.bind(this);
   }
 
   render() {
-    
     return (
       <>
         <div class="container-fluid bg-light py-5">
@@ -250,13 +215,19 @@ class Search extends Component {
             <div id="contentCow">
               {/* {show} */}
               {this.state.searchShow.map((show, setkey) => {
-                // const contractCow = this.state.tasks;
+                const Anum = show.id - 1;
+                const num = 1;
                 document.getElementById("contentCow").innerHTML = "";
                 const beforAr = show.cowCertlist;
                 const afterSp = beforAr.split(",");
                 if (show && afterSp[13] == "0") {
                   return (
-                    <form class="col-md-9 m-auto" method="post" role="form" key={setkey}>
+                    <form
+                      class="col-md-9 m-auto"
+                      method="post"
+                      role="form"
+                      key={setkey}
+                    >
                       <div class="row">
                         <div class="mb-3 name-app">
                           <h1 class="h1">{afterSp[3]}</h1>
@@ -266,7 +237,6 @@ class Search extends Component {
                         <div class="mb-3 show-logo">
                           <img
                             className="img-fluid-show"
-                            // src="./assets/images/Me02.jpeg"
                             src={`https://ipfs.io/ipfs/${show.imgPath}`}
                             alt=""
                           />
@@ -279,19 +249,18 @@ class Search extends Component {
                       </div>
                       <div class="row">
                         <div class="form-group col-md-12 mb-3">
-                          <h3>ข้อมูลโคบราห์มัน</h3>
+                          <h3>ข้อมูลโคบราห์มัน</h3> <button>Print</button>
                         </div>
                       </div>
                       <div class="row">
                         <div class="form-group col-md-12 mb-3">
                           <label htmlFor="inputname">
-                            {" "}
                             <img
                               className="imgPreview"
                               src="../assets/images/CowCoin.jpeg"
                               alt=""
                             />
-                            address เจ้าของโค : {afterSp[12]}
+                            address เจ้าของโค : {this.state.winOwner[Anum]}
                           </label>
                         </div>
                       </div>
@@ -348,15 +317,40 @@ class Search extends Component {
                           </label>
                         </div>
                       </div>
-                      <div class="row">
+                      {/* <div class="row">
                         <div class="mb-3">
                           <label htmlFor="inputsubject">
                             สถานะเปลี่ยนเจ้าของวัว : {afterSp[11]}
                           </label>
                         </div>
+                      </div> */}
+                      <div class="row">
+                        <div class="form-group col-md-12 mb-3">
+                          <h3>ประวัติผู้ถือครอง</h3>
+                        </div>
                       </div>
-                      <hr />
-
+                      <table class="table table-responsive-md">
+                              <thead>
+                                <tr>
+                                  <th scope="col">Address</th>
+                                  <th scope="col">Hash</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                        {this.state.hash.map((hashshowcert)=>{
+                            if(show.id == hashshowcert.token)
+                            {
+                              return(
+                                <tr key={hashshowcert.to}>
+                                  <td>{hashshowcert.to}</td>
+                                  <td>{hashshowcert.hash}</td>
+                                </tr>
+                              )
+                            }
+                          })
+                        }
+                        </tbody>
+                        </table>
                       <div class="row">
                         <div class="form-group col-md-12 mb-3">
                           <h3>ข้อมูลพ่อโคบราห์มัน</h3>
@@ -430,11 +424,17 @@ class Search extends Component {
                           </label>
                         </div>
                       </div>
-                     </form>
+                    </form>
                   );
                 } else if (show && afterSp[13] == "1") {
                   return (
-                    <form class="col-md-9 m-auto" method="post" role="form" key={setkey}>
+                    <>
+                    <form
+                      class="col-md-9 m-auto"
+                      method="post"
+                      role="form"
+                      key={setkey}
+                    >
                       <div class="row">
                         <div class="mb-3 name-app">
                           <h1 class="h1">{afterSp[3]}</h1>
@@ -468,7 +468,7 @@ class Search extends Component {
                               src="../assets/images/CowCoin.jpeg"
                               alt=""
                             />
-                            address เจ้าของโค : {afterSp[12]}
+                            address เจ้าของโค : {this.state.winOwner[Anum]}
                           </label>
                         </div>
                       </div>
@@ -525,14 +525,42 @@ class Search extends Component {
                           </label>
                         </div>
                       </div>
-                      <div class="row">
+                      {/* <div class="row">
                         <div class="mb-3">
                           <label htmlFor="inputsubject">
                             สถานะเปลี่ยนเจ้าของวัว : {afterSp[11]}
-                          </label>
+                            </label>
+                            </div>
+                      </div> */}
+                      <div class="row">
+                        <div class="form-group col-md-12 mb-3">
+                          <h3>ประวัติผู้ถือครอง</h3>
                         </div>
                       </div>
-                      <hr />
+                      <table class="table table-responsive-md">
+                              <thead>
+                                <tr>
+                                  <th scope="col">Address</th>
+                                  <th scope="col">Hash</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                        {this.state.hash.map((hashshowcert)=>{
+                            if(show.id == hashshowcert.token)
+                            {
+                              return(
+                                <tr key={hashshowcert.to}>
+                                  <td>{hashshowcert.to}</td>
+                                  <td>{hashshowcert.hash}</td>
+                                </tr>
+                              )
+                            }
+                          })
+                        }
+                        </tbody>
+                        </table>
+                          
+                      
 
                       <div class="row">
                         <div class="form-group col-md-12 mb-3">
@@ -714,13 +742,13 @@ class Search extends Component {
                         </div>
                       </div>
                     </form>
+                    </>
                   );
                 }
               })}
             </div>
           </div>
         </div>
-        {/* </form> */}
       </>
     );
   }

@@ -66,14 +66,6 @@ class AddCowCert extends Component {
     const CowCoinNo = content.cowcert_no;
     const account = content.account_Employee;
     const objectArray = Object.values(content);
-    // this.setState({ loading: true });
-    // const addCert = this.state.cowCoin.methods
-    //   .tokenizedCowCert(account,CowCoinNo,`${objectArray}`,"test")
-    //   .send({ from: this.state.account })
-    //   .once("receipt", (receipt) => {
-    //     this.setState({ loading: false });
-    //   });
-    // console.log(addCert)
     ipfs.files.add(content.buffer, (error, result) => {
       if(error) {
         console.error(error)
@@ -88,12 +80,6 @@ class AddCowCert extends Component {
         console.log('ifpsHash', this.state.ipfsHash)
         return <ShowCowCert/>
       });
-      
-    // console.log(addCert)
-      // this.simpleStorageInstance.set(result[0].hash, { from: this.state.account }).then((r) => {
-      //   return this.setState({ ipfsHash: result[0].hash })
-      //   console.log('ifpsHash', this.state.ipfsHash)
-      // })
     })
   }
   toggleCompleted(taskId) {

@@ -3,6 +3,7 @@ import { Route, Link } from "react-router-dom";
 import AddCowCert from "../AddCowCert";
 import Web3 from "web3";
 import CowCoin from "../abis/CowCoin.json";
+import ERC721 from "../abis/ERC721.json";
 import CowCertificate from "../abis/CowCertificate.json";
 import axios from "axios";
 import "./ShowCowCert.css";
@@ -34,55 +35,56 @@ class ShowCowCert extends Component {
       const networkId = await web3.eth.net.getId();
       const networkData = CowCoin.networks[networkId];
       const abi = CowCoin.abi;
+      const abiERC = ERC721.abi;
       const address = networkData.address;
       const cowCoin = new web3.eth.Contract(abi, address);
+      const cowerc = new web3.eth.Contract(abiERC, address);
       this.setState({ cowCoin });
+      this.setState({ cowerc });
       const coinCow = await cowCoin.methods.cowCertCount().call();
       this.setState({ coinCow });
-      // console.log(cowCoin);
-      // const shwaddress = cowCoin.methods.ownerOf(1).call();
-      // console.log(shwaddress);
 
       for (var i = 1; i <= coinCow; i++) {
         const task = await cowCoin.methods.blacklistedCowCert(i).call();
-        // const shwaddress = await cowCoin.methods.ownerOf(i).call();
-        // console.log(task,i);
+        const shwaddress = await cowerc.methods.ownerOf(i).call();
+        // console.log(task);
         this.setState({
           tasks: [...this.state.tasks, task],
+          owner: [...this.state.owner, shwaddress],
         });
       }
-      // const getEmployeestest = () => {
       axios
         .get(
-          "https://api-testnet.bscscan.com/api?module=account&action=txlist&address=0x4c17Cf6ADaaB57285556332e74C853a07962C0A0&startblock=1&endblock=99999999&sort=asc&apikey=YourApiKeyToken"
+          // "https://api-testnet.bscscan.com/api?module=account&action=txlist&address=0x82eaDcf8504F893993cf075b98f11465078B240E&startblock=1&endblock=99999999&sort=asc&apikey=YourApiKeyToken"
+          "https://api-testnet.bscscan.com/api?module=account&action=tokennfttx&contractaddress=0x82eaDcf8504F893993cf075b98f11465078B240E"
         )
         .then((response) => {
-          // console.log(response);
-          this.setState({
-            setDataAll: [...this.state.setDataAll, response.data],
+          // this.setState({
+          //   setDataAll: [...this.state.setDataAll, response.data],
+          // });
+          const getDataAll = response.data.result.map((cow, key) => {
+            const hashs = {
+              hash: cow.hash,
+              token: cow.tokenID,
+              from: cow.from,
+              to: cow.to,
+            };
+            this.setState({
+              hash: [...this.state.hash, hashs],
+            });
+            // console.log(this.state.blocks)
+            // let arrTmp = cow.result;
+            // const saveshow = [];
+            // if (arrTmp.length) {
+            //   for (var i = 1; i <= arrTmp.length; i++) {
+            //     if (arrTmp[i] === undefined) continue;
+            //     this.setState({
+            //       hash: [...this.state.hash, arrTmp[i].hash],
+            //       blocks: [...this.state.blocks, arrTmp[i]],
+            //     });
+            //   }
+            // }
           });
-          const getDataAll = this.state.setDataAll.map((cow, key) => {
-            let arrTmp = cow.result;
-            const saveshow = [];
-            // console.log(arrTmp);
-            if (arrTmp.length) {
-              for (var i = 1; i <= arrTmp.length; i++) {
-                if (arrTmp[i] === undefined) continue;
-                // const show = arrTmp[i].hash;
-                // const task =  cowCoin.methods.blacklistedCowCert(i).call();
-                // const shwaddress = await cowCoin.methods.ownerOf(i).call();
-                // console.log(i);
-                // console.log(arrTmp[i]);
-                this.setState({
-                  hash: [...this.state.hash, arrTmp[i].hash],
-                  blocks: [...this.state.blocks, arrTmp[i]],
-                  // tasks: [...this.state.tasks, task],
-                });
-                // console.log(show)
-              }
-            }
-          });
-          // alert(response)
         });
     }
   }
@@ -101,10 +103,11 @@ class ShowCowCert extends Component {
       searchShow: [],
       search: "",
       blocks: [],
+      owner: "",
     };
   }
   searchChanged = (event) => {
-    console.log(event)
+    // console.log(event)
     const search = this.state.search;
     const selectDrop = this.state.selectDrop;
     const hash = this.state.hash;
@@ -121,10 +124,7 @@ class ShowCowCert extends Component {
   };
 
   copyCodeToClipboard = (e) => {
-    // console.log(e)
     const el = e;
-    // console.log(el);
-    // el.select()
     document.execCommand("copy");
   };
 
@@ -151,39 +151,6 @@ class ShowCowCert extends Component {
                 this.searchChanged();
               }}
             >
-              {/* <div class="input-group mb-3">
-                <div class="input-group-prepend d-none d-md-block input-group-text">
-                  <select
-                    name="f"
-                    class="custom-select custom-select-sm  custom-arrow-select input-group-text font-size-base "
-                    onChange={(event) => {
-                      this.setState({
-                        selectDrop: [event.target.value],
-                      });
-                    }}
-                  >
-                    <option value="1">Addresses</option>
-                    <option value="2">เลขทะเบียนโค</option>
-                  </select>
-                </div>
-                <input
-                  type="text"
-                  class="form-control form-control-lg"
-                  placeholder="Search by Address / Txn Hash / Block / Token"
-                  // onChange={this.searchChanged}
-                  value={this.state.search}
-                  onChange={(event) => {
-                    this.setState({ search: event.target.value });
-                  }}
-                />
-                <button
-                  type="submit"
-                  // onClick={this.searchChanged}
-                  class="input-group-text btn-success"
-                >
-                  <i class="bi bi-search me-2"></i> Search
-                </button>
-              </div> */}
               <div className="Add-app">
                 <Link class="btn btn-success btn-lg px-3" to="/addowner">
                   Create Owner
@@ -210,44 +177,46 @@ class ShowCowCert extends Component {
                 </thead>
                 <tbody>
                   {/* {isCowCoin} */}
-                  
-                  {this.state.blocks.map((block, number) => {
-                    // console.log(block);
-                    const contractCow = this.state.tasks;
-                    const beforAr = contractCow[number].cowCertlist;
-                    const afterSp = beforAr.split(',');
-                    // console.log(block.hash)
-                    var s = 0;
+                  {this.state.tasks.map((task, keyTask) => {
+                    const beforAr = task.cowCertlist;
+                    const afterSp = beforAr.split(",");
+                    const owner = this.state.owner;
+
                     return (
                       <>
-                        <tr key={number} >
-                          <td>{contractCow[number].tokendId}</td>
+                        <tr key={keyTask}>
+                          <td>{task.tokendId}</td>
                           <td>
-                          <img className="CowCoin" src={`https://ipfs.io/ipfs/${contractCow[number].imgPath}`} alt=""/>
+                            <img
+                              className="CowCoin"
+                              src={`https://ipfs.io/ipfs/${task.imgPath}`}
+                              alt=""
+                            />
                           </td>
                           <td>{afterSp[3]}</td>
                           <td>
-                            สมาชิก : {afterSp[12]}<br/>
-                            Hash : {block.hash}
+                            {owner[keyTask]}
+                            <br />
+                            Hash :{" "}
+                            {this.state.hash.map((hash, key) => {
+                              // console.log(hash.token)
+                              if (
+                                hash.to == owner[keyTask].toLocaleLowerCase() &&
+                                hash.token == task.id
+                              ) {
+                                return <td>{hash.hash}</td>;
+                              }
+                            })}
                           </td>
                           <td>
                             <Link
                               class="btn btn-outline-secondary"
-                              value={contractCow[number].id}
-                              to="/search"
+                              value={task.tokendId}
+                              to="/hiscowcoin"
                             >
                               <i class="fa fa-eye"></i>
                               history
                             </Link>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            <a
-                              type="submit"
-                              class="btn btn-outline-secondary"
-                              onClick={() => this.copyCodeToClipboard(block.hash)}
-                            >
-                              <i class="fa fa-copy"></i>
-                              Copy
-                            </a>
                           </td>
                         </tr>
                       </>
