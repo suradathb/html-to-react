@@ -1,7 +1,6 @@
 import React, { useState, useEffect, Component } from "react";
 import axios from "axios";
 import Web3 from "web3";
-import CowCertificate from "./abis/CowCertificate.json";
 import CowCoin from "./abis/CowCoin.json";
 import ERC721 from "./abis/ERC721.json";
 import "./Search.css";
@@ -217,6 +216,7 @@ class Search extends Component {
               {/* {show} */}
               {this.state.searchShow.map((show, setkey) => {
                 const Anum = show.id - 1;
+                const num = 1;
                 document.getElementById("contentCow").innerHTML = "";
                 const beforAr = show.cowCertlist;
                 const afterSp = beforAr.split(",");
@@ -249,7 +249,7 @@ class Search extends Component {
                       </div>
                       <div class="row">
                         <div class="form-group col-md-12 mb-3">
-                          <h3>ข้อมูลโคบราห์มัน</h3>
+                          <h3>ข้อมูลโคบราห์มัน</h3> <button>Print</button>
                         </div>
                       </div>
                       <div class="row">
@@ -317,15 +317,40 @@ class Search extends Component {
                           </label>
                         </div>
                       </div>
-                      <div class="row">
+                      {/* <div class="row">
                         <div class="mb-3">
                           <label htmlFor="inputsubject">
                             สถานะเปลี่ยนเจ้าของวัว : {afterSp[11]}
                           </label>
                         </div>
+                      </div> */}
+                      <div class="row">
+                        <div class="form-group col-md-12 mb-3">
+                          <h3>ประวัติผู้ถือครอง</h3>
+                        </div>
                       </div>
-                      <hr />
-
+                      <table class="table table-responsive-md">
+                              <thead>
+                                <tr>
+                                  <th scope="col">Address</th>
+                                  <th scope="col">Hash</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                        {this.state.hash.map((hashshowcert)=>{
+                            if(show.id == hashshowcert.token)
+                            {
+                              return(
+                                <tr key={hashshowcert.to}>
+                                  <td>{hashshowcert.to}</td>
+                                  <td>{hashshowcert.hash}</td>
+                                </tr>
+                              )
+                            }
+                          })
+                        }
+                        </tbody>
+                        </table>
                       <div class="row">
                         <div class="form-group col-md-12 mb-3">
                           <h3>ข้อมูลพ่อโคบราห์มัน</h3>
@@ -403,6 +428,7 @@ class Search extends Component {
                   );
                 } else if (show && afterSp[13] == "1") {
                   return (
+                    <>
                     <form
                       class="col-md-9 m-auto"
                       method="post"
@@ -499,14 +525,42 @@ class Search extends Component {
                           </label>
                         </div>
                       </div>
-                      <div class="row">
+                      {/* <div class="row">
                         <div class="mb-3">
                           <label htmlFor="inputsubject">
                             สถานะเปลี่ยนเจ้าของวัว : {afterSp[11]}
-                          </label>
+                            </label>
+                            </div>
+                      </div> */}
+                      <div class="row">
+                        <div class="form-group col-md-12 mb-3">
+                          <h3>ประวัติผู้ถือครอง</h3>
                         </div>
                       </div>
-                      <hr />
+                      <table class="table table-responsive-md">
+                              <thead>
+                                <tr>
+                                  <th scope="col">Address</th>
+                                  <th scope="col">Hash</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                        {this.state.hash.map((hashshowcert)=>{
+                            if(show.id == hashshowcert.token)
+                            {
+                              return(
+                                <tr key={hashshowcert.to}>
+                                  <td>{hashshowcert.to}</td>
+                                  <td>{hashshowcert.hash}</td>
+                                </tr>
+                              )
+                            }
+                          })
+                        }
+                        </tbody>
+                        </table>
+                          
+                      
 
                       <div class="row">
                         <div class="form-group col-md-12 mb-3">
@@ -688,6 +742,7 @@ class Search extends Component {
                         </div>
                       </div>
                     </form>
+                    </>
                   );
                 }
               })}

@@ -3,6 +3,7 @@ import { CustomDialog, useDialog } from "react-st-modal";
 import Web3 from "web3";
 import CowCoin from "./abis/CowCoin.json";
 import ERC721 from "./abis/ERC721.json";
+import "./SearchItem.css";
 
 class SearchItem extends Component {
   async componentWillMount() {
@@ -44,7 +45,6 @@ class SearchItem extends Component {
 
   constructor(props) {
     super(props);
-    
     this.state = {
       datas: this.props.data,
       login: "",
@@ -56,7 +56,7 @@ class SearchItem extends Component {
     this.TransFromTo = this.TransFromTo.bind(this);
   }
   handleChange(e) {
-      console.log("test")
+      // console.log("test")
     this.setState({ login: e.target.value });
   }
 
@@ -80,13 +80,22 @@ class SearchItem extends Component {
   }
   render() {
     const data = this.state.datas;
+    const image = this.state.datas.images;
     const smart = data.smart;
     const sprit = smart.split(",");
-    // console.log(data.accessKey);
     return (
       <>
-        <from id="contentCowCoin">
-          <div class="row">
+        <from id="contentCowCoin" className="search-item">
+        <br/>
+          <div className="row s-im">
+          <img
+            className="s-CowCoin"
+            src={`https://ipfs.io/ipfs/${image}`}
+            alt=""
+          />
+          </div>
+          <br/>
+          <div class="row s-item">
             <div class="form-group col-md-6 mb-3">
               <label htmlFor="inputname">ทะเบียนโคเลขที่ : {sprit[2]}</label>
             </div>
@@ -94,7 +103,7 @@ class SearchItem extends Component {
               <label htmlFor="inputemail">ชื่อโค : {sprit[3]}</label>
             </div>
           </div>
-          <div class="row">
+          <div class="row s-item">
             <div class="form-group col-md-6 mb-3">
               <label htmlFor="inputname">เพศ : {sprit[1]}</label>
             </div>
@@ -102,7 +111,7 @@ class SearchItem extends Component {
               <label htmlFor="inputemail">เลขประจำตัวโค : {sprit[5]}</label>
             </div>
           </div>
-          <div class="row">
+          <div class="row s-item">
             <div class="form-group col-md-6 mb-3">
               <label htmlFor="inputname">วัน/เดือน/ปี เกิด : {sprit[4]}</label>
             </div>
@@ -110,10 +119,9 @@ class SearchItem extends Component {
               <label htmlFor="inputemail">ผู้บำรุงพันธุ์ : {sprit[7]}</label>
             </div>
           </div>
-          <div className="input-group mb-3">
-            {/* <label for="inputname">Address ปลายทาง</label> */}
+          <div className="input-group mb-3 s-box">
             <input
-              class="form-control form-control-lg"
+              class="form-control  form-control-lg"
               type="text"
               placeholder="Address"
               value={this.state.toAddress}
@@ -122,7 +130,7 @@ class SearchItem extends Component {
               }}
             />
           </div>
-          <div class="row">
+          <div class="row s-item">
             <div class="col text-end mt-2">
               <input
                 type="submit"
@@ -134,18 +142,9 @@ class SearchItem extends Component {
                     this.TransFromTo(this.state);
                   }}
               />
-              {/* <button
-                type="submit"
-                className="btn btn-success btn-lg px-3"
-                // onClick={() => {
-                //   // Сlose the dialog and return the value
-                //   this.state.dialog.close(this.state);
-                // }}
-              >
-                โอน
-              </button> */}
             </div>
           </div>
+          <br/>
         </from>
       </>
     );
@@ -181,52 +180,33 @@ function CustomExample(props) {
           </button>
         </div>
       );
+    } else {
+      return <></>
     }
   })
-  if(newArray.length == 0) 
-  {
-    return (
-      <div>
-        <button
-          className="btn btn-success btn-lg px-3"
-          onClick={async () => {
-            //   console.log(props)
-            const smartshow = props.smart.split(",");
-            const result = await CustomDialog(<SearchItem data={props} />, {
-              title: "โอนเหรียญ : " + smartshow[3],
-              showCloseIcon: true,
-            });
-          }}
-        >
-          โอนเหรียญ
-        </button>
-      </div>
-    );
-  }
-  
-  // console.log(pads)
-  //   const namecontract = props;
+  // if(newArray.length == 0) 
+  // {
+  //   return (
+  //     <div>
+  //       <button
+  //         className="btn btn-success btn-lg px-3"
+  //         onClick={async () => {
+  //           //   console.log(props)
+  //           const smartshow = props.smart.split(",");
+  //           const result = await CustomDialog(<SearchItem data={props} />, {
+  //             title: "โอนเหรียญ : " + smartshow[3],
+  //             showCloseIcon: true,
+  //           });
+  //         }}
+  //       >
+  //         โอนเหรียญ
+  //       </button>
+  //     </div>
+  //   );
+  // }
   return (
     <div>
       {pads}
-      {/* {props.pad.map((num) => {
-        {num != props.accessKey ? 
-      <button
-        className="btn btn-success btn-lg px-3"
-        onClick={async () => {
-          //   console.log(props)
-          const smartshow = props.smart.split(",");
-          const result = await CustomDialog(<SearchItem data={props} />, {
-            title: "โอนเหรียญ : " + smartshow[3],
-            showCloseIcon: true,
-          });
-        }}
-      >
-        โอนเหรียญ
-      </button>
-      :""}
-    })
-  } */}
     </div>
   );
 }

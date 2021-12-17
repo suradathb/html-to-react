@@ -1,0 +1,30 @@
+#contentCowCoin{
+  width: 1000;
+  box-sizing: border-box;
+}
+.imgPreview{
+    width: 150px;
+    height: 150px;
+    border-radius: 80%;
+    align-items: center;
+}
+.s-im{
+    margin: 0px;
+    border: 0px;
+    display: table;
+    margin-left: auto;
+    margin-right: auto;
+}
+.s-item{
+    /* position: absolute; */
+    margin: auto;
+    width: 1.5;
+    font-size:smaller;
+}
+.s-CowCoin{
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+    width: 120px;
+    height: 120px;
+}

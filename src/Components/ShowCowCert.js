@@ -55,24 +55,35 @@ class ShowCowCert extends Component {
       }
       axios
         .get(
-          "https://api-testnet.bscscan.com/api?module=account&action=txlist&address=0x82eaDcf8504F893993cf075b98f11465078B240E&startblock=1&endblock=99999999&sort=asc&apikey=YourApiKeyToken"
+          // "https://api-testnet.bscscan.com/api?module=account&action=txlist&address=0x82eaDcf8504F893993cf075b98f11465078B240E&startblock=1&endblock=99999999&sort=asc&apikey=YourApiKeyToken"
+          "https://api-testnet.bscscan.com/api?module=account&action=tokennfttx&contractaddress=0x82eaDcf8504F893993cf075b98f11465078B240E"
         )
         .then((response) => {
-          this.setState({
-            setDataAll: [...this.state.setDataAll, response.data],
-          });
-          const getDataAll = this.state.setDataAll.map((cow, key) => {
-            let arrTmp = cow.result;
-            const saveshow = [];
-            if (arrTmp.length) {
-              for (var i = 1; i <= arrTmp.length; i++) {
-                if (arrTmp[i] === undefined) continue;
-                this.setState({
-                  hash: [...this.state.hash, arrTmp[i].hash],
-                  blocks: [...this.state.blocks, arrTmp[i]],
-                });
-              }
-            }
+          // this.setState({
+          //   setDataAll: [...this.state.setDataAll, response.data],
+          // });
+          const getDataAll = response.data.result.map((cow, key) => {
+            const hashs = {
+              hash: cow.hash,
+              token: cow.tokenID,
+              from: cow.from,
+              to: cow.to,
+            };
+            this.setState({
+              hash: [...this.state.hash, hashs],
+            });
+            // console.log(this.state.blocks)
+            // let arrTmp = cow.result;
+            // const saveshow = [];
+            // if (arrTmp.length) {
+            //   for (var i = 1; i <= arrTmp.length; i++) {
+            //     if (arrTmp[i] === undefined) continue;
+            //     this.setState({
+            //       hash: [...this.state.hash, arrTmp[i].hash],
+            //       blocks: [...this.state.blocks, arrTmp[i]],
+            //     });
+            //   }
+            // }
           });
         });
     }
@@ -92,7 +103,7 @@ class ShowCowCert extends Component {
       searchShow: [],
       search: "",
       blocks: [],
-      owner:""
+      owner: "",
     };
   }
   searchChanged = (event) => {
@@ -166,52 +177,50 @@ class ShowCowCert extends Component {
                 </thead>
                 <tbody>
                   {/* {isCowCoin} */}
-                  
-                  {this.state.blocks.map((block, number) => {
-                    // console.log(block);
-                    const contractCow = this.state.tasks;
-                    if (contractCow[number] != undefined) {
-                    const beforAr = contractCow[number].cowCertlist;
-                    const afterSp = beforAr.split(',');
-                    // console.log(block.hash)
-                    var s = 0;
+                  {this.state.tasks.map((task, keyTask) => {
+                    const beforAr = task.cowCertlist;
+                    const afterSp = beforAr.split(",");
+                    const owner = this.state.owner;
+
                     return (
                       <>
-                        <tr key={number} >
-                          <td>{contractCow[number].tokendId}</td>
+                        <tr key={keyTask}>
+                          <td>{task.tokendId}</td>
                           <td>
-                          <img className="CowCoin" src={`https://ipfs.io/ipfs/${contractCow[number].imgPath}`} alt=""/>
+                            <img
+                              className="CowCoin"
+                              src={`https://ipfs.io/ipfs/${task.imgPath}`}
+                              alt=""
+                            />
                           </td>
                           <td>{afterSp[3]}</td>
                           <td>
-                            สมาชิก : {afterSp[12]}<br/>
-                            <Link to="/hiscowcoin">
-                            Hash : {block.hash}
-                            </Link>
+                            {owner[keyTask]}
+                            <br />
+                            Hash :{" "}
+                            {this.state.hash.map((hash, key) => {
+                              // console.log(hash.token)
+                              if (
+                                hash.to == owner[keyTask].toLocaleLowerCase() &&
+                                hash.token == task.id
+                              ) {
+                                return <td>{hash.hash}</td>;
+                              }
+                            })}
                           </td>
                           <td>
                             <Link
                               class="btn btn-outline-secondary"
-                              value={contractCow[number].id}
+                              value={task.tokendId}
                               to="/hiscowcoin"
                             >
                               <i class="fa fa-eye"></i>
                               history
                             </Link>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
-                            {/* <a
-                              type="submit"
-                              class="btn btn-outline-secondary"
-                              onClick={() => this.copyCodeToClipboard(block.hash)}
-                            >
-                              <i class="fa fa-copy"></i>
-                              Copy
-                            </a> */}
                           </td>
                         </tr>
                       </>
                     );
-                    }
                   })}
                 </tbody>
               </table>

@@ -3,10 +3,10 @@ import axios from "axios";
 import Web3 from "web3";
 import CowCoin from "./abis/CowCoin.json";
 import ERC721 from "./abis/ERC721.json";
-import { Link } from "react-router-dom";
+import { Link, Route } from "react-router-dom";
 import "./Member.css";
 import SearchItem from "./SearchItem";
-import { get } from "react-hook-form";
+import ShowItemCowCert from "./Components/ShowItemCowCert";
 
 class Member extends Component {
   async componentWillMount() {
@@ -44,20 +44,14 @@ class Member extends Component {
       this.setState({ cowerc });
       const coinCow = await cowCoin.methods.cowCertCount().call();
       this.setState({ coinCow });
-      //   for (var i = 1; i <= coinCow; i++) {
-      //     const task = await cowCoin.methods.blacklistedCowCert(i).call();
-      //     // console.log(task)
-      //     this.setState({
-      //       tasks: [...this.state.tasks, task],
-      //     });
-      //   }
+
       axios
         .get(
           `https://api-testnet.bscscan.com/api?module=account&action=tokennfttx&contractaddress=0x82eaDcf8504F893993cf075b98f11465078B240E&address=${accounts}`
         )
         .then((response) => {
           const getDataAll = response.data.result.map((cow, key) => {
-            const getacc = this.state.account.toLocaleLowerCase()
+            const getacc = this.state.account.toLocaleLowerCase();
             if (cow.to != getacc) {
               this.setState({
                 balance: [...this.state.balance, cow.tokenID],
@@ -100,6 +94,7 @@ class Member extends Component {
     };
     // this.getEmployeestest = this.getEmployeestest.bind(this);
   }
+  SendView;
   render() {
     return (
       <>
@@ -128,7 +123,7 @@ class Member extends Component {
                 {this.state.hash.map((namecontract, keyname) => {
                   let num;
                   const depArray = this.state.balance.map((j) => {
-                    num = j
+                    num = j;
                     return num;
                   });
                   const smarts = this.state.tasks;
@@ -137,37 +132,37 @@ class Member extends Component {
                     const afterSp = histshow.split(",");
                     if (smarts[keyname].id == namecontract.tokenID) {
                       return (
-                          <tr key={keyname}>
-                            <td>{smarts[keyname].tokendId}</td>
-                            <td>
-                              <img
-                                className="CowCoin"
-                                src={`https://ipfs.io/ipfs/${smarts[keyname].imgPath}`}
-                                alt=""
-                              />
-                            </td>
-                            <td>{afterSp[3]}</td>
-                            <td>
-                              <Link
-                                class="nav-link"
-                                value={smarts[keyname].id}
-                                to="/hiscowcoin"
-                              >
-                                {this.state.isReadMore
-                                  ? namecontract.hash
-                                  : namecontract.hash}
-                              </Link>
-                            </td>
-                            <td>
-                              <SearchItem
-                                hash={namecontract}
-                                smart={histshow}
-                                pad={depArray}
-                                accessKey={smarts[keyname].id}
-                                account={this.state.account}
-                              />
-                            </td>
-                          </tr>
+                        <tr key={keyname}>
+                          <td>{smarts[keyname].tokendId}</td>
+                          <td>
+                            <img
+                              className="CowCoin"
+                              src={`https://ipfs.io/ipfs/${smarts[keyname].imgPath}`}
+                              alt=""
+                            />
+                          </td>
+                          <td>{afterSp[3]}</td>
+                          <td>
+                            <Link
+                              to={`/hiscowcoin/${namecontract.hash}`}
+                              title={
+                                smarts[keyname].tokendId + "," + afterSp[3]
+                              }
+                            >
+                              {namecontract.hash}
+                            </Link>
+                          </td>
+                          <td>
+                            <SearchItem
+                              hash={namecontract}
+                              smart={histshow}
+                              pad={depArray}
+                              accessKey={smarts[keyname].id}
+                              account={this.state.account}
+                              images={smarts[keyname].imgPath}
+                            />
+                          </td>
+                        </tr>
                       );
                     }
                   }
