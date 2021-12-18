@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Component } from "react";
+import { Link, Route } from "react-router-dom";
 import axios from "axios";
 import Web3 from "web3";
 import CowCoin from "./abis/CowCoin.json";
@@ -92,9 +93,9 @@ class Search extends Component {
           const hashs = {
             hash: cow.hash,
             token: cow.tokenID,
-            from : cow.from,
-            to: cow.to
-          }
+            from: cow.from,
+            to: cow.to,
+          };
           // console.log(hashs)
           this.setState({
             hash: [...this.state.hash, hashs],
@@ -109,28 +110,27 @@ class Search extends Component {
     const selectDrop = this.state.selectDrop;
     const hashs = this.state.hash;
     const count = 0;
-    
+
     switch (selectDrop) {
       case "1":
         hashs.map((cert, key) => {
           // console.log(cert)
           // for (var h = 0; h <= key; h++) {
-            if (cert.hash == search) {
-              
-              // let number = key - 1;
-              this.state.tasks.map((name, keyname) => {
-                if (cert.token == name.id) {
-                  // console.log(cert.hash,name)
-                  const shwaddress = this.state.cowerc.methods
-                    .ownerOf(name.id)
-                    .call();
-                  this.setState({
-                    searchShow: [...this.state.searchShow, name],
-                    winOwner: [...this.state.owner, cert.hash],
-                  });
-                }
-              });
-            }
+          if (cert.hash == search) {
+            // let number = key - 1;
+            this.state.tasks.map((name, keyname) => {
+              if (cert.token == name.id) {
+                // console.log(cert.hash,name)
+                const shwaddress = this.state.cowerc.methods
+                  .ownerOf(name.id)
+                  .call();
+                this.setState({
+                  searchShow: [...this.state.searchShow, name],
+                  winOwner: [...this.state.owner, cert.hash],
+                });
+              }
+            });
+          }
           // }
         });
       case "2":
@@ -143,7 +143,6 @@ class Search extends Component {
             });
           }
         });
-      
     }
   };
 
@@ -317,40 +316,33 @@ class Search extends Component {
                           </label>
                         </div>
                       </div>
-                      {/* <div class="row">
-                        <div class="mb-3">
-                          <label htmlFor="inputsubject">
-                            สถานะเปลี่ยนเจ้าของวัว : {afterSp[11]}
-                          </label>
-                        </div>
-                      </div> */}
                       <div class="row">
                         <div class="form-group col-md-12 mb-3">
                           <h3>ประวัติผู้ถือครอง</h3>
                         </div>
                       </div>
                       <table class="table table-responsive-md">
-                              <thead>
-                                <tr>
-                                  <th scope="col">Address</th>
-                                  <th scope="col">Hash</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                        {this.state.hash.map((hashshowcert)=>{
-                            if(show.id == hashshowcert.token)
-                            {
-                              return(
+                        <thead>
+                          <tr>
+                            <th scope="col">Address</th>
+                            <th scope="col">Hash</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {this.state.hash.map((hashshowcert) => {
+                            if (show.id == hashshowcert.token) {
+                              return (
                                 <tr key={hashshowcert.to}>
                                   <td>{hashshowcert.to}</td>
-                                  <td>{hashshowcert.hash}</td>
+                                  <Link to={`/hiscowcoin/${hashshowcert.hash}`}>
+                                    <td>{hashshowcert.hash}</td>
+                                  </Link>
                                 </tr>
-                              )
+                              );
                             }
-                          })
-                        }
+                          })}
                         </tbody>
-                        </table>
+                      </table>
                       <div class="row">
                         <div class="form-group col-md-12 mb-3">
                           <h3>ข้อมูลพ่อโคบราห์มัน</h3>
@@ -429,319 +421,321 @@ class Search extends Component {
                 } else if (show && afterSp[13] == "1") {
                   return (
                     <>
-                    <form
-                      class="col-md-9 m-auto"
-                      method="post"
-                      role="form"
-                      key={setkey}
-                    >
-                      <div class="row">
-                        <div class="mb-3 name-app">
-                          <h1 class="h1">{afterSp[3]}</h1>
+                      <form
+                        class="col-md-9 m-auto"
+                        method="post"
+                        role="form"
+                        key={setkey}
+                      >
+                        <div class="row">
+                          <div class="mb-3 name-app">
+                            <h1 class="h1">{afterSp[3]}</h1>
+                          </div>
                         </div>
-                      </div>
-                      <div class="row">
-                        <div class="mb-3 show-logo">
-                          <img
-                            className="img-fluid-show"
-                            // src="./assets/images/Me02.jpeg"
-                            src={`https://ipfs.io/ipfs/${show.imgPath}`}
-                            alt=""
-                          />
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="mb-3 name-app">
-                          <h1 class="h2">Cowcert Type : {afterSp[0]}</h1>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="form-group col-md-12 mb-3">
-                          <h3>ข้อมูลโคบราห์มัน</h3>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="form-group col-md-12 mb-3">
-                          <label htmlFor="inputname">
+                        <div class="row">
+                          <div class="mb-3 show-logo">
                             <img
-                              className="imgPreview"
-                              src="../assets/images/CowCoin.jpeg"
+                              className="img-fluid-show"
+                              // src="./assets/images/Me02.jpeg"
+                              src={`https://ipfs.io/ipfs/${show.imgPath}`}
                               alt=""
                             />
-                            address เจ้าของโค : {this.state.winOwner[Anum]}
-                          </label>
+                          </div>
                         </div>
-                      </div>
-                      <div class="row">
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">
-                            ทะเบียนโคเลขที่ : {afterSp[2]}
-                          </label>
+                        <div class="row">
+                          <div class="mb-3 name-app">
+                            <h1 class="h2">Cowcert Type : {afterSp[0]}</h1>
+                          </div>
                         </div>
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputemail">
-                            ชื่อโค : {afterSp[3]}
-                          </label>
+                        <div class="row">
+                          <div class="form-group col-md-12 mb-3">
+                            <h3>ข้อมูลโคบราห์มัน</h3>
+                          </div>
                         </div>
-                      </div>
-                      <div class="row">
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">เพศ : {afterSp[1]}</label>
+                        <div class="row">
+                          <div class="form-group col-md-12 mb-3">
+                            <label htmlFor="inputname">
+                              <img
+                                className="imgPreview"
+                                src="../assets/images/CowCoin.jpeg"
+                                alt=""
+                              />
+                              address เจ้าของโค : {this.state.winOwner[Anum]}
+                            </label>
+                          </div>
                         </div>
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputemail">
-                            เลขประจำตัวโค : {afterSp[5]}
-                          </label>
+                        <div class="row">
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              ทะเบียนโคเลขที่ : {afterSp[2]}
+                            </label>
+                          </div>
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputemail">
+                              ชื่อโค : {afterSp[3]}
+                            </label>
+                          </div>
                         </div>
-                      </div>
-                      <div class="row">
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">
-                            วัน/เดือน/ปี เกิด : {afterSp[4]}
-                          </label>
+                        <div class="row">
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              เพศ : {afterSp[1]}
+                            </label>
+                          </div>
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputemail">
+                              เลขประจำตัวโค : {afterSp[5]}
+                            </label>
+                          </div>
                         </div>
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputemail">
-                            ผู้บำรุงพันธุ์ : {afterSp[7]}
-                          </label>
+                        <div class="row">
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              วัน/เดือน/ปี เกิด : {afterSp[4]}
+                            </label>
+                          </div>
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputemail">
+                              ผู้บำรุงพันธุ์ : {afterSp[7]}
+                            </label>
+                          </div>
                         </div>
-                      </div>
-                      <div class="row">
-                        <div class="form-group col-md-6 mb-3">
-                          <label for="inputname">
-                            เจ้าของปัจจุบัน : {afterSp[8]}
-                          </label>
+                        <div class="row">
+                          <div class="form-group col-md-6 mb-3">
+                            <label for="inputname">
+                              เจ้าของปัจจุบัน : {afterSp[8]}
+                            </label>
+                          </div>
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputemail">
+                              ชื่อเจ้าของปัจจุบัน : {afterSp[9]}
+                            </label>
+                          </div>
                         </div>
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputemail">
-                            ชื่อเจ้าของปัจจุบัน : {afterSp[9]}
-                          </label>
+                        <div class="row">
+                          <div class="mb-3">
+                            <label htmlFor="inputsubject">
+                              วันที่โอน : {afterSp[10]}
+                            </label>
+                          </div>
                         </div>
-                      </div>
-                      <div class="row">
-                        <div class="mb-3">
-                          <label htmlFor="inputsubject">
-                            วันที่โอน : {afterSp[10]}
-                          </label>
-                        </div>
-                      </div>
-                      {/* <div class="row">
+                        {/* <div class="row">
                         <div class="mb-3">
                           <label htmlFor="inputsubject">
                             สถานะเปลี่ยนเจ้าของวัว : {afterSp[11]}
                             </label>
                             </div>
                       </div> */}
-                      <div class="row">
-                        <div class="form-group col-md-12 mb-3">
-                          <h3>ประวัติผู้ถือครอง</h3>
+                        <div class="row">
+                          <div class="form-group col-md-12 mb-3">
+                            <h3>ประวัติผู้ถือครอง</h3>
+                          </div>
                         </div>
-                      </div>
-                      <table class="table table-responsive-md">
-                              <thead>
-                                <tr>
-                                  <th scope="col">Address</th>
-                                  <th scope="col">Hash</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                        {this.state.hash.map((hashshowcert)=>{
-                            if(show.id == hashshowcert.token)
-                            {
-                              return(
-                                <tr key={hashshowcert.to}>
-                                  <td>{hashshowcert.to}</td>
-                                  <td>{hashshowcert.hash}</td>
-                                </tr>
-                              )
-                            }
-                          })
-                        }
-                        </tbody>
+                        <table class="table table-responsive-md">
+                          <thead>
+                            <tr>
+                              <th scope="col">Address</th>
+                              <th scope="col">Hash</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {this.state.hash.map((hashshowcert) => {
+                              if (show.id == hashshowcert.token) {
+                                return (
+                                  <tr key={hashshowcert.to}>
+                                    <td>{hashshowcert.to}</td>
+                                    <Link
+                                      to={`/hiscowcoin/${hashshowcert.hash}`}
+                                    >
+                                      <td>{hashshowcert.hash}</td>
+                                    </Link>
+                                  </tr>
+                                );
+                              }
+                            })}
+                          </tbody>
                         </table>
-                          
-                      
 
-                      <div class="row">
-                        <div class="form-group col-md-12 mb-3">
-                          <h3>ข้อมูลพ่อโคบราห์มัน</h3>
+                        <div class="row">
+                          <div class="form-group col-md-12 mb-3">
+                            <h3>ข้อมูลพ่อโคบราห์มัน</h3>
+                          </div>
                         </div>
-                      </div>
-                      <div class="row">
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">
-                            ทะเบียนพ่อโคบราห์มัน : {afterSp[24]}
-                          </label>
+                        <div class="row">
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              ทะเบียนพ่อโคบราห์มัน : {afterSp[24]}
+                            </label>
+                          </div>
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              Hash พ่อ : {afterSp[25]}
+                            </label>
+                          </div>
                         </div>
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">
-                            Hash พ่อ : {afterSp[25]}
-                          </label>
+                        <div class="row">
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              ทะเบียน ปู่สายพ่อ : {afterSp[26]}
+                            </label>
+                          </div>
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              Hash ปู่สายพ่อ : {afterSp[27]}
+                            </label>
+                          </div>
                         </div>
-                      </div>
-                      <div class="row">
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">
-                            ทะเบียน ปู่สายพ่อ : {afterSp[26]}
-                          </label>
+                        <div class="row">
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              ทะเบียน ย่าสายพ่อ : {afterSp[28]}
+                            </label>
+                          </div>
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              Hash ย่าสายพ่อ : {afterSp[29]}
+                            </label>
+                          </div>
                         </div>
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">
-                            Hash ปู่สายพ่อ : {afterSp[27]}
-                          </label>
+                        <div class="row">
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              ทะเบียน ปู่ทวดสายปู่ : {afterSp[30]}
+                            </label>
+                          </div>
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              Hash ปู่ทวดสายปู่ : {afterSp[31]}
+                            </label>
+                          </div>
                         </div>
-                      </div>
-                      <div class="row">
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">
-                            ทะเบียน ย่าสายพ่อ : {afterSp[28]}
-                          </label>
+                        <div class="row">
+                          <div class="form-group col-md-6 mb-3">
+                            <label for="inputname">
+                              ทะเบียน ย่าทวดสายปู่ : {afterSp[32]}
+                            </label>
+                          </div>
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              Hash ย่าทวดสายปู่ : {afterSp[33]}
+                            </label>
+                          </div>
                         </div>
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">
-                            Hash ย่าสายพ่อ : {afterSp[29]}
-                          </label>
+                        <div class="row">
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              ทะเบียน ตาทวดสายย่า : {afterSp[34]}
+                            </label>
+                          </div>
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              Hash ตาทวดสายย่า : {afterSp[35]}
+                            </label>
+                          </div>
                         </div>
-                      </div>
-                      <div class="row">
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">
-                            ทะเบียน ปู่ทวดสายปู่ : {afterSp[30]}
-                          </label>
+                        <div class="row">
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              ทะเบียน ยายทวดสายย่า : {afterSp[36]}
+                            </label>
+                          </div>
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              Hash ยายทวดสายย่า : {afterSp[37]}
+                            </label>
+                          </div>
                         </div>
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">
-                            Hash ปู่ทวดสายปู่ : {afterSp[31]}
-                          </label>
+                        <hr />
+                        <div class="row">
+                          <div class="form-group col-md-12 mb-3">
+                            <h3>ข้อมูลแม่โคบราห์มัน</h3>
+                          </div>
                         </div>
-                      </div>
-                      <div class="row">
-                        <div class="form-group col-md-6 mb-3">
-                          <label for="inputname">
-                            ทะเบียน ย่าทวดสายปู่ : {afterSp[32]}
-                          </label>
+                        <div class="row">
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              ทะเบียนแม่โคบราห์มัน : {afterSp[24]}
+                            </label>
+                          </div>
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              Hash แม่ : {afterSp[25]}
+                            </label>
+                          </div>
                         </div>
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">
-                            Hash ย่าทวดสายปู่ : {afterSp[33]}
-                          </label>
+                        <div class="row">
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              ทะเบียน ตาสายแม่ : {afterSp[26]}
+                            </label>
+                          </div>
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              Hash ตาสายแม่ : {afterSp[27]}
+                            </label>
+                          </div>
                         </div>
-                      </div>
-                      <div class="row">
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">
-                            ทะเบียน ตาทวดสายย่า : {afterSp[34]}
-                          </label>
+                        <div class="row">
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              ทะเบียน ยายสายแม่ : {afterSp[28]}
+                            </label>
+                          </div>
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              Hash ยายสายแม่ : {afterSp[29]}
+                            </label>
+                          </div>
                         </div>
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">
-                            Hash ตาทวดสายย่า : {afterSp[35]}
-                          </label>
+                        <div class="row">
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              ทะเบียน ปู่ทวดสายตา : {afterSp[30]}
+                            </label>
+                          </div>
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              Hash ปู่ทวดสายตา : {afterSp[31]}
+                            </label>
+                          </div>
                         </div>
-                      </div>
-                      <div class="row">
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">
-                            ทะเบียน ยายทวดสายย่า : {afterSp[36]}
-                          </label>
+                        <div class="row">
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              ทะเบียน ย่าทวดสายตา : {afterSp[32]}
+                            </label>
+                          </div>
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              Hash ย่าทวดสายตา : {afterSp[33]}
+                            </label>
+                          </div>
                         </div>
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">
-                            Hash ยายทวดสายย่า : {afterSp[37]}
-                          </label>
+                        <div class="row">
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              ทะเบียน ตาทวดสายยาย : {afterSp[34]}
+                            </label>
+                          </div>
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              Hash ตาทวดสายยาย : {afterSp[35]}
+                            </label>
+                          </div>
                         </div>
-                      </div>
-                      <hr />
-                      <div class="row">
-                        <div class="form-group col-md-12 mb-3">
-                          <h3>ข้อมูลแม่โคบราห์มัน</h3>
+                        <div class="row">
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              ทะเบียน ยายทวดสายยาย : {afterSp[36]}
+                            </label>
+                          </div>
+                          <div class="form-group col-md-6 mb-3">
+                            <label htmlFor="inputname">
+                              Hash ยายทวดสายยาย : {afterSp[37]}
+                            </label>
+                          </div>
                         </div>
-                      </div>
-                      <div class="row">
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">
-                            ทะเบียนแม่โคบราห์มัน : {afterSp[24]}
-                          </label>
-                        </div>
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">
-                            Hash แม่ : {afterSp[25]}
-                          </label>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">
-                            ทะเบียน ตาสายแม่ : {afterSp[26]}
-                          </label>
-                        </div>
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">
-                            Hash ตาสายแม่ : {afterSp[27]}
-                          </label>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">
-                            ทะเบียน ยายสายแม่ : {afterSp[28]}
-                          </label>
-                        </div>
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">
-                            Hash ยายสายแม่ : {afterSp[29]}
-                          </label>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">
-                            ทะเบียน ปู่ทวดสายตา : {afterSp[30]}
-                          </label>
-                        </div>
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">
-                            Hash ปู่ทวดสายตา : {afterSp[31]}
-                          </label>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">
-                            ทะเบียน ย่าทวดสายตา : {afterSp[32]}
-                          </label>
-                        </div>
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">
-                            Hash ย่าทวดสายตา : {afterSp[33]}
-                          </label>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">
-                            ทะเบียน ตาทวดสายยาย : {afterSp[34]}
-                          </label>
-                        </div>
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">
-                            Hash ตาทวดสายยาย : {afterSp[35]}
-                          </label>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">
-                            ทะเบียน ยายทวดสายยาย : {afterSp[36]}
-                          </label>
-                        </div>
-                        <div class="form-group col-md-6 mb-3">
-                          <label htmlFor="inputname">
-                            Hash ยายทวดสายยาย : {afterSp[37]}
-                          </label>
-                        </div>
-                      </div>
-                    </form>
+                      </form>
                     </>
                   );
                 }
