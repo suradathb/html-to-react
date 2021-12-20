@@ -63,10 +63,8 @@ class Member extends Component {
                 tasks: [...this.state.tasks, hist],
               });
             });
-            // console.log(task)
             this.setState({
               hash: [...this.state.hash, cow],
-              // tasks: [...this.state.tasks, task],
             });
           });
         });
@@ -105,7 +103,7 @@ class Member extends Component {
               src="../assets/images/cowcert-01.png"
               alt=""
             />
-            <p class="inputname">{this.state.account}</p>
+            <p class="inputname">{this.state.account.toLocaleLowerCase()}</p>
           </div>
         </div>
         <div class="container py-5">

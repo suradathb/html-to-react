@@ -161,14 +161,16 @@ function CustomExample(props) {
   });
   // console.log(newArray.length)
   const pads = newArray.map((num) => {
+    
     if(num != props.accessKey && getacc == props.hash.to)
     {
+      console.log(num,props.accessKey,getacc,props.hash)
       return (
         <div>
           <button
             className="btn btn-success btn-lg px-3"
             onClick={async () => {
-              //   console.log(props)
+                console.log(props)
               const smartshow = props.smart.split(",");
               const result = await CustomDialog(<SearchItem data={props} />, {
                 title: "โอนเหรียญ : " + smartshow[3],

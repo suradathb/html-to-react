@@ -195,7 +195,7 @@ class ShowCowCert extends Component {
                           </td>
                           <td>{afterSp[3]}</td>
                           <td>
-                            {owner[keyTask]}
+                            {owner[keyTask].toLocaleLowerCase()}
                             <br />
                             Hash :{" "}
                             {this.state.hash.map((hash, key) => {
