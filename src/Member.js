@@ -6,7 +6,7 @@ import ERC721 from "./abis/ERC721.json";
 import { Link, Route } from "react-router-dom";
 import "./Member.css";
 import SearchItem from "./SearchItem";
-import ShowItemCowCert from "./Components/ShowItemCowCert";
+// import ShowItemCowCert from "./Components/ShowItemCowCert";
 
 class Member extends Component {
   async componentWillMount() {
@@ -47,7 +47,8 @@ class Member extends Component {
 
       axios
         .get(
-          `https://api-testnet.bscscan.com/api?module=account&action=tokennfttx&contractaddress=0x82eaDcf8504F893993cf075b98f11465078B240E&address=${accounts}`
+          // `https://api-testnet.bscscan.com/api?module=account&action=tokennfttx&contractaddress=0x82eaDcf8504F893993cf075b98f11465078B240E&address=${accounts}`
+          `https://api-testnet.bscscan.com/api?module=account&action=tokennfttx&contractaddress=0x82eadcf8504f893993cf075b98f11465078b240e&address=${accounts}`
         )
         .then((response) => {
           const getDataAll = response.data.result.map((cow, key) => {
@@ -58,7 +59,14 @@ class Member extends Component {
               });
             }
             const task = cowCoin.methods.blacklistedCowCert(cow.tokenID).call();
+            // const getadd = cowerc.methods.ownerOf(cow.tokenID).call();
             task.then((hist) => {
+              const showaddress = cowerc.methods.ownerOf(hist.id).call();
+              showaddress.then((name) => {
+                // console.log(name)
+                this.setState({owner : name})
+              })
+              
               this.setState({
                 tasks: [...this.state.tasks, hist],
               });
@@ -67,7 +75,7 @@ class Member extends Component {
               hash: [...this.state.hash, cow],
             });
           });
-        });
+      });
     }
   }
 
@@ -92,7 +100,7 @@ class Member extends Component {
     };
     // this.getEmployeestest = this.getEmployeestest.bind(this);
   }
-  SendView;
+  // SendView;
   render() {
     return (
       <>
@@ -124,7 +132,9 @@ class Member extends Component {
                     num = j;
                     return num;
                   });
+                  
                   const smarts = this.state.tasks;
+                  // console.log(smarts)
                   if (smarts[keyname] != undefined) {
                     const histshow = smarts[keyname].cowCertlist;
                     const afterSp = histshow.split(",");
@@ -151,14 +161,18 @@ class Member extends Component {
                             </Link>
                           </td>
                           <td>
+                            {this.state.owner.toLocaleLowerCase() == this.state.account.toLocaleLowerCase() ? 
                             <SearchItem
-                              hash={namecontract}
-                              smart={histshow}
-                              pad={depArray}
-                              accessKey={smarts[keyname].id}
-                              account={this.state.account}
-                              images={smarts[keyname].imgPath}
-                            />
+                            hash={namecontract}
+                            smart={histshow}
+                            pad={depArray}
+                            accessKey={smarts[keyname].id}
+                            account={this.state.account}
+                            images={smarts[keyname].imgPath}
+                            ERC721={this.state.cowerc}
+                          /> : 
+                            ""
+                            }
                           </td>
                         </tr>
                       );

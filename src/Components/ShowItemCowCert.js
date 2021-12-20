@@ -210,7 +210,7 @@ class ShowItemCowCert extends Component {
                               src="../assets/images/CowCoin.jpeg"
                               alt=""
                             />
-                            address เจ้าของโค : {this.state.winOwner[Anum]}
+                            address เจ้าของโค : {this.state.winOwner[Anum].toLocaleLowerCase()}
                           </label>
                         </div>
                       </div>
@@ -409,7 +409,7 @@ class ShowItemCowCert extends Component {
                               src="../assets/images/CowCoin.jpeg"
                               alt=""
                             />
-                            address เจ้าของโค : {this.state.winOwner[Anum]}
+                            address เจ้าของโค : {this.state.winOwner[Anum].toLocaleLowerCase()}
                           </label>
                         </div>
                       </div>
