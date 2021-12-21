@@ -195,7 +195,7 @@ class ShowCowCert extends Component {
                           </td>
                           <td>{afterSp[3]}</td>
                           <td>
-                            {owner[keyTask]}
+                            {owner[keyTask].toLocaleLowerCase()}
                             <br />
                             Hash :{" "}
                             {this.state.hash.map((hash, key) => {
@@ -204,20 +204,33 @@ class ShowCowCert extends Component {
                                 hash.to == owner[keyTask].toLocaleLowerCase() &&
                                 hash.token == task.id
                               ) {
-                                return <td>{hash.hash}</td>;
+                                return <td>
+                                  <Link
+                                    to={`/hiscowcoin/${hash.hash}`}
+                                    >
+                                  {hash.hash}
+                                  </Link>
+                                  </td>;
                               }
                             })}
                           </td>
-                          <td>
+                          {this.state.hash.map((hashd, keyd) => {
+                            if (
+                              hashd.to == owner[keyTask].toLocaleLowerCase() &&
+                              hashd.token == task.id
+                            ) {
+                          return <td>
                             <Link
                               class="btn btn-outline-secondary"
                               value={task.tokendId}
-                              to="/hiscowcoin"
+                              to={`/hiscowcoin/${hashd.hash}`}
                             >
                               <i class="fa fa-eye"></i>
                               history
                             </Link>
                           </td>
+                          }
+                          })}
                         </tr>
                       </>
                     );

@@ -16,7 +16,6 @@ import AddCowCert from "./AddCowCert";
 import React, { Component } from "react";
 import Home from "./Home";
 import ShowCowCert from "./Components/ShowCowCert";
-import AleartConfirm from "./AleartConfirm";
 import axios from "axios";
 // import CreateMember from "./Components/CreateMember";
 import AddOwner from "./AddMember";
@@ -89,7 +88,7 @@ class App extends Component {
 
     return (
       <>
-        <Header account={this.state.account} />
+        <Header account={this.state.account.toLocaleLowerCase()} />
         <Switch>
           <Route path="/" exact>
             <Banner />
@@ -134,9 +133,6 @@ class App extends Component {
           </Route>
           <Route path="/login">
             <Login />
-          </Route>
-          <Route path="/testprint">
-            <Example/>
           </Route>
           <Route path="/members">
             <Member/>

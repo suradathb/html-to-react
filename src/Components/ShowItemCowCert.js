@@ -151,7 +151,7 @@ class ShowItemCowCert extends Component {
   render() {
     return (
       <>
-        <div class="container-fluid bg-light py-5">
+        <div class="container-fluid bg-light py-5" key={this.state.hashching}>
           <div class="col-md-6 m-auto text-center">
             <img
               className="imgPreview"
@@ -175,8 +175,7 @@ class ShowItemCowCert extends Component {
                     <form
                       class="col-md-9 m-auto"
                       method="post"
-                      role="form"
-                      key={show.tokenID}
+                      // role="form"
                     >
                       <div class="row">
                         <div class="mb-3 name-app">
@@ -210,7 +209,7 @@ class ShowItemCowCert extends Component {
                               src="../assets/images/CowCoin.jpeg"
                               alt=""
                             />
-                            address เจ้าของโค :
+                            address เจ้าของโค : {this.state.winOwner[Anum].toLocaleLowerCase()}
                           </label>
                         </div>
                       </div>
@@ -373,8 +372,8 @@ class ShowItemCowCert extends Component {
                       <form
                         class="col-md-9 m-auto"
                         method="post"
-                        role="form"
-                        key=""
+                        // role="form"
+                        // key=""
                       >
                         <div class="row">
                           <div class="mb-3 name-app">
@@ -409,7 +408,7 @@ class ShowItemCowCert extends Component {
                               src="../assets/images/CowCoin.jpeg"
                               alt=""
                             />
-                            address เจ้าของโค : {this.state.winOwner[Anum]}
+                            address เจ้าของโค : {this.state.winOwner[Anum].toLocaleLowerCase()}
                           </label>
                         </div>
                       </div>
