@@ -1,10 +1,20 @@
-import React, { Component } from "react";
+import React, { Component, useRef } from "react";
 import { CustomDialog, useDialog } from "react-st-modal";
 import axios from "axios";
 import Web3 from "web3";
 import CowCoin from "./abis/CowCoin.json";
 import ERC721 from "./abis/ERC721.json";
 import "./SearchItem.css";
+import QrReader from "react-qr-reader";
+import {
+  Container,
+  Card,
+  CardContent,
+  makeStyles,
+  Grid,
+  TextField,
+  Button,
+} from "@material-ui/core";
 
 class SearchItem extends Component {
   async componentWillMount() {
@@ -69,13 +79,14 @@ class SearchItem extends Component {
       tokenId: 0,
       account: "",
       tasks: [],
+      result: "No result",
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleScan = this.handleScan.bind(this);
     this.TransFromTo = this.TransFromTo.bind(this);
   }
-  handleChange(e) {
-    // console.log("test")
-    this.setState({ login: e.target.value });
+  handleChange(event) {
+    this.setState({ login: event.target.value });
   }
 
   TransFromTo(event) {
@@ -95,6 +106,21 @@ class SearchItem extends Component {
         console.log("ToSusess", to);
         document.getElementById("contentCowCoin").innerHTML = "";
       });
+  }
+  handleScan(data) {
+    const getdata = data
+    const Sdata = getdata.split(":");
+    // console.log(Sdata[1].toLocaleLowerCase())
+    this.setState({
+      toAddress: Sdata[1].toLocaleLowerCase(),
+    });
+  }
+  handleError(err) {
+    console.error(err);
+  }
+  openImageDialog() {
+    document.getElementById("contentCow").innerHTML = "";
+    this.refs.qrReader1.openImageDialog();
   }
   render() {
     const data = this.state.datas;
@@ -138,8 +164,11 @@ class SearchItem extends Component {
               <label htmlFor="inputemail">ผู้บำรุงพันธุ์ : {sprit[7]}</label>
             </div>
           </div>
-          <div className="input-group mb-3 s-box">
+          <div className="input-group mb-3 s-box" >
             <input
+              readOnly
+              required
+              id="contentCow"
               class="form-control  form-control-lg"
               type="text"
               placeholder="Address"
@@ -148,6 +177,23 @@ class SearchItem extends Component {
                 this.setState({ toAddress: event.target.value });
               }}
             />
+            <QrReader
+              ref="qrReader1"
+              delay={this.state.delay}
+              // previewStyle={previewStyle}
+              onError={this.handleError}
+              onScan={this.handleScan}
+              legacyMode={true}
+            />
+            <Button
+              className="btn btn-success btn-lg px-3"
+              variant="contained"
+              color="secondary"
+              onClick={this.openImageDialog.bind(this)}
+            >
+              Scan Qr Code
+            </Button>
+            {/* <p>{this.state.result}</p> */}
           </div>
           <div class="row s-item">
             <div class="col text-end mt-2">
@@ -177,10 +223,9 @@ function CustomExample(props) {
   var newArray = padd.filter(function (elem, pos) {
     return padd.indexOf(elem) == pos;
   });
-  let shwerc = props.ERC721.methods.ownerOf(props.accessKey).call()
+  let shwerc = props.ERC721.methods.ownerOf(props.accessKey).call();
 
   const pads = newArray.map((num) => {
- 
     if (num != props.accessKey && getacc == props.hash.to) {
       return (
         <div>
@@ -225,6 +270,22 @@ function CustomExample(props) {
   // }
   return <div>{pads}</div>;
 }
-
+const useStyles = makeStyles((theme) => ({
+  conatiner: {
+    marginTop: 10,
+  },
+  title: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    background: "#3f51b5",
+    color: "#fff",
+    padding: 20,
+  },
+  btn: {
+    marginTop: 10,
+    marginBottom: 20,
+  },
+}));
 
 export default CustomExample;

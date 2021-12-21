@@ -123,6 +123,7 @@ class Member extends Component {
                   <th scope="col">Photo</th>
                   <th scope="col">Name</th>
                   <th scope="col">Hash</th>
+                  <th scope="col"></th>
                 </tr>
               </thead>
               <tbody>
