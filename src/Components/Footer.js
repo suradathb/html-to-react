@@ -1,20 +1,83 @@
 import React, { Component } from "react";
 import { Link, NavLink } from "react-router-dom";
+import CowCoin from "../abis/CowCoin.json";
+import ERC721 from "../abis/ERC721.json";
+import Web3 from "web3";
 
 // function Footer() {
 class Footer extends Component {
+  async componentWillMount() {
+    await this.loadWeb3();
+    await this.loadBlockchainData();
+  }
+  async loadWeb3() {
+    if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum);
+      await window.ethereum.enable();
+    } else if (window.web3) {
+      window.web3 = new Web3(window.web3.currentProvider);
+    } else {
+      // window.alert(
+      //   "Non-Ethereum browser detected. You should consider trying MetaMask!"
+      // );
+    }
+  }
+  async loadBlockchainData() {
+    if (window.web3) {
+      const web3 = window.web3;
+      // Load account
+      const accounts = await web3.eth.getAccounts();
+      this.setState({ account: accounts[0] });
+      const networkId = await web3.eth.net.getId();
+      const networkData = CowCoin.networks[networkId];
+      // console.log(CowCertificate)
+      const abi = CowCoin.abi;
+      const abiERC = ERC721.abi;
+      const address = networkData.address;
+      const cowCoin = new web3.eth.Contract(abi, address);
+      const cowerc = new web3.eth.Contract(abiERC, address);
+      this.setState({ cowCoin });
+      this.setState({ cowerc });
+      const taskCount = await cowCoin.methods.cowCertCount().call();
+      this.setState({ taskCount });
+      // console.log(cowCoin.methods)
+      for (var i = 0; i <= taskCount; i++) {
+        const task = await cowCoin.methods.taskcows(i).call();
+        // console.log(task)
+        this.setState({
+          owner: [...this.state.owner, task.government.toLocaleLowerCase()],
+        });
+      }
+      // this.setState({ loading: false });
+    }
+  }
+  constructor(props) {
+    super(props);
+    this.state = {
+      account: "",
+      taskCount: 0,
+      tasks: [],
+      owner: [],
+      loading: true,
+      cowerc: [],
+      cowCoin: [],
+      smartdata: [],
+    };
+  }
   render() {
     const useraccount = this.props.account;
-    let ShowHide;
-    if (useraccount) {
-      ShowHide = (
-        <li>
-          <Link class="text-decoration-none" to="/addcowcert">
-            CreateCowCert
-          </Link>
-        </li>
-      );
-    }
+    let ShowHide = this.state.owner.map((admin) => {
+      // console.log(useraccount)
+      if (useraccount.toLocaleLowerCase() == admin) {
+        return (
+          <li>
+            <Link class="text-decoration-none" to="/addcowcert">
+              ผู้ดูแลระบบ
+            </Link>
+          </li>
+        );
+      }
+    });
 
     return (
       <>
@@ -72,17 +135,17 @@ class Footer extends Component {
                 <ul class="list-unstyled text-light footer-link-list">
                   <li>
                     <Link class="text-decoration-none" to="/">
-                      Home
+                      หน้าหลัก
                     </Link>
                   </li>
                   <li>
                     <Link class="text-decoration-none" to="/search">
-                      Search
+                      ค้นหา
                     </Link>
                   </li>
                   <li>
                     <Link class="text-decoration-none" to="/abount">
-                      About Us
+                      เกี่ยวกับเรา
                     </Link>
                   </li>
                   {ShowHide}
@@ -93,7 +156,7 @@ class Footer extends Component {
                   </li> */}
                   <li>
                     <Link class="text-decoration-none" to="/contact">
-                      Contact
+                      ติดต่อเรา
                     </Link>
                   </li>
                 </ul>

@@ -1,0 +1,17 @@
+#contentCowCoin{
+    width: 1000;
+    box-sizing: border-box;
+  }
+.s-CowCoin{
+    border: 1px solid #ddd;
+    border-radius: 25%;
+    padding: 1px;
+    width: 200px;
+    height: 200px;
+}
+.s-item{
+    /* position: absolute; */
+    margin: auto;
+    width: 1.5;
+    font-size:smaller;
+}

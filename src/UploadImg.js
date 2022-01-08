@@ -70,7 +70,7 @@ class UploadImg extends Component {
     // })
   };
   render() {
-    console.log(ipfs)
+    // console.log(ipfs)
     return (
       <>
         <div class="container-fluid bg-light py-5">

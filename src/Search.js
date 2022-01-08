@@ -57,7 +57,7 @@ class Search extends Component {
         Web3.givenProvider || "https://data-seed-prebsc-1-s1.binance.org:8545/"
       );
 
-      this.setState({ account: "0x82eaDcf8504F893993cf075b98f11465078B240E" });
+      this.setState({ account: "0xCb6b82C5c03C7A5F356F5aA26DE20c14980c754C" });
       const networkId = await publicweb3.eth.net.getId();
       const networkData = CowCoin.networks[networkId];
       const abi = CowCoin.abi;
@@ -86,7 +86,7 @@ class Search extends Component {
     axios
       .get(
         // "https://api-testnet.bscscan.com/api?module=account&action=txlist&address=0x82eaDcf8504F893993cf075b98f11465078B240E&startblock=1&endblock=99999999&sort=asc&apikey=YourApiKeyToken"
-        "https://api-testnet.bscscan.com/api?module=account&action=tokennfttx&contractaddress=0x82eaDcf8504F893993cf075b98f11465078B240E"
+        "https://api-testnet.bscscan.com/api?module=account&action=tokennfttx&contractaddress=0x8501F5517751F191894dA46F80aD8f6A6ECb3554"
       )
       .then((response) => {
         const getDataAll = response.data.result.map((cow, key) => {
@@ -204,7 +204,7 @@ class Search extends Component {
                 onClick={this.searchChanged}
                 class="input-group-text btn-success"
               >
-                <i class="bi bi-search me-2"></i> Search
+                <i class="bi bi-search me-2"></i> ค้นหา
               </button>
             </div>
           </div>
@@ -248,7 +248,7 @@ class Search extends Component {
                       </div>
                       <div class="row">
                         <div class="form-group col-md-12 mb-3">
-                          <h3>ข้อมูลโคบราห์มัน</h3> <button>Print</button>
+                          <h3>ข้อมูลโคบราห์มัน</h3>
                         </div>
                       </div>
                       <div class="row">

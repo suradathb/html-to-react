@@ -2,10 +2,10 @@ import React, { Component, useRef } from "react";
 import { CustomDialog, useDialog } from "react-st-modal";
 import axios from "axios";
 import Web3 from "web3";
-import CowCoin from "./abis/CowCoin.json";
-import ERC721 from "./abis/ERC721.json";
-import "./SearchItem.css";
+import CowCoin from "../abis/CowCoin.json";
+import ERC721 from "../abis/ERC721.json";
 import QrReader from "react-qr-reader";
+import "./BlockCowCert.css";
 import {
   Container,
   Card,
@@ -16,7 +16,7 @@ import {
   Button,
 } from "@material-ui/core";
 
-class SearchItem extends Component {
+class BlockCowCert extends Component {
   async componentWillMount() {
     await this.loadWeb3();
     await this.loadBlockchainData();
@@ -55,7 +55,7 @@ class SearchItem extends Component {
       axios
         .get(
           // `https://api-testnet.bscscan.com/api?module=account&action=tokennfttx&contractaddress=0x82eaDcf8504F893993cf075b98f11465078B240E&address=${accounts}`
-          `https://api-testnet.bscscan.com/api?module=account&action=tokennfttx&contractaddress=0x8501F5517751F191894dA46F80aD8f6A6ECb3554&address=${accounts}`
+          `https://api-testnet.bscscan.com/api?module=account&action=tokennfttx&contractaddress=0x82eadcf8504f893993cf075b98f11465078b240e&address=${accounts}`
         )
         .then((response) => {
           const getDataAll = response.data.result.map((cow, key) => {
@@ -90,26 +90,59 @@ class SearchItem extends Component {
   }
 
   TransFromTo(event) {
+    console.log(this.state.cowCoin.methods);
+    // console.log(this.state.cowCoin.methods.enableTransfer(this.state.datas.ID).call())
+    // const check = this.state.cowCoin.methods.enableTransfer(this.state.datas.ID)
     // event.preventDefault()
     const fromCert = this.state.account;
     const to = event.toAddress;
-    const tokend = event.datas.accessKey;
+    const tokend = this.state.datas.ID;
+    // console.log(tokend)
     // console.log(fromCert,to,tokend);
     // const CowCoinNo = content.cowcert_no;
     // const account = content.account_Employee;
     // const objectArray = Object.values(content);
 
     const addCert = this.state.cowCoin.methods
-      .safeTransferFrom(fromCert, to, tokend)
+      .disableTransfer(tokend)
       .send({ from: fromCert })
       .once("receipt", (receipt) => {
-        console.log("ToSusess", to);
+        // console.log(
+        //   "Disable Success",
+        //   this.state.cowCoin.methods.disableTransfer(tokend).call()
+        // );
+        // document.getElementById("contentCowCoin").innerHTML = "";
+        window.location.reload();
+      });
+  }
+  TransFromToUnblock(event){
+    // console.log(this.state.cowCoin.methods);
+    // console.log(this.state.cowCoin.methods.enableTransfer(this.state.datas.ID).call())
+    // const check = this.state.cowCoin.methods.enableTransfer(this.state.datas.ID)
+    // event.preventDefault()
+    const fromCert = this.state.account;
+    const to = event.toAddress;
+    const tokend = this.state.datas.ID;
+    // console.log(tokend)
+    // console.log(fromCert,to,tokend);
+    // const CowCoinNo = content.cowcert_no;
+    // const account = content.account_Employee;
+    // const objectArray = Object.values(content);
+
+    const addCert = this.state.cowCoin.methods
+      .enableTransfer(tokend)
+      .send({ from: fromCert })
+      .once("receipt", (receipt) => {
+        // console.log(
+        //   "Disable Success",
+        //   this.state.cowCoin.methods.enableTransfer(tokend).call()
+        // );
         // document.getElementById("contentCowCoin").innerHTML = "";
         window.location.reload();
       });
   }
   handleScan(data) {
-    const getdata = data
+    const getdata = data;
     const Sdata = getdata.split(":");
     // console.log(Sdata[1].toLocaleLowerCase())
     this.setState({
@@ -124,11 +157,12 @@ class SearchItem extends Component {
     this.refs.qrReader1.openImageDialog();
   }
   render() {
-    const data = this.state.datas;
+    //console.log(this.state)
     const image = this.state.datas.images;
-    const smart = data.smart;
+    const smart = this.state.datas.smart;
     const sprit = smart.split(",");
-
+    const block = this.state.datas.status;
+    // console.log(sprit)
     return (
       <>
         <from id="contentCowCoin" className="search-item">
@@ -165,42 +199,12 @@ class SearchItem extends Component {
               <label htmlFor="inputemail">ผู้บำรุงพันธุ์ : {sprit[7]}</label>
             </div>
           </div>
-          <div className="input-group mb-3 s-box" >
-            <input
-              readOnly
-              required
-              id="contentCow"
-              class="form-control  form-control-lg"
-              type="text"
-              placeholder="Address"
-              value={this.state.toAddress}
-              onChange={(event) => {
-                this.setState({ toAddress: event.target.value });
-              }}
-            />
-            <QrReader
-              ref="qrReader1"
-              delay={this.state.delay}
-              // previewStyle={previewStyle}
-              onError={this.handleError}
-              onScan={this.handleScan}
-              legacyMode={true}
-            />
-            <Button
-              className="btn btn-success btn-lg px-3"
-              variant="contained"
-              color="secondary"
-              onClick={this.openImageDialog.bind(this)}
-            >
-              Scan Qr Code
-            </Button>
-            {/* <p>{this.state.result}</p> */}
-          </div>
           <div class="row s-item">
             <div class="col text-end mt-2">
+              {block == false ?
               <input
                 type="submit"
-                value="บันทึก"
+                value="บล็อก"
                 class="btn btn-success btn-lg px-3"
                 onClick={(event) => {
                   event.preventDefault();
@@ -208,6 +212,18 @@ class SearchItem extends Component {
                   this.TransFromTo(this.state);
                 }}
               />
+              :
+              <input
+                type="submit"
+                value="ยกเลิกบล็อก"
+                class="btn btn-success btn-lg px-3"
+                onClick={(event) => {
+                  event.preventDefault();
+                  // console.log(this.state)
+                  this.TransFromToUnblock(this.state);
+                }}
+              />
+            }
             </div>
           </div>
           <br />
@@ -217,86 +233,49 @@ class SearchItem extends Component {
   }
 }
 
-function CustomExample(props) {
-  // console.log(props)
-  const padd = props.pad;
-  const getacc = props.account.toLocaleLowerCase();
-  var newArray = [];
-  var newArray = padd.filter(function (elem, pos) {
-    return padd.indexOf(elem) == pos;
-  });
-  // let shwerc = props.ERC721.methods.ownerOf(props.accessKey).call();
-  // console.log(newArray)
-  // const pads = newArray.map((num) => {
-  //   // console.log(num,"!=",props.accessKey,getacc,"=",props.hash.to)
-  //   if ((num != props.accessKey) && (getacc == props.hash.to)) {
-  //     return (
-  //       <div key={props.accessKey}>
-  //         <button
-  //           className="btn btn-success btn-lg px-3"
-  //           onClick={async () => {
-  //             // console.log(props)
-  //             const smartshow = props.smart.split(",");
-  //             const result = await CustomDialog(<SearchItem data={props} />, {
-  //               title: "โอนเหรียญ : " + smartshow[3],
-  //               showCloseIcon: true,
-  //             });
-  //           }}
-  //         >
-  //           โอนเหรียญ
-  //         </button>
-  //       </div>
-  //     );
-  //   } 
-  // });
-  if(newArray.length == 0)
-  {
-    return (
-      <div>
+function ShowBlockCowCoin(props) {
+  // console.log(props);
+  const sbool = props.status;
+  return (
+    <>
+      {sbool == false ? (
         <button
-          className="btn btn-success btn-lg px-3"
+          className="btn btn-outline-secondary"
           onClick={async () => {
-            //   console.log(props)
-            const smartshow = props.smart.split(",");
-            const result = await CustomDialog(<SearchItem data={props} />, {
-              title: "โอนเหรียญ : " + smartshow[3],
+            // console.log(props)
+            //   const smartshow = props.smart.split(",");
+            const result = await CustomDialog(<BlockCowCert data={props} />, {
+              title: "บล็อกเหรียญ : ",
               showCloseIcon: true,
             });
           }}
         >
-          โอนเหรียญ
+          <i class="fa fa-eraser"></i>
+          &nbsp; บล็อก
         </button>
-      </div>
-    );
-  }
-  else {
-    const pads = newArray.map((num) => {
-      // console.log(num,"!=",props.accessKey,getacc,"=",props.hash.to)
-      if ((num != props.accessKey) && (getacc == props.hash.to)) {
-        return (
-          <div key={props.accessKey}>
-            <button
-              className="btn btn-success btn-lg px-3"
-              onClick={async () => {
-                // console.log(props)
-                const smartshow = props.smart.split(",");
-                const result = await CustomDialog(<SearchItem data={props} />, {
-                  title: "โอนเหรียญ : " + smartshow[3],
-                  showCloseIcon: true,
-                });
-              }}
-            >
-              โอนเหรียญ
-            </button>
-          </div>
-        );
-      } 
-    });
-  }
+      ) : (
+        <button
+          className="btn btn-outline-secondary"
+          onClick={async () => {
+            // console.log(props)
+            //   const smartshow = props.smart.split(",");
+            const result = await CustomDialog(<BlockCowCert data={props} />, {
+              title: "บล็อกเหรียญ : ",
+              showCloseIcon: true,
+            });
+          }}
+        >
+          <i class="fa fa-eraser"></i>
+          &nbsp; ยกเลิกบล็อก
+        </button>
+      )}
+    </>
+  );
 }
+
 const useStyles = makeStyles((theme) => ({
   conatiner: {
-    marginTop: 10,
+    marginTop: 20,
   },
   title: {
     display: "flex",
@@ -311,5 +290,4 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 20,
   },
 }));
-
-export default CustomExample;
+export default ShowBlockCowCoin;

@@ -1,28 +1,104 @@
 import React, { Component } from "react";
 import { Link, NavLink } from "react-router-dom";
+import CowCoin from "../abis/CowCoin.json";
+import ERC721 from "../abis/ERC721.json";
+import Web3 from "web3";
 
 class Header extends Component {
+  async componentWillMount() {
+    await this.loadWeb3();
+    await this.loadBlockchainData();
+  }
+  async loadWeb3() {
+    if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum);
+      await window.ethereum.enable();
+    } else if (window.web3) {
+      window.web3 = new Web3(window.web3.currentProvider);
+    } else {
+      // window.alert(
+      //   "Non-Ethereum browser detected. You should consider trying MetaMask!"
+      // );
+    }
+  }
+  async loadBlockchainData() {
+    if (window.web3) {
+      const web3 = window.web3;
+      // Load account
+      const accounts = await web3.eth.getAccounts();
+      this.setState({ account: accounts[0] });
+      const networkId = await web3.eth.net.getId();
+      const networkData = CowCoin.networks[networkId];
+      // console.log(CowCertificate)
+      const abi = CowCoin.abi;
+      const abiERC = ERC721.abi;
+      const address = networkData.address;
+      const cowCoin = new web3.eth.Contract(abi, address);
+      const cowerc = new web3.eth.Contract(abiERC, address);
+      this.setState({ cowCoin });
+      this.setState({ cowerc });
+      const taskCount = await cowCoin.methods.cowCertCount().call();
+      this.setState({ taskCount });
+      // console.log(cowCoin.methods)
+      for (var i = 0; i <= taskCount; i++) {
+        const task = await cowCoin.methods.taskcows(i).call();
+        // console.log(task)
+        this.setState({
+          owner: [...this.state.owner, task.government.toLocaleLowerCase()],
+        });
+      }
+      // this.setState({ loading: false });
+    }
+  }
+  constructor(props) {
+    super(props);
+    this.state = {
+      account: "",
+      taskCount: 0,
+      tasks: [],
+      owner: [],
+      loading: true,
+      cowerc: [],
+      cowCoin: [],
+      smartdata: [],
+    };
+  }
   render() {
     const useraccount = this.props.account;
+
     let button;
     if (useraccount) {
-      button = <Link class="nav-link" to="/members">{useraccount}</Link>;
+      button = (
+        <Link class="nav-link" to="/members">
+          {useraccount}
+        </Link>
+      );
     } else {
-      button = <Link class="nav-link" to="/login">Login</Link>;
+      button = (
+        <Link class="nav-link" to="/login">
+          Login
+        </Link>
+      );
     }
-    let Permission;
-    if(useraccount){
-      Permission = <li class="nav-item">
-      <Link class="nav-link" to="/showcowcert">
-        CreateCowCert
-      </Link>
-      {/* <Link class="nav-link" to="/members">
-        Member
-      </Link> */}
-    </li>
-    }else{
-     
-    }
+    let Permission = this.state.owner.map((admin) => {
+      let setPermission;
+      // console.log(admin)
+      if (useraccount == admin) {
+        // setPermission = <li class="nav-item">
+        return (
+          <li class="nav-item">
+            <Link class="nav-link" to="/showcowcert">
+            ผู้ดูแลระบบ
+            </Link>
+            {/* <Link class="nav-link" to="/members">
+          Member
+        </Link> */}
+          </li>
+        );
+      } else {
+      }
+    });
+
     return (
       <>
         <nav class="navbar navbar-expand-lg navbar-light shadow">
@@ -58,17 +134,17 @@ class Header extends Component {
                 <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
                   <li class="nav-item">
                     <Link class="nav-link" to="/">
-                      Home
+                      หน้าหลัก
                     </Link>
                   </li>
                   <li class="nav-item">
                     <Link class="nav-link" to="/search">
-                      Search
+                      ค้นหา
                     </Link>
                   </li>
                   <li class="nav-item">
                     <Link class="nav-link" to="/abount">
-                      About Us
+                      เกี่ยวกับเรา
                     </Link>
                   </li>
                   {/* <li class="nav-item">
@@ -83,7 +159,7 @@ class Header extends Component {
                   </li> */}
                   <li class="nav-item">
                     <Link class="nav-link" to="/contact">
-                      Contact
+                      ติดต่อเรา
                     </Link>
                   </li>
                   {Permission}
@@ -91,9 +167,7 @@ class Header extends Component {
               </div>
               <div class="navbar align-self-center d-flex">
                 <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
-                  <li class="nav-item">
-                    {button}
-                  </li>
+                  <li class="nav-item">{button}</li>
                 </ul>
               </div>
             </div>

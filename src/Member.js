@@ -44,38 +44,66 @@ class Member extends Component {
       this.setState({ cowerc });
       const coinCow = await cowCoin.methods.cowCertCount().call();
       this.setState({ coinCow });
-
+      // console.log(cowCoin.methods.blacklistedCowCert(1).call())
+      for (var i = 1; i <= coinCow; i++) {
+        const task = await cowCoin.methods.blacklistedCowCert(i).call();
+        const getadd = await cowerc.methods.ownerOf(i).call();
+        // const check = await cowCoin.methods
+        // console.log(getadd)
+        this.setState({
+          tasks: [...this.state.tasks, task],
+          owner : [...this.state.owner, getadd],
+        });
+      }
       axios
         .get(
           // `https://api-testnet.bscscan.com/api?module=account&action=tokennfttx&contractaddress=0x82eaDcf8504F893993cf075b98f11465078B240E&address=${accounts}`
-          `https://api-testnet.bscscan.com/api?module=account&action=tokennfttx&contractaddress=0x82eadcf8504f893993cf075b98f11465078b240e&address=${accounts}`
+          `https://api-testnet.bscscan.com/api?module=account&action=tokennfttx&contractaddress=0x8501F5517751F191894dA46F80aD8f6A6ECb3554&address=${accounts}`
         )
         .then((response) => {
           const getDataAll = response.data.result.map((cow, key) => {
             const getacc = this.state.account.toLocaleLowerCase();
-            if (cow.to != getacc) {
-              this.setState({
-                balance: [...this.state.balance, cow.tokenID],
-              });
-            }
+            // console.log(getacc,cow.to)
+            // if (cow.to != getacc) {
+            //   console.log(getacc,cow.to,cow.tokenID)
+            //   this.setState({
+            //     balance: [...this.state.balance, cow.tokenID],
+            //   });
+            // }
+
             const task = cowCoin.methods.blacklistedCowCert(cow.tokenID).call();
             // const getadd = cowerc.methods.ownerOf(cow.tokenID).call();
-            task.then((hist) => {
-              const showaddress = cowerc.methods.ownerOf(hist.id).call();
-              showaddress.then((name) => {
-                // console.log(name)
-                this.setState({owner : name})
-              })
-              
-              this.setState({
-                tasks: [...this.state.tasks, hist],
-              });
-            });
+            // // console.log(task)
+            // getadd.then((name) =>{
+            //   // console.log(name)
+            //   // if (cow.to != getacc) {
+            //   this.setState({
+            //     owner : name,
+            //     // balance: [...this.state.balance, cow.tokenID],
+            //   })
+            //   // }
+            // });
+            // task.then((hist) => {
+            // //   // console.log(hist)
+            // // //   const showaddress = cowerc.methods.ownerOf(hist.id).call();
+            // // //   // showaddress.then((name) => {
+            // // //   //     this.setState({ 
+            // // //   //       owner:[...this.state.owner,name],
+            // // //   //       tasks: [...this.state.tasks, hist],
+            // // //   //     });
+            // // //   // });
+            // // //   // console.log(showaddress.name)
+            //   this.setState({
+            //     tasks: [...this.state.tasks, hist],
+                
+            //   });
+            // });
             this.setState({
               hash: [...this.state.hash, cow],
+              // tasks: [...this.state.tasks, task],
             });
           });
-      });
+        });
     }
   }
 
@@ -94,9 +122,10 @@ class Member extends Component {
       searchShow: [],
       hash: [],
       getapi: [],
-      owner: "",
+      owner: [],
       balance: [],
       isReadMore: true,
+      isowner:false,
     };
     // this.getEmployeestest = this.getEmployeestest.bind(this);
   }
@@ -119,10 +148,10 @@ class Member extends Component {
             <table class="table table-responsive-md">
               <thead>
                 <tr>
-                  <th scope="col">No</th>
-                  <th scope="col">Photo</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Hash</th>
+                  <th scope="col">รหัสวัว</th>
+                  <th scope="col">รูป</th>
+                  <th scope="col">ชื่อวัว</th>
+                  <th scope="col">เจ้าของวัว</th>
                   <th scope="col"></th>
                 </tr>
               </thead>
@@ -130,15 +159,18 @@ class Member extends Component {
                 {this.state.hash.map((namecontract, keyname) => {
                   let num;
                   const depArray = this.state.balance.map((j) => {
+                    // console.log(j)
                     num = j;
                     return num;
                   });
-                  
+                  // let getowner = this.state.owner
+                  // console.log(getowner)
                   const smarts = this.state.tasks;
                   // console.log(smarts)
                   if (smarts[keyname] != undefined) {
                     const histshow = smarts[keyname].cowCertlist;
                     const afterSp = histshow.split(",");
+                    
                     if (smarts[keyname].id == namecontract.tokenID) {
                       return (
                         <tr key={keyname}>
@@ -162,18 +194,21 @@ class Member extends Component {
                             </Link>
                           </td>
                           <td>
-                            {this.state.owner.toLocaleLowerCase() == this.state.account.toLocaleLowerCase() ? 
-                            <SearchItem
-                            hash={namecontract}
-                            smart={histshow}
-                            pad={depArray}
-                            accessKey={smarts[keyname].id}
-                            account={this.state.account}
-                            images={smarts[keyname].imgPath}
-                            ERC721={this.state.cowerc}
-                          /> : 
-                            ""
-                            }
+                            {/* {console.log(this.state.owner.toLocaleLowerCase())} */}
+                            {this.state.owner[keyname].toLocaleLowerCase() == this.state.account.toLocaleLowerCase() ? (
+                              <SearchItem
+                                key={smarts[keyname].id}
+                                hash={namecontract}
+                                smart={histshow}
+                                pad={depArray}
+                                accessKey={smarts[keyname].id}
+                                account={this.state.account}
+                                images={smarts[keyname].imgPath}
+                                ERC721={this.state.cowerc}
+                              />
+                           ) : (
+                              ""
+                            )}
                           </td>
                         </tr>
                       );
