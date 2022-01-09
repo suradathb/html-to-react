@@ -110,6 +110,12 @@ class App extends Component {
           <Route path="/addowner">
             <AddOwner />
           </Route>
+          <Route path="/hiscowcoin">
+            <ShowItemCowCert />
+          </Route>
+          <Route path="/members">
+            <Member/>
+          </Route>
           </>
         )
       }
