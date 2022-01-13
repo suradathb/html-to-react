@@ -243,7 +243,7 @@ class Search extends Component {
                       </div>
                       <div class="row">
                         <div class="mb-3 name-app">
-                          <h1 class="h2">Cowcert Type : {afterSp[0]}</h1>
+                          <h1 class="h2">ประเภทวัว : {afterSp[0]}</h1>
                         </div>
                       </div>
                       <div class="row">
@@ -259,7 +259,7 @@ class Search extends Component {
                               src="../assets/images/CowCoin.jpeg"
                               alt=""
                             />
-                            address เจ้าของโค : {this.state.winOwner[Anum]}
+                            address เจ้าของโค : {this.state.winOwner[Anum].toLocaleLowerCase()}
                           </label>
                         </div>
                       </div>
@@ -444,7 +444,7 @@ class Search extends Component {
                         </div>
                         <div class="row">
                           <div class="mb-3 name-app">
-                            <h1 class="h2">Cowcert Type : {afterSp[0]}</h1>
+                            <h1 class="h2">ประเภทวัว : {afterSp[0]}</h1>
                           </div>
                         </div>
                         <div class="row">
@@ -460,7 +460,7 @@ class Search extends Component {
                                 src="../assets/images/CowCoin.jpeg"
                                 alt=""
                               />
-                              address เจ้าของโค : {this.state.winOwner[Anum]}
+                              address เจ้าของโค : {this.state.winOwner[Anum].toLocaleLowerCase()}
                             </label>
                           </div>
                         </div>

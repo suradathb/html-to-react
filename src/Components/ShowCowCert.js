@@ -141,7 +141,7 @@ class ShowCowCert extends Component {
       <>
         <div class="container-fluid bg-light py-5">
           <div class="col-md-12 m-auto text-center">
-            <h1 class="h1">Create Cowcert</h1>
+            <h1 class="h1">ผู้ดูแลระบบ</h1>
             <div class="input-group mb-3">
               <p></p>
             </div>

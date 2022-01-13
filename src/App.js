@@ -116,6 +116,12 @@ class App extends Component {
           <Route path="/members">
             <Member/>
           </Route>
+          {/* <Route path="/hiscowcoin">
+            <ShowItemCowCert />
+          </Route> */}
+          <Route path="/contact">
+            <Contract />
+          </Route>
           </>
         )
       }
@@ -158,6 +164,9 @@ class App extends Component {
           </Route>
           <Route path="/abount">
             <Abount />
+          </Route>
+          <Route path="/ReportCert">
+              <ReportCert/>
           </Route>
           {/* <Route path="/showcowcert">
             <ShowCowCert />

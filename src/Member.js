@@ -6,6 +6,7 @@ import ERC721 from "./abis/ERC721.json";
 import { Link, Route } from "react-router-dom";
 import "./Member.css";
 import SearchItem from "./SearchItem";
+import ReportCert from './Components/ReportCert';
 // import ShowItemCowCert from "./Components/ShowItemCowCert";
 
 class Member extends Component {
@@ -148,9 +149,9 @@ class Member extends Component {
             <table class="table table-responsive-md">
               <thead>
                 <tr>
-                  <th scope="col">รหัสวัว</th>
-                  <th scope="col">รูป</th>
-                  <th scope="col">ชื่อวัว</th>
+                  <th scope="col">รหัสโค</th>
+                  <th scope="col">รูปโค</th>
+                  <th scope="col">ชื่อโค</th>
                   <th scope="col">เจ้าของวัว</th>
                   <th scope="col"></th>
                 </tr>
@@ -192,6 +193,18 @@ class Member extends Component {
                             >
                               {namecontract.hash}
                             </Link>
+                          </td>
+                          <td>
+                            <ReportCert
+                            key={smarts[keyname].id}
+                            hash={namecontract}
+                            smart={histshow}
+                            pad={depArray}
+                            accessKey={smarts[keyname].id}
+                            account={this.state.account}
+                            images={smarts[keyname].imgPath}
+                            ERC721={this.state.cowerc}
+                            />
                           </td>
                           <td>
                             {/* {console.log(this.state.owner.toLocaleLowerCase())} */}

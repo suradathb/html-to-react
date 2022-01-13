@@ -4,6 +4,7 @@ import Web3 from "web3";
 import CowCoin from "../abis/CowCoin.json";
 import ERC721 from "../abis/ERC721.json";
 import { Link, Route, Switch } from "react-router-dom";
+import ReactToPrint from "react-to-print";
 import ReportCert from './ReportCert';
 
 class ShowItemCowCert extends Component {
@@ -195,14 +196,13 @@ class ShowItemCowCert extends Component {
                       </div>
                       <div class="row">
                         <div class="mb-3 name-app">
-                          <h1 class="h2">Cowcert Type : {afterSp[0]}</h1>
+                          <h1 class="h2">ประเภทวัว : {afterSp[0]}</h1>
                         </div>
                       </div>
                       <div class="row">
                         <div class="form-group col-md-12 mb-3">
                           <h3>ข้อมูลโคบราห์มัน</h3>
-                          <Link to={`/ReportCert/${this.state.hashching}`}>ดาวโหลด CowCoin</Link>
-                          <ReportCert hash={this.state.hashching}/>
+                          {/* <Link to={`/ReportCert/${this.state.hashching}`}>ดาวโหลด CowCoin</Link> */} 
                         </div>
                       </div>
                       <div class="row">
@@ -396,13 +396,13 @@ class ShowItemCowCert extends Component {
                         </div>
                         <div class="row">
                           <div class="mb-3 name-app">
-                            <h1 class="h2">Cowcert Type : {afterSp[0]}</h1>
+                            <h1 class="h2">ประเภทวัว : {afterSp[0]}</h1>
                           </div>
                         </div>
                         <div class="row">
                           <div class="form-group col-md-12 mb-3">
                             <h3>ข้อมูลโคบราห์มัน</h3>
-                            <Link to={`/ReportCert/${this.state.hashching}`}>ดาวโหลด CowCoin</Link>
+                            {/* <Link to={`/ReportCert/${this.state.hashching}`}>ดาวโหลด CowCoin</Link> */}
                           </div>
                         </div>
                         <div class="row">
