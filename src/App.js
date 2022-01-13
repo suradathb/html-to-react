@@ -9,19 +9,22 @@ import Contract from "./Contract";
 import Login from "./Login";
 import Page404 from "./Page404";
 import Search from "./Search";
-import CowCertificate from "./abis/CowCertificate.json";
+import ReportCert from "./Components/ReportCert";
 import CowCoin from "./abis/CowCoin.json";
+import ERC721 from "./abis/ERC721.json";
 import Web3 from "web3";
 import AddCowCert from "./AddCowCert";
 import React, { Component } from "react";
 import Home from "./Home";
 import ShowCowCert from "./Components/ShowCowCert";
+import BlockCowCert from "./Components/BlockCowCert";
 import axios from "axios";
 // import CreateMember from "./Components/CreateMember";
 import AddOwner from "./AddMember";
 import Example from "./Components/ReportCert";
 import Member from "./Member";
 import ShowItemCowCert from "./Components/ShowItemCowCert";
+
 
 
 
@@ -50,24 +53,27 @@ class App extends Component {
       const web3 = window.web3;
       // Load account
       const accounts = await web3.eth.getAccounts();
-      // console.log(accounts)
       this.setState({ account: accounts[0] });
       const networkId = await web3.eth.net.getId();
       const networkData = CowCoin.networks[networkId];
       // console.log(CowCertificate)
       const abi = CowCoin.abi;
+      const abiERC = ERC721.abi;
       const address = networkData.address;
       const cowCoin = new web3.eth.Contract(abi, address);
+      const cowerc = new web3.eth.Contract(abiERC, address);
       this.setState({ cowCoin });
+      this.setState({ cowerc });
       const taskCount = await cowCoin.methods.cowCertCount().call();
       this.setState({ taskCount });
-      // for (var i = 1; i <= taskCount; i++) {
-      //   const task = await cowCoin.methods.taskcows(i).call();
-      //   // console.log(task.dataCow)
-      //   this.setState({
-      //     tasks: [...this.state.tasks, task],
-      //   });
-      // }
+      // console.log(cowCoin.methods)
+      for (var i = 0; i <= taskCount; i++) {
+        const task = await cowCoin.methods.taskcows(i).call();
+        // console.log(task)
+        this.setState({
+          owner: [...this.state.owner, task.government.toLocaleLowerCase()],
+        });
+      }
       // this.setState({ loading: false });
     }
   }
@@ -78,14 +84,55 @@ class App extends Component {
       account: "",
       taskCount: 0,
       tasks: [],
+      owner:[],
       loading: true,
+      cowerc: [],
+      cowCoin: [],
       smartdata: [],
     };
   }
 
   render() {
     // console.log(this.state.tasks)
-
+    let Permission = this.state.owner.map((admin) => {
+      // console.log(this.state.account.toLocaleLowerCase(),admin)
+      if(this.state.account.toLocaleLowerCase() == admin)
+      {
+        return (
+          <>
+          <Route path="/showcowcert">
+            {/* <AddCowCert value={this.state.account}/> */}
+            <ShowCowCert />
+          </Route>
+          <Route path="/addcowcert">
+            <AddCowCert />
+          </Route>
+          <Route path="/addowner">
+            <AddOwner />
+          </Route>
+          <Route path="/hiscowcoin">
+            <ShowItemCowCert />
+          </Route>
+          <Route path="/members">
+            <Member/>
+          </Route>
+          {/* <Route path="/hiscowcoin">
+            <ShowItemCowCert />
+          </Route> */}
+          <Route path="/contact">
+            <Contract />
+          </Route>
+          </>
+        )
+      }
+      else{
+        // return (
+        //   <Route path="*">
+        //     <Page404 />
+        //   </Route>
+        // )
+      }
+    });
     return (
       <>
         <Header account={this.state.account.toLocaleLowerCase()} />
@@ -118,8 +165,10 @@ class App extends Component {
           <Route path="/abount">
             <Abount />
           </Route>
-          <Route path="/showcowcert">
-            {/* <AddCowCert value={this.state.account}/> */}
+          <Route path="/ReportCert">
+              <ReportCert/>
+          </Route>
+          {/* <Route path="/showcowcert">
             <ShowCowCert />
           </Route>
           <Route path="/addcowcert">
@@ -127,7 +176,8 @@ class App extends Component {
           </Route>
           <Route path="/addowner">
             <AddOwner />
-          </Route>
+          </Route> */}
+          {Permission}
           <Route path="/contact">
             <Contract />
           </Route>
@@ -140,10 +190,15 @@ class App extends Component {
           <Route path="/hiscowcoin">
             <ShowItemCowCert />
           </Route>
+          <Route path="blockcowcoin">
+            <BlockCowCert/>
+          </Route>
+          <Route path="/cowcertPDF">
+              <ReportCert/>
+         </Route>
           <Route path="*">
             <Page404 />
           </Route>
-         
         </Switch>
         <Footer account={this.state.account} />
       </>

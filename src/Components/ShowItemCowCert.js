@@ -4,6 +4,8 @@ import Web3 from "web3";
 import CowCoin from "../abis/CowCoin.json";
 import ERC721 from "../abis/ERC721.json";
 import { Link, Route, Switch } from "react-router-dom";
+import ReactToPrint from "react-to-print";
+import ReportCert from './ReportCert';
 
 class ShowItemCowCert extends Component {
   async componentWillMount() {
@@ -43,6 +45,7 @@ class ShowItemCowCert extends Component {
       for (var i = 1; i <= coinCow; i++) {
         const task = await cowCoin.methods.blacklistedCowCert(i).call();
         const shwaddress = await cowerc.methods.ownerOf(i).call();
+        // const check = await cowCoin.methods
         // console.log(task,shwaddress)
         this.setState({
           tasks: [...this.state.tasks, task],
@@ -82,7 +85,7 @@ class ShowItemCowCert extends Component {
     axios
       .get(
         // "https://api-testnet.bscscan.com/api?module=account&action=txlist&address=0x82eaDcf8504F893993cf075b98f11465078B240E&startblock=1&endblock=99999999&sort=asc&apikey=YourApiKeyToken"
-        "https://api-testnet.bscscan.com/api?module=account&action=tokennfttx&contractaddress=0x82eaDcf8504F893993cf075b98f11465078B240E"
+        "https://api-testnet.bscscan.com/api?module=account&action=tokennfttx&contractaddress=0x8501F5517751F191894dA46F80aD8f6A6ECb3554"
       )
       .then((response) => {
         const getDataAll = response.data.result.map((cow, key) => {
@@ -193,12 +196,13 @@ class ShowItemCowCert extends Component {
                       </div>
                       <div class="row">
                         <div class="mb-3 name-app">
-                          <h1 class="h2">Cowcert Type : {afterSp[0]}</h1>
+                          <h1 class="h2">ประเภทวัว : {afterSp[0]}</h1>
                         </div>
                       </div>
                       <div class="row">
                         <div class="form-group col-md-12 mb-3">
                           <h3>ข้อมูลโคบราห์มัน</h3>
+                          {/* <Link to={`/ReportCert/${this.state.hashching}`}>ดาวโหลด CowCoin</Link> */} 
                         </div>
                       </div>
                       <div class="row">
@@ -392,12 +396,13 @@ class ShowItemCowCert extends Component {
                         </div>
                         <div class="row">
                           <div class="mb-3 name-app">
-                            <h1 class="h2">Cowcert Type : {afterSp[0]}</h1>
+                            <h1 class="h2">ประเภทวัว : {afterSp[0]}</h1>
                           </div>
                         </div>
                         <div class="row">
                           <div class="form-group col-md-12 mb-3">
                             <h3>ข้อมูลโคบราห์มัน</h3>
+                            {/* <Link to={`/ReportCert/${this.state.hashching}`}>ดาวโหลด CowCoin</Link> */}
                           </div>
                         </div>
                         <div class="row">

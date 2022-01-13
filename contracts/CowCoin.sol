@@ -26,7 +26,9 @@ contract CowCoin is ERC721 {
     
     mapping(uint256 => AdAdmin) public taskcows;
     mapping(uint256 => AddCertCoin) public blacklistedCowCert;
-    mapping(uint256 => bool) internal blockCowcert;
+    mapping(uint256 => bool) public blockCowcert;
+    // mapping(uint256 => bool) internal blockCowcert;
+
    
     
     constructor()   

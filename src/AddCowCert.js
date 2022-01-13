@@ -9,6 +9,7 @@ import ipfs from './ipfs';
 import ShowCowCert from "./Components/ShowCowCert";
 
 
+
 class AddCowCert extends Component {
   async componentWillMount() {
     await this.loadWeb3();
@@ -77,8 +78,9 @@ class AddCowCert extends Component {
       .once("receipt", (receipt) => {
         this.setState({ ipfsHash: result[0].hash });
         this.setState({ loading: false });
-        console.log('ifpsHash', this.state.ipfsHash)
-        return <ShowCowCert/>
+        // console.log('ifpsHash', this.state.ipfsHash)
+        // return <ShowCowCert/>
+        window.location.reload();
       });
     })
   }
@@ -91,7 +93,7 @@ class AddCowCert extends Component {
         this.setState({ loading: false });
       });
   }
-
+  
   render() {
     return (
       <>
