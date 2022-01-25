@@ -9,11 +9,26 @@ import ERC721 from "../abis/ERC721.json";
 import axios from "axios";
 import jsPDF from "jspdf";
 import logoPDF from "./image/cowcert-01.png";
-import '../font/Kanit-Medium.ttf';
-import '../font/Kanit-Bold.ttf';
-
-
-
+import "../font/Kanit-Medium.ttf";
+import "../font/Kanit-Bold.ttf";
+import pdfMake, { fonts } from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+// console.log(pdfMake)
+// pdfMake.fonts = {
+//   THSarabunNew: {
+//     normal: 'THSarabunNew.ttf',
+//     bold: 'THSarabunNew Bold.ttf',
+//     italics: 'THSarabunNew Italic.ttf',
+//     bolditalics: 'THSarabunNew BoldItalic.ttf'
+//   },
+//   // Roboto: {
+//   //   normal: 'Roboto-Regular.ttf',
+//   //   bold: 'Roboto-Medium.ttf',
+//   //   italics: 'Roboto-Italic.ttf',
+//   //   bolditalics: 'Roboto-MediumItalic.ttf'
+//   // }
+// }
 class ReportCert extends Component {
   async componentWillMount() {
     await this.loadWeb3();
@@ -65,7 +80,7 @@ class ReportCert extends Component {
       axios
         .get(
           // "https://api-testnet.bscscan.com/api?module=account&action=txlist&address=0x82eaDcf8504F893993cf075b98f11465078B240E&startblock=1&endblock=99999999&sort=asc&apikey=YourApiKeyToken"
-          "https://api-testnet.bscscan.com/api?module=account&action=tokennfttx&contractaddress=0x8501F5517751F191894dA46F80aD8f6A6ECb3554"
+          "https://api-testnet.bscscan.com/api?module=account&action=tokennfttx&contractaddress=0xA97b83e0a21698770A0259b8e0dB03D48ac6F9C6"
         )
         .then((response) => {
           // this.setState({
@@ -118,62 +133,94 @@ class ReportCert extends Component {
     };
     // this.createPDF = this.createPDF.bind(this);
   }
-  createPDF(event) {
+  printPDF(event) {
     const smart = event.datas.smart;
     const sprit = smart.split(",");
-    let content ={
-
+    pdfMake.fonts = {
+      THSarabunNew: {
+        normal: 'THSarabunNew.ttf',
+        bold: 'THSarabunNew Bold.ttf',
+        italics: 'THSarabunNew Italic.ttf',
+        bolditalics: 'THSarabunNew BoldItalic.ttf'
+      },
     }
-    // console.log(sprit);
-    if (sprit[13] == 1) {
-      // var doc = new jsPDF("landscape", "px", "a4", "flase");
-      var doc = new jsPDF("landscape", "px", "a4");
-      // doc.addFileToVFS('Kanit-Bold.ttf','Kanit')
-      doc.addFont('Kanit-Bold.ttf','Bold','normal');
-      doc.setFont('Bold');
-      // doc.addFont('supermarket.ttf', 'supermarket', 'normal');
-      // doc.setFont('supermarket');
-      doc.text(150, 20, 'COWCOIN NFT ASSOCIATION OF BRAHMAN BREEDERS');
-      doc.addFont('Kanit-Medium.ttf','Kanit','normal');
-      doc.setFont('Kanit');
-      doc.addImage(logoPDF, "png", 10, 10, 60, 60);
-      doc.text(80, 50, `Breeding leaves of Thai Brahman cattle, sex : ${sprit[1]=='F'?'เมีย':'ผู้'}`);
-      doc.text(400, 50, `Registration number : ${sprit[2]}`);
-      doc.text(80, 65, `Name : ${sprit[3]}`);
-      doc.text(400, 65, `Date of birthday : ${sprit[4]}`);
-      doc.text(80, 80, `ID Number : ${sprit[5]}`);
-      doc.text(400, 80, `color : ${sprit[6]}`);
-      doc.text(80, 95, `Breeder : ${sprit[7]} `);
-      doc.text(80, 110, `Current owner : ${sprit[8]} ${sprit[9]}`);
-      doc.text(400, 110, `Transfer date : ${sprit[10]}`);
-      // Group SIRE Start
-      doc.text(250, 150, `A  ${sprit[26]}`);
-      doc.text(10, 170, `SIRE : T  ${sprit[24]}`);
-      doc.text(250, 190, `T  ${sprit[28]}`);
-      doc.text(400, 140, `${sprit[30]}`);
-      doc.text(400, 160, `${sprit[32]}`);
-      doc.text(400, 180, `${sprit[34]}`);
-      doc.text(400, 200, `${sprit[36]}`);
-      //  Group  DAM Start
-      doc.text(250, 250, `A  ${sprit[40]}`);
-      doc.text(10, 270, `DAM : T  ${sprit[38]}`);
-      doc.text(250, 290, `T  ${sprit[42]}`);
-      doc.text(400, 240, `${sprit[44]}`);
-      doc.text(400, 260, `${sprit[46]}`);
-      doc.text(400, 280, `${sprit[48]}`);
-      doc.text(400, 300, `${sprit[50]}`);
+    var docDefinition = {
+      pageOrientation: 'landscape',
+      content: [
+        { text: `สีโคบราห์มัน : ${sprit[6]}`,fontSize: 16},
+        { text: `สีโคบราห์มัน : ${sprit[6]}`,fontSize: 16},
+        { text: `สีโคบราห์มัน : ${sprit[6]}`,fontSize: 16},
 
-      doc.save(`${sprit[3]}.pdf`);
-      window.location.reload();
-    }
-    // var doc = new jsPDF('landscape','px','a4','flase');
-    // doc.addImage(logoPDF,'png',10,10,60,60)
-    // doc.text(260,90,`Certificate Brahman ${sprit[1]}`)
-    // doc.text(260,100,`${sprit[3]}`)
-    // doc.text(15,100,`${sprit[2]}`)
-    // doc.save('cowcoin.pdf')
-    // window.location.reload();
+      ],
+      defaultStyle:{
+        font: "THSarabunNew",
+      }
+    };
+    // console.log(docDefinition)
+    pdfMake.createPdf(docDefinition).open();
   }
+  // createPDF(event) {
+  //   const smart = event.datas.smart;
+  //   const sprit = smart.split(",");
+  //   let hey = decodeURI(sprit[6]) ;
+
+  //   console.log(hey);
+  //   if (sprit[13] == 1) {
+  //     // var doc = new jsPDF("landscape", "px", "a4", "flase");
+  //     var doc = new jsPDF("landscape", "px", "a4");
+  //     // doc.addFileToVFS('Kanit-Bold.ttf','Kanit')
+  //     doc.addFont("Kanit-Bold.ttf", "Bold", "normal");
+  //     doc.setFont("Bold");
+  //     // doc.addFont('supermarket.ttf', 'supermarket', 'normal');
+  //     // doc.setFont('supermarket');
+  //     doc.text(150, 20, "COWCOIN NFT ASSOCIATION OF BRAHMAN BREEDERS");
+  //     doc.addImage(logoPDF, "png", 10, 10, 60, 60);
+  //     doc.addFont("Kanit-Medium.ttf", "Kanit", "normal");
+  //     doc.setFont("Kanit");
+  //     doc.text(
+  //       80,
+  //       50,
+  //       `Breeding leaves of Thai Brahman cattle, sex : ${
+  //         sprit[1] == "F" ? "เมีย" : "ผู้"
+  //       }`
+  //     );
+  //     doc.text(400, 50, `Registration number : ${sprit[2]}`);
+  //     doc.text(80, 65, `Name : ${sprit[3]}`);
+  //     doc.text(400, 65, `Date of birthday : ${sprit[4]}`);
+  //     doc.text(80, 80, `ID Number : ${sprit[5]}`);
+  //     // doc.text(400, 80, `color : ${sprit[6]}`);
+  //     doc.text(400, 80, `color : ${hey}`);
+  //     doc.text(80, 95, `Breeder : ${sprit[7]} `);
+  //     doc.text(80, 110, `Current owner : ${sprit[8]} ${sprit[9]}`);
+  //     doc.text(400, 110, `Transfer date : ${sprit[10]}`);
+  //     // Group SIRE Start
+  //     doc.text(250, 150, `A  ${sprit[26]}`);
+  //     doc.text(10, 170, `SIRE : T  ${sprit[24]}`);
+  //     doc.text(250, 190, `T  ${sprit[28]}`);
+  //     doc.text(400, 140, `${sprit[30]}`);
+  //     doc.text(400, 160, `${sprit[32]}`);
+  //     doc.text(400, 180, `${sprit[34]}`);
+  //     doc.text(400, 200, `${sprit[36]}`);
+  //     //  Group  DAM Start
+  //     doc.text(250, 250, `A  ${sprit[40]}`);
+  //     doc.text(10, 270, `DAM : T  ${sprit[38]}`);
+  //     doc.text(250, 290, `T  ${sprit[42]}`);
+  //     doc.text(400, 240, `${sprit[44]}`);
+  //     doc.text(400, 260, `${sprit[46]}`);
+  //     doc.text(400, 280, `${sprit[48]}`);
+  //     doc.text(400, 300, `${sprit[50]}`);
+
+  //     // doc.save(`${sprit[3]}.pdf`);
+  //     // window.location.reload();
+  //   }
+  //   // var doc = new jsPDF('landscape','px','a4','flase');
+  //   // doc.addImage(logoPDF,'png',10,10,60,60)
+  //   // doc.text(260,90,`Certificate Brahman ${sprit[1]}`)
+  //   // doc.text(260,100,`${sprit[3]}`)
+  //   // doc.text(15,100,`${sprit[2]}`)
+  //   // doc.save('cowcoin.pdf')
+  //   // window.location.reload();
+  // }
 
   render() {
     const data = this.state.datas;
@@ -225,7 +272,8 @@ class ReportCert extends Component {
                 onClick={(event) => {
                   event.preventDefault();
                   // console.log(this.state)
-                  this.createPDF(this.state);
+                  // this.createPDF(this.state);
+                  this.printPDF(this.state);
                 }}
               />
             </div>
