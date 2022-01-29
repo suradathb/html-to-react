@@ -9,26 +9,15 @@ import ERC721 from "../abis/ERC721.json";
 import axios from "axios";
 import jsPDF from "jspdf";
 import logoPDF from "./image/cowcert-01.png";
+import QRCode from "react-qr-code";
+import ReactDOM from "react-dom";
 import "../font/Kanit-Medium.ttf";
 import "../font/Kanit-Bold.ttf";
 import pdfMake, { fonts } from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
+import { fontSize } from "@mui/system";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
-// console.log(pdfMake)
-// pdfMake.fonts = {
-//   THSarabunNew: {
-//     normal: 'THSarabunNew.ttf',
-//     bold: 'THSarabunNew Bold.ttf',
-//     italics: 'THSarabunNew Italic.ttf',
-//     bolditalics: 'THSarabunNew BoldItalic.ttf'
-//   },
-//   // Roboto: {
-//   //   normal: 'Roboto-Regular.ttf',
-//   //   bold: 'Roboto-Medium.ttf',
-//   //   italics: 'Roboto-Italic.ttf',
-//   //   bolditalics: 'Roboto-MediumItalic.ttf'
-//   // }
-// }
+
 class ReportCert extends Component {
   async componentWillMount() {
     await this.loadWeb3();
@@ -129,6 +118,7 @@ class ReportCert extends Component {
       blocks: [],
       owner: "",
       status: [],
+      Text_Output:"",
       datas: this.props.data,
     };
     // this.createPDF = this.createPDF.bind(this);
@@ -136,6 +126,23 @@ class ReportCert extends Component {
   printPDF(event) {
     const smart = event.datas.smart;
     const sprit = smart.split(",");
+    const QRScan = <QRCode 
+                      value={event.datas.hash.hash}
+                      size={50}
+                      bgColor={"#ffffff"}
+                      fgColor={"#000000"}
+                      level={"L"}
+                      includeMargin={false}
+                      renderAs={"svg"}
+                      imageSettings={{
+                        src: "../assets/images/cowcert-01.png",
+                        x: null,
+                        y: null,
+                        height: 14,
+                        width: 14,
+                        excavate: true,
+                      }}
+                    />;
     pdfMake.fonts = {
       THSarabunNew: {
         normal: 'THSarabunNew.ttf',
@@ -144,14 +151,40 @@ class ReportCert extends Component {
         bolditalics: 'THSarabunNew BoldItalic.ttf'
       },
     }
+    // console.log(sprit)
     var docDefinition = {
       pageOrientation: 'landscape',
-      content: [
-        { text: `สีโคบราห์มัน : ${sprit[6]}`,fontSize: 16},
-        { text: `สีโคบราห์มัน : ${sprit[6]}`,fontSize: 16},
-        { text: `สีโคบราห์มัน : ${sprit[6]}`,fontSize: 16},
-
+      header:[
+        {text:"NFT CowCert Association",fontSize:30,alignment:'center'},
+        // {image: '../assets/images/cowcert-01.png',width: 150,alignment:'center'},
       ],
+      
+      content: [
+        { text: `ใบพันธุ์ประวัติโค ไทยบราห์มัน เพศ : ${sprit[1]} ทะเบียนโคเลขที่ : ${sprit[2]}`,fontSize: 18,alignment:'center'},
+        { text: `ชื่อโค : ${sprit[3]} วันเกิด : ${sprit[4]}`,fontSize: 18,alignment:'center'},
+        { text: `หมายเลขประจำตัวโค : ${sprit[5]} ${sprit[6]}`,fontSize: 18,alignment:'center'},
+        { text: `ผู้บำรุงพันธุ์ : ${sprit[7]}`,fontSize: 18,alignment:'center'},
+        { text: `เจ้าของปัจจุบัน : ${sprit[8]} ${sprit[9]}`,fontSize: 18,alignment:'center'},
+        // พ่อ
+        { text: `${sprit[30]}`,fontSize: 18,alignment:'right'},
+        { text: `${sprit[26]}`,fontSize: 18,alignment:'center'},
+        { text: `${sprit[32]}`,fontSize: 18,alignment:'right'},
+        { text: `พ่อ SIRE : ${sprit[24]}`,fontSize: 18,alignment:'left'},
+        { text: `${sprit[34]}`,fontSize: 18,alignment:'right'},
+        { text: `${sprit[28]}`,fontSize: 18,alignment:'center'},
+        { text: `${sprit[36]}`,fontSize: 18,alignment:'right'},
+        // แม่
+        { text: `${sprit[44]}`,fontSize: 18,alignment:'right'},
+        { text: `${sprit[40]}`,fontSize: 18,alignment:'center'},
+        { text: `${sprit[46]}`,fontSize: 18,alignment:'right'},
+        { text: `แม่ DAM : ${sprit[38]}`,fontSize: 18,alignment:'left'},
+        { text: `${sprit[48]}`,fontSize: 18,alignment:'right'},
+        { text: `${sprit[42]}`,fontSize: 18,alignment:'center'},
+        { text: `${sprit[50]}`,fontSize: 18,alignment:'right'},
+        { qr:`${QRScan.props.value}`,fit:80,alignment:'right'},
+        
+      ],
+      
       defaultStyle:{
         font: "THSarabunNew",
       }
