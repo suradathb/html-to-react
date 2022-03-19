@@ -3,6 +3,7 @@ import axios from "axios";
 import Web3 from "web3";
 import CowCoin from "../abis/CowCoin.json";
 import ERC721 from "../abis/ERC721.json";
+import "./ShowItemCowCert.css";
 import { Link, Route, Switch } from "react-router-dom";
 import ReactToPrint from "react-to-print";
 import ReportCert from './ReportCert';
@@ -158,7 +159,7 @@ class ShowItemCowCert extends Component {
           <div class="col-md-6 m-auto text-center">
             <img
               className="imgPreview"
-              src="../assets/images/cowcert-01.png"
+              src="../assets/images/NFTBlack.png"
               alt=""
             />
             <p class="inputname">{this.state.hashching}</p>
@@ -209,10 +210,11 @@ class ShowItemCowCert extends Component {
                         <div class="form-group col-md-12 mb-3">
                           <label htmlFor="inputname">
                             <img
-                              className="imgPreview"
-                              src="../assets/images/CowCoin.jpeg"
+                              className="NFTCoin"
+                              src="../assets/images/NFTCowCert_logo.png"
                               alt=""
                             />
+                            &nbsp;
                             address เจ้าของโค : {this.state.winOwner[Anum].toLocaleLowerCase()}
                           </label>
                         </div>
@@ -409,10 +411,11 @@ class ShowItemCowCert extends Component {
                         <div class="form-group col-md-12 mb-3">
                           <label htmlFor="inputname">
                             <img
-                              className="imgPreview"
-                              src="../assets/images/CowCoin.jpeg"
+                              className="NFTCoin"
+                              src="../assets/images/NFTCowCert_logo.png"
                               alt=""
                             />
+                            &nbsp;
                             address เจ้าของโค : {this.state.winOwner[Anum].toLocaleLowerCase()}
                           </label>
                         </div>

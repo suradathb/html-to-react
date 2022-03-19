@@ -150,7 +150,7 @@ class Member extends Component {
           <div class="col-md-6 m-auto text-center">
             <img
               className="imgPreview"
-              src="../assets/images/cowcert-01.png"
+              src="../assets/images/NFTBlack.png"
               alt=""
             />
             <p class="inputname">{this.state.account.toLocaleLowerCase()}</p>
@@ -235,6 +235,7 @@ class Member extends Component {
                                       account={this.state.account}
                                       images={smarts[keyname].imgPath}
                                       ERC721={this.state.cowerc}
+                                      owner_account={this.state.owner[keyname].toLocaleLowerCase()}
                                     />
                                   </td>
                                   <td>

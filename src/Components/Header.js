@@ -109,7 +109,7 @@ class Header extends Component {
             >
               <img
                 className="logo-Header"
-                src="./assets/images/cowcert-01.png"
+                src="./assets/images/NFTBlack.png"
                 alt=""
               />
             </a>

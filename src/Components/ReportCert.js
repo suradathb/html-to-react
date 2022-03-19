@@ -151,37 +151,39 @@ class ReportCert extends Component {
         bolditalics: 'THSarabunNew BoldItalic.ttf'
       },
     }
-    // console.log(sprit)
+    // console.log(event.datas)
     var docDefinition = {
       pageOrientation: 'landscape',
       header:[
-        {text:"NFT CowCert Association",fontSize:30,alignment:'center'},
+        {text:"NFT CowCert Association",fontSize:30,bold: true,alignment:'center'},
         // {image: '../assets/images/cowcert-01.png',width: 150,alignment:'center'},
       ],
-      
+      watermark: {text: 'NFT CowCert', color: 'black', opacity: 0.3, bold: true, italics: false},
       content: [
-        { text: `ใบพันธุ์ประวัติโค ไทยบราห์มัน เพศ : ${sprit[1]} ทะเบียนโคเลขที่ : ${sprit[2]}`,fontSize: 18,alignment:'center'},
-        { text: `ชื่อโค : ${sprit[3]} วันเกิด : ${sprit[4]}`,fontSize: 18,alignment:'center'},
-        { text: `หมายเลขประจำตัวโค : ${sprit[5]} ${sprit[6]}`,fontSize: 18,alignment:'center'},
-        { text: `ผู้บำรุงพันธุ์ : ${sprit[7]}`,fontSize: 18,alignment:'center'},
-        { text: `เจ้าของปัจจุบัน : ${sprit[8]} ${sprit[9]}`,fontSize: 18,alignment:'center'},
+        { text: `ใบพันธุ์ประวัติโค ไทยบราห์มัน เพศ : ${sprit[1]} ทะเบียนโคเลขที่ : ${sprit[2]}`,fontSize: 16,alignment:'center'},
+        { text: `ชื่อโค : ${sprit[3]} วันเกิด : ${sprit[4]}`,fontSize: 16,alignment:'center'},
+        { text: `หมายเลขประจำตัวโค : ${sprit[5]} ${sprit[6]}`,fontSize: 16,alignment:'center'},
+        { text: `ผู้บำรุงพันธุ์ : ${sprit[7]}`,fontSize: 16,alignment:'center'},
+        { text: `เจ้าของปัจจุบัน : ${event.datas.owner_account}`,fontSize: 16,alignment:'center'},
+        { text: `Hash ธุรกรรม : ${event.datas.hash.hash}`,fontSize: 16,alignment:'center'},
+        { qr:`${QRScan.props.value}`,fit:95,bold: true,alignment:'center'},
         // พ่อ
-        { text: `${sprit[30]}`,fontSize: 18,alignment:'right'},
-        { text: `${sprit[26]}`,fontSize: 18,alignment:'center'},
-        { text: `${sprit[32]}`,fontSize: 18,alignment:'right'},
-        { text: `พ่อ SIRE : ${sprit[24]}`,fontSize: 18,alignment:'left'},
-        { text: `${sprit[34]}`,fontSize: 18,alignment:'right'},
-        { text: `${sprit[28]}`,fontSize: 18,alignment:'center'},
-        { text: `${sprit[36]}`,fontSize: 18,alignment:'right'},
+        { text: `${sprit[30]}`,fontSize: 16,alignment:'right'},
+        { text: `${sprit[26]}`,fontSize: 16,alignment:'center'},
+        { text: `${sprit[32]}`,fontSize: 16,alignment:'right'},
+        { text: `พ่อ SIRE : ${sprit[24]}`,fontSize: 16,alignment:'left'},
+        { text: `${sprit[34]}`,fontSize: 16,alignment:'right'},
+        { text: `${sprit[28]}`,fontSize: 16,alignment:'center'},
+        { text: `${sprit[36]}`,fontSize: 16,alignment:'right'},
         // แม่
-        { text: `${sprit[44]}`,fontSize: 18,alignment:'right'},
-        { text: `${sprit[40]}`,fontSize: 18,alignment:'center'},
-        { text: `${sprit[46]}`,fontSize: 18,alignment:'right'},
-        { text: `แม่ DAM : ${sprit[38]}`,fontSize: 18,alignment:'left'},
-        { text: `${sprit[48]}`,fontSize: 18,alignment:'right'},
-        { text: `${sprit[42]}`,fontSize: 18,alignment:'center'},
-        { text: `${sprit[50]}`,fontSize: 18,alignment:'right'},
-        { qr:`${QRScan.props.value}`,fit:80,alignment:'right'},
+        { text: `${sprit[44]}`,fontSize: 16,alignment:'right'},
+        { text: `${sprit[40]}`,fontSize: 16,alignment:'center'},
+        { text: `${sprit[46]}`,fontSize: 16,alignment:'right'},
+        { text: `แม่ DAM : ${sprit[38]}`,fontSize: 16,alignment:'left'},
+        { text: `${sprit[48]}`,fontSize: 16,alignment:'right'},
+        { text: `${sprit[42]}`,fontSize: 16,alignment:'center'},
+        { text: `${sprit[50]}`,fontSize: 16,alignment:'right'},
+        // { qr:`${QRScan.props.value}`,fit:80,alignment:'right'},
         
       ],
       

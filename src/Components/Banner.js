@@ -15,14 +15,17 @@ function Banner() {
                             <div class="container">
                                 <div class="row p-5">
                                     <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
-                                        <img class="img-fluid " src="./assets/images/cowcert2-02.png" alt="" />
+                                        <img class="img-fluid " src="./assets/images/NFTBlack.png" alt="" />
                                     </div>
                                     <div class="col-lg-6 mb-0 d-flex align-items-center">
                                         <div class="text-align-left align-self-center">
-                                            <h1 class="h1 text-success"><b>Cowcert</b> association</h1>
-                                            <h3 class="h2">Blockchain prototype cowcert :  For managing certificate pedigree Cow Brahman cattle breed</h3>
+                                            <h1 class="h1 text-success"><b>NFT CowCert</b> Blockchain Prototype</h1>
+                                            <h3 class="h2">For Managing Brahman Pedigree Certificates </h3>
                                             <p>
-                                            โคบราห์มัน จัดเป็นโคเนื้อในเขตร้อน(Bos indicus) มีถิ่นกำเนิดดั้งเดิมในประเทศอินเดีย โดยคำว่าบราห์มัน เชื่อว่ามาจากคำว่า Bramini ซึ่งเป็นประเพณีทางศาสนาพราหมณ์ที่มีพ่อโคศักดิ์สิทธิ์ชื่อพราหมณี 
+                                            ระบบ NFT CowCert ถูกพัฒนาขึ้นเพื่อเป็นต้นแบบ สำหรับงานวิจัยเพื่อแสดงให้เห็นกระบวนการทำงาน จึงทำขึ้นเพื่อเป็นเว็บตัวแทนของสมาคม
+                เมื่อพวกเค้าเชื่อถือ blockchain ร่วมกันเหล่าสมาชิก ผู้สนใจ และผู้ดูแลระบบ สามารถใช้งานผ่าน ระบบ NFT CowCert ตามสิทธิ์การเข้าถึงในแต่ละ
+                หน้าที่ของการใช้งานของพวกเค้าได้ผ่านระบบต้นแบบนี้ Smart contract ถูก Deploy ขึ้นใน วง chain ของ binance testnet และใช้ fleek ในการจัดการกับ
+                Server เหล่านี้คือข้อมูลเบื่องต้นและยินดีต้องรับสู่ <b>NFT CowCert</b> ระบบ NFT สำหรับ ตรวจสอบ และเปลี่ยนมือตัวแทนของ โคบราห์มัน แบบ Decentralization
                                             </p>
                                         </div>
                                     </div>

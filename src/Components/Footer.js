@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link, NavLink } from "react-router-dom";
 import CowCoin from "../abis/CowCoin.json";
 import ERC721 from "../abis/ERC721.json";
+import "./Footer.css";
 import Web3 from "web3";
 
 // function Footer() {
@@ -88,7 +89,7 @@ class Footer extends Component {
               <div class="col-md-4 pt-5 footer">
                 <img
                   className="logo-Footer"
-                  src="./assets/images/cowcert-01.png"
+                  src="./assets/images/NFTWrite.png"
                   alt=""
                 />
                 <ul class="list-unstyled text-light footer-link-list">
@@ -130,7 +131,7 @@ class Footer extends Component {
 
               <div class="col-md-4 pt-5">
                 <h2 class="h2 text-light border-bottom pb-3 border-light">
-                  Further Info
+                  ข้อมูลเพิ่มเติม
                 </h2>
                 <ul class="list-unstyled text-light footer-link-list">
                   <li>
