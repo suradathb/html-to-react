@@ -158,7 +158,7 @@ class ReportCert extends Component {
         {text:"NFT CowCert Association",fontSize:30,bold: true,alignment:'center'},
         // {image: '../assets/images/cowcert-01.png',width: 150,alignment:'center'},
       ],
-      watermark: {text: 'NFT CowCert', color: 'black', opacity: 0.3, bold: true, italics: false},
+      watermark: {text: `NFT CowCert : ${sprit[2]}`, color: 'black', opacity: 0.3, bold: true, italics: false},
       content: [
         { text: `ใบพันธุ์ประวัติโค ไทยบราห์มัน เพศ : ${sprit[1]} ทะเบียนโคเลขที่ : ${sprit[2]}`,fontSize: 16,alignment:'center'},
         { text: `ชื่อโค : ${sprit[3]} วันเกิด : ${sprit[4]}`,fontSize: 16,alignment:'center'},

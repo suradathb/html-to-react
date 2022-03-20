@@ -76,7 +76,7 @@ class Header extends Component {
     } else {
       button = (
         <Link class="nav-link" to="/login">
-          Login
+          เข้าสู่ระบบ
         </Link>
       );
     }
