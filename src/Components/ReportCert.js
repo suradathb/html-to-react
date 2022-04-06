@@ -192,7 +192,9 @@ class ReportCert extends Component {
       }
     };
     // console.log(docDefinition)
-    pdfMake.createPdf(docDefinition).open({},window);
+    // pdfMake.createPdf(docDefinition).open();
+    pdfMake.createPdf(docDefinition).download(`NFT_CowCert_${sprit[2]}.pdf`);//.print({},window.open('','_blank'));
+    // pdfDocGenerator.getStream();
   }
   // createPDF(event) {
   //   const smart = event.datas.smart;
