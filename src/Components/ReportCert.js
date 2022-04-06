@@ -192,7 +192,7 @@ class ReportCert extends Component {
       }
     };
     // console.log(docDefinition)
-    pdfMake.createPdf(docDefinition).open();
+    pdfMake.createPdf(docDefinition).open({},window);
   }
   // createPDF(event) {
   //   const smart = event.datas.smart;
