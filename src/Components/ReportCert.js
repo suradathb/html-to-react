@@ -190,6 +190,7 @@ class ReportCert extends Component {
       defaultStyle:{
         font: "THSarabunNew",
       }
+     
     };
     // console.log(docDefinition)
     // pdfMake.createPdf(docDefinition).open();

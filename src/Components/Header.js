@@ -42,10 +42,17 @@ class Header extends Component {
       // console.log(cowCoin.methods)
       for (var i = 0; i <= taskCount; i++) {
         const task = await cowCoin.methods.taskcows(i).call();
-        // console.log(task)
-        this.setState({
-          owner: [...this.state.owner, task.government.toLocaleLowerCase()],
-        });
+        // console.log(accounts,task)
+        if(accounts == task[1])
+        {
+          // console.log("OK");
+          this.setState({
+            owner: task.government.toLocaleLowerCase()
+          });
+        }
+        // this.setState({
+        //   owner: [...this.state.owner, task.government.toLocaleLowerCase()],
+        // });
       }
       // this.setState({ loading: false });
     }
@@ -80,24 +87,34 @@ class Header extends Component {
         </Link>
       );
     }
-    let Permission = this.state.owner.map((admin) => {
-      let setPermission;
-      // console.log(admin)
-      if (useraccount == admin) {
-        // setPermission = <li class="nav-item">
-        return (
-          <li class="nav-item">
-            <Link class="nav-link" to="/showcowcert">
-            ผู้ดูแลระบบ
-            </Link>
-            {/* <Link class="nav-link" to="/members">
-          Member
-        </Link> */}
-          </li>
-        );
-      } else {
-      }
-    });
+    // console.log(this.state.owner)
+    let Permission = this.state.owner
+    // console.log(Permission)
+    let setPermission 
+    if(Permission != 0)
+    {
+      setPermission = <li class="nav-item"><Link class="nav-link" to="/showcowcert"> ผู้ดูแลระบบ</Link></li>
+    }
+    else {
+      setPermission = "";
+    }
+    // let Permission = this.state.owner.map((admin,i) => {
+    //   let setPermission = false;
+    //   // console.log(useraccount,admin,i)
+    //   if (useraccount == admin) {
+    //     // console.log(useraccount,admin,i)
+    //     setPermission = <li class="nav-item"><Link class="nav-link" to="/showcowcert"> ผู้ดูแลระบบ</Link></li>;
+    //     return (
+    //       setPermission
+    //     //   <li class="nav-item">
+    //     //     <Link class="nav-link" to="/showcowcert">
+    //     //     ผู้ดูแลระบบ
+    //     //     </Link>
+    //     //  </li>
+    //     );
+    //   } else {
+    //   }
+    // });
 
     return (
       <>
@@ -162,7 +179,7 @@ class Header extends Component {
                       ติดต่อเรา
                     </Link>
                   </li>
-                  {Permission}
+                  {setPermission}
                 </ul>
               </div>
               <div class="navbar align-self-center d-flex">

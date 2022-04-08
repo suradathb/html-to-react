@@ -157,7 +157,7 @@ class Search extends Component {
   };
 
   handleScan(data) {
-    console.log(data)
+    // console.log(data)
     const getdata = data
     // const Sdata = getdata.split(":");
     // console.log(Sdata[1].toLocaleLowerCase())
