@@ -9,8 +9,7 @@ function Page404() {
                         <img className="logo" src="./assets/images/cowcert-01.png" alt="" />
                         <h1 class="h1">ERROR 404.</h1>
                         <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                            Lorem ipsum dolor sit amet.
+                            พบปัญหาระหว่างการใช้งานระบบ  NFT CowCert โปรด กด "กลับหน้าหลัก" ขออภัยในความไม่สะดวก 
                             <div class="row">
                                 <div class="col text-end mt-2">
                                     <input type="text" class="form-control mt-1" id="error" name="Error 404" placeholder="Error 404" />

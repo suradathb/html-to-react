@@ -5,6 +5,16 @@ import Web3 from "web3";
 import CowCoin from "./abis/CowCoin.json";
 import ERC721 from "./abis/ERC721.json";
 import "./Search.css";
+import QrReader from "react-qr-reader";
+import {
+  Container,
+  Card,
+  CardContent,
+  makeStyles,
+  Grid,
+  TextField,
+  Button,
+} from "@material-ui/core";
 import Example from "./Components/ReportCert";
 
 // function Search(props) {
@@ -86,7 +96,7 @@ class Search extends Component {
     axios
       .get(
         // "https://api-testnet.bscscan.com/api?module=account&action=txlist&address=0x82eaDcf8504F893993cf075b98f11465078B240E&startblock=1&endblock=99999999&sort=asc&apikey=YourApiKeyToken"
-        "https://api-testnet.bscscan.com/api?module=account&action=tokennfttx&contractaddress=0x8501F5517751F191894dA46F80aD8f6A6ECb3554"
+        "https://api-testnet.bscscan.com/api?module=account&action=tokennfttx&contractaddress=0xA97b83e0a21698770A0259b8e0dB03D48ac6F9C6"
       )
       .then((response) => {
         const getDataAll = response.data.result.map((cow, key) => {
@@ -146,6 +156,24 @@ class Search extends Component {
     }
   };
 
+  handleScan(data) {
+    // console.log(data)
+    const getdata = data
+    // const Sdata = getdata.split(":");
+    // console.log(Sdata[1].toLocaleLowerCase())
+    this.setState({
+      // toAddress: Sdata[1].toLocaleLowerCase(),
+      search: getdata,
+    });
+  }
+  handleError(err) {
+    console.error(err);
+  }
+  openImageDialog() {
+    document.getElementById("contentCow").innerHTML = "";
+    this.refs.qrReader1.openImageDialog();
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -165,6 +193,7 @@ class Search extends Component {
       winOwner: "",
       isReadMore: true,
     };
+    this.handleScan = this.handleScan.bind(this);
   }
 
   render() {
@@ -172,9 +201,9 @@ class Search extends Component {
       <>
         <div class="container-fluid bg-light py-5">
           <div class="col-md-6 m-auto text-center">
-            <h1 class="h1">Search Cowcert</h1>
+            <h1 class="h1">Search NFT Cowcert</h1>
             <div class="input-group mb-3">
-              <div class="input-group-prepend d-none d-md-block input-group-text">
+              {/* <div class="input-group-prepend d-none d-md-block input-group-text">
                 <select
                   name="f"
                   class="custom-select custom-select-sm  custom-arrow-select input-group-text font-size-base "
@@ -188,7 +217,7 @@ class Search extends Component {
                   <option value="1">Txn Hash</option>
                   <option value="2">เลขทะเบียนโค</option>
                 </select>
-              </div>
+              </div> */}
               <input
                 type="text"
                 class="form-control form-control-lg"
@@ -199,6 +228,25 @@ class Search extends Component {
                   this.setState({ search: event.target.value });
                 }}
               />
+              <QrReader
+              ref="qrReader1"
+              delay={this.state.delay}
+              // previewStyle={previewStyle}
+              onError={this.handleError}
+              onScan={this.handleScan}
+              legacyMode={true}
+            />
+            <Button
+              // className="btn btn-success btn-lg px-3"
+              className="btn scanQr"
+              variant="contained"
+              // color="secondary"
+              onClick={this.openImageDialog.bind(this)}
+            >
+             <i class="fa fa-qrcode fa-2x" aria-hidden="true"></i>
+             &nbsp;
+              ค้นหาด้วย Qr Code
+            </Button>
               <button
                 type="submit"
                 onClick={this.searchChanged}
@@ -255,10 +303,11 @@ class Search extends Component {
                         <div class="form-group col-md-12 mb-3">
                           <label htmlFor="inputname">
                             <img
-                              className="imgPreview"
-                              src="../assets/images/CowCoin.jpeg"
+                              className="NFTCoin"
+                              src="../assets/images/NFTCowCert_logo.png"
                               alt=""
                             />
+                            &nbsp;
                             address เจ้าของโค : {this.state.winOwner[Anum].toLocaleLowerCase()}
                           </label>
                         </div>
@@ -456,10 +505,11 @@ class Search extends Component {
                           <div class="form-group col-md-12 mb-3">
                             <label htmlFor="inputname">
                               <img
-                                className="imgPreview"
-                                src="../assets/images/CowCoin.jpeg"
+                                className="NFTCoin"
+                                src="../assets/images/NFTCowCert_logo.png"
                                 alt=""
                               />
+                              &nbsp;
                               address เจ้าของโค : {this.state.winOwner[Anum].toLocaleLowerCase()}
                             </label>
                           </div>
