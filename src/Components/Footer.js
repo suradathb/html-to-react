@@ -66,20 +66,15 @@ class Footer extends Component {
     };
   }
   render() {
-    const useraccount = this.props.account;
-    let ShowHide = this.state.owner.map((admin) => {
-      // console.log(useraccount)
-      if (useraccount.toLocaleLowerCase() == admin) {
-        return (
-          <li>
-            <Link class="text-decoration-none" to="/addcowcert">
-              ผู้ดูแลระบบ
-            </Link>
-          </li>
-        );
-      }
-    });
-
+    let Permission = this.state.owner
+    let setPermission 
+    if(Permission != 0)
+    {
+      setPermission = <li><Link class="text-decoration-none" to="/showcowcert"> ผู้ดูแลระบบ</Link></li>
+    }
+    else {
+      setPermission = "";
+    }
     return (
       <>
         {/* <!-- Start Footer --> */}
@@ -149,7 +144,8 @@ class Footer extends Component {
                       เกี่ยวกับเรา
                     </Link>
                   </li>
-                  {ShowHide}
+                  {/* {ShowHide} */}
+                  {setPermission}
                   {/* <li>
                     <Link class="text-decoration-none" to="/addcowcert">
                       CreateCowCert

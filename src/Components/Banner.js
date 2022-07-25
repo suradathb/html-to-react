@@ -19,13 +19,11 @@ function Banner() {
                                     </div>
                                     <div class="col-lg-6 mb-0 d-flex align-items-center">
                                         <div class="text-align-left align-self-center">
-                                            <h1 class="h1 text-success"><b>NFT CowCert</b> Blockchain Prototype</h1>
-                                            <h3 class="h2">For Managing Brahman Pedigree Certificates </h3>
+                                            <h1 class="h1 text-success"> <b>Blockchain Certificates for Pedigree Management</b></h1>
+                                            <h3 class="h2"><b>NFT CowCert</b></h3>
                                             <p>
-                                            ระบบ NFT CowCert ถูกพัฒนาขึ้นเพื่อเป็นต้นแบบ สำหรับงานวิจัยเพื่อแสดงให้เห็นกระบวนการทำงาน จึงทำขึ้นเพื่อเป็นเว็บตัวแทนของสมาคม
-                เมื่อพวกเค้าเชื่อถือ blockchain ร่วมกันเหล่าสมาชิก ผู้สนใจ และผู้ดูแลระบบ สามารถใช้งานผ่าน ระบบ NFT CowCert ตามสิทธิ์การเข้าถึงในแต่ละ
-                หน้าที่ของการใช้งานของพวกเค้าได้ผ่านระบบต้นแบบนี้ Smart contract ถูก Deploy ขึ้นใน วง chain ของ binance testnet และใช้ fleek ในการจัดการกับ
-                Server เหล่านี้คือข้อมูลเบื่องต้นและยินดีต้องรับสู่ <b>NFT CowCert</b> ระบบ NFT สำหรับ ตรวจสอบ และเปลี่ยนมือตัวแทนของ โคบราห์มัน แบบ Decentralization
+                                            ระบบ NFT CowCert ระบบรับรองสายเลือดโคบราห์มันที่ปลอดภัย และตรวจสอบ รวมถึงสามารถเปลี่นผู้ถือครองได้ผ่านระบบ NFT CowCert โดยการนำเสนอผ่านเทคโนโลยีบล็อกเชน
+                                            สามารถตรวจสอบเครือญาติได้  <b>NFT CowCert</b> ระบบ NFT สำหรับ ตรวจสอบ และเปลี่ยนมือตัวแทนของ โคบราห์มัน แบบ Decentralization
                                             </p>
                                         </div>
                                     </div>
